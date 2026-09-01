@@ -191,6 +191,16 @@ textarea{width:100%;}
     </div>
 
     <div class="card">
+      <div class="card-title">Coach</div>
+      <div class="subtle-note" style="margin-top:-8px;margin-bottom:14px;">Brutally honest. Genuinely in your corner. No fluff, no filler compliments.</div>
+      <div class="deficit-box" style="margin-bottom:10px;">
+        <div style="font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:1px;">Today's read</div>
+        <div class="deficit-status status-warn" id="coachVerdict">NO DATA</div>
+      </div>
+      <div id="coachText" style="font-size:13px;line-height:1.7;color:var(--fg-dim);"></div>
+    </div>
+
+    <div class="card">
       <div class="card-title">This Week's Deficit</div>
       <div class="deficit-box">
         <div class="deficit-num" id="weekDeficitNum">0</div>
@@ -307,7 +317,7 @@ const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','
 
 function defaultData(){
   return {
-    profile:{startWeight:170, goalWeight:150, startBF:23.9, goalBF:15, tdee:2500, calLow:1800, calHigh:1900},
+    profile:{startWeight:170, goalWeight:150, startBF:23.9, goalBF:15, tdee:2500, calLow:1800, calHigh:1900, proteinTarget:153, fatTarget:60, carbTarget:175},
     days:{}, // 'YYYY-MM-DD': {calories, protein, carbs, fat, steps, wholeFoods, liquidsClean, training, run, reading, dental, mental, physical}
     bodyLog:[], // {date, weight, bf}
     savings:[], // {date, amount}
@@ -387,6 +397,9 @@ document.querySelectorAll('.tab').forEach(tab=>{
     document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
     tab.classList.add('active');
     document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
+    if(tab.dataset.tab==='today') renderChecklist();
+    if(tab.dataset.tab==='nutrition') renderNutritionTab();
+    if(tab.dataset.tab==='plan') renderPlan();
     if(tab.dataset.tab==='progress') renderCharts();
   });
 });
@@ -394,8 +407,9 @@ document.querySelectorAll('.tab').forEach(tab=>{
 /* ---------- HEADER / COUNTDOWN ---------- */
 function renderHeader(){
   const now = new Date();
-  const msLeft = END_DATE - now;
-  const daysLeft = Math.max(0, Math.ceil(msLeft/86400000));
+  const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const msLeft = END_DATE - todayMidnight;
+  const daysLeft = Math.max(0, Math.round(msLeft/86400000));
   document.getElementById('daysLeft').textContent = daysLeft;
 
   const dow = now.getDay();
@@ -447,6 +461,7 @@ function renderChecklist(){
       saveData();
       renderChecklist();
       renderDotmap();
+      renderNutritionChecklist();
     });
     list.appendChild(row);
   });
@@ -473,7 +488,7 @@ document.getElementById('markAllBtn').addEventListener('click',()=>{
   day.wholeFoods=true; day.liquidsClean=true; day.reading=true;
   day.dental=true; day.mental=true; day.physical=true;
   if(!day.steps || day.steps<10000) day.steps=10000;
-  saveData(); renderChecklist(); renderDotmap();
+  saveData(); renderChecklist(); renderDotmap(); renderNutritionChecklist(); renderWeekDeficit();
   toast('All marked done');
 });
 
@@ -525,6 +540,7 @@ document.getElementById('saveNutritionBtn').addEventListener('click',()=>{
   renderWeekDeficit();
   renderChecklist();
   renderDotmap();
+  renderCoach();
 });
 
 function currentWeekKeys(){
@@ -538,6 +554,173 @@ function currentWeekKeys(){
     keys.push(dateKey(d));
   }
   return keys;
+}
+
+/* ---------- COACH ---------- */
+const USER_NAME = 'Sagasta';
+const COACH_LINES = {
+  ok: {
+    open: [
+      "Good. This is the boring, repeatable stuff that actually works.",
+      "This is it. Not exciting, just correct — do it again tomorrow.",
+      `${USER_NAME}, this is exactly the day that gets you to December.`,
+      "No drama today. That's the point.",
+      "Clean day. Bank it and move on.",
+      "This is what being on track is supposed to feel like — unremarkable."
+    ],
+    close: [
+      "Don't overthink it — just repeat this.",
+      "Same again tomorrow. That's the whole strategy.",
+      "Consistency is the only trick here, and you just did it.",
+      "Nothing to fix. Go train.",
+      "This is the arc working as designed."
+    ]
+  },
+  warn: {
+    open: [
+      "Close, but close doesn't move the needle by itself.",
+      `${USER_NAME}, this is fixable in one sentence — read below.`,
+      "Not a bad day. Not the day either, though.",
+      "You're circling the target, not hitting it. Let's fix that.",
+      "This is the kind of day that quietly stalls a cut if it repeats."
+    ],
+    close: [
+      "One small correction tomorrow and this is a non-issue.",
+      "Fix the gap above, don't overhaul the whole day.",
+      "Small miss. Small fix. Don't spiral over it.",
+      "This is a tune, not a rebuild.",
+      "Catch it tomorrow and it never becomes a pattern."
+    ]
+  },
+  bad: {
+    open: [
+      `${USER_NAME}, straight talk — today worked against the goal, not for it.`,
+      "This is the day that undoes a week if you let it become a pattern.",
+      "I'm not going to soften this one. Read it.",
+      "This isn't a vibe check, it's math — and today the math didn't work.",
+      "One day like this is noise. Three in a row is a new trajectory, and not the one you want."
+    ],
+    close: [
+      "Tomorrow's the actual test — not today. What you do next matters more than this.",
+      "You don't need to punish yourself for it. You need to not repeat it.",
+      "Reset tomorrow. Dwelling on today burns more energy than fixing it.",
+      "This is one data point out of 91 days. Don't let it become the story.",
+      "Fix what's above, then close this tab and go train."
+    ]
+  }
+};
+function pickCoachLine(pool, seedOffset){
+  const now = new Date();
+  const start = new Date(now.getFullYear(),0,0);
+  const dayOfYear = Math.floor((now-start)/86400000);
+  return pool[(dayOfYear+seedOffset) % pool.length];
+}
+function getMacroTargets(){
+  return {
+    protein: data.profile.proteinTarget,
+    fat: data.profile.fatTarget,
+    carbs: data.profile.carbTarget
+  };
+}
+
+function renderCoach(){
+  const day = getDay(todayKey());
+  const verdictEl = document.getElementById('coachVerdict');
+  const textEl = document.getElementById('coachText');
+  const {calLow, calHigh} = data.profile;
+  const targets = getMacroTargets();
+
+  if(day.calories==null){
+    verdictEl.textContent='NO DATA'; verdictEl.className='deficit-status status-warn';
+    textEl.innerHTML = "Log today's calories — and macros if you've got them — and I'll tell you exactly where you stand.";
+    return;
+  }
+
+  const cals = day.calories;
+  const lines = [];
+  let flags = 0;
+
+  if(cals < 1500){
+    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong> — too low. You set an ${calLow}–${calHigh} target for a reason: enough food to train hard, hold onto muscle, and actually stick to this for 91 days. Under-eating this hard now just sets up a binge later and drags your metabolism down for the whole arc.`);
+    flags+=2;
+  } else if(cals < calLow){
+    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong> — a bit under target (${calLow}–${calHigh}). Not a crisis once in a while, but don't confuse "disciplined" with "starving." The deficit you already planned is enough — trust it.`);
+    flags+=1;
+  } else if(cals <= calHigh){
+    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong> — right in the ${calLow}–${calHigh} window. This is exactly what gets you to ${data.profile.goalWeight}lb on schedule. Repeat it.`);
+  } else if(cals <= calHigh+200){
+    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong> — over target. One day like this won't wreck the arc, but it eats into your weekly deficit. Tighten it up tomorrow.`);
+    flags+=1;
+  } else {
+    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong> — well over target. This single day can undo 2–3 days of a clean deficit. Figure out what happened and don't let it repeat.`);
+    flags+=2;
+  }
+
+  if(day.protein!=null){
+    const p = day.protein;
+    if(p < targets.protein*0.75){
+      lines.push(`<strong>Protein: ${p}g</strong> — low, target's ${targets.protein}g. In a deficit, protein is what tells your body to burn fat and hold onto muscle. Skip this enough and the weight you lose won't be the weight you wanted to lose.`);
+      flags+=2;
+    } else if(p < targets.protein){
+      lines.push(`<strong>Protein: ${p}g</strong> — close, but under the ${targets.protein}g target. Find another ${Math.round(targets.protein-p)}g tomorrow — extra chicken, a scoop of whey, or a couple eggs gets you there.`);
+      flags+=1;
+    } else {
+      lines.push(`<strong>Protein: ${p}g</strong> — target hit. This is doing the most to protect your muscle while you cut.`);
+    }
+  } else {
+    lines.push(`<strong>Protein:</strong> not logged. Aim for around ${targets.protein}g/day — it's the single biggest lever for keeping muscle while you're in a deficit.`);
+  }
+
+  if(day.fat!=null){
+    const f = day.fat;
+    if(f < targets.fat){
+      lines.push(`<strong>Fat: ${f}g</strong> — under the ${targets.fat}g floor. Too low for too long messes with hormones (including testosterone), sleep, and recovery. Get some olive oil, nuts, or fatty fish in.`);
+      flags+=1;
+    } else {
+      lines.push(`<strong>Fat: ${f}g</strong> — fine, no issue here.`);
+    }
+  }
+
+  if(day.carbs!=null){
+    const c = day.carbs;
+    const dow = new Date().getDay();
+    const isTrainingOrRunDay = DAY_SCHEDULE[dow].label!=='Rest' || isRunDay(dow);
+    if(c < targets.carbs*0.6){
+      lines.push(`<strong>Carbs: ${c}g</strong> — quite low, target's around ${targets.carbs}g. Carbs aren't the enemy here — they're what fuels your lifts and runs. Starving them while training hard just tanks performance and recovery, it doesn't speed up fat loss.`);
+      flags+=1;
+    } else if(c < targets.carbs*0.85){
+      lines.push(`<strong>Carbs: ${c}g</strong> — a bit under the ~${targets.carbs}g target.${isTrainingOrRunDay ? " You're training today — this is the fuel for that session, don't shortchange it." : " Fine on a rest day, just don't let it become the default."}`);
+    } else if(c <= targets.carbs*1.25){
+      lines.push(`<strong>Carbs: ${c}g</strong> — right where they should be. Good fuel for training, and it's not eating into your deficit if the total calories check out.`);
+    } else {
+      lines.push(`<strong>Carbs: ${c}g</strong> — well above target. Not inherently bad, but this usually means total calories crept up somewhere — check the number at the top matches.`);
+      flags+=1;
+    }
+  }
+
+  if(day.protein!=null && day.carbs!=null && day.fat!=null){
+    const macroCals = day.protein*4 + day.carbs*4 + day.fat*9;
+    if(Math.abs(macroCals - cals) > 150){
+      lines.push(`Heads up: your macros add up to ~${Math.round(macroCals)} kcal but you logged ${Math.round(cals)} kcal total — worth double-checking one of those numbers.`);
+    }
+  }
+
+  let tier;
+  if(flags===0) tier='ok';
+  else if(flags<=2) tier='warn';
+  else tier='bad';
+
+  const opener = pickCoachLine(COACH_LINES[tier].open, 0);
+  const closer = pickCoachLine(COACH_LINES[tier].close, 3);
+
+  textEl.innerHTML =
+    `<div style="font-weight:700;color:var(--fg);margin-bottom:12px;">${opener}</div>` +
+    lines.map(l=>`<div style="margin-bottom:10px;">${l}</div>`).join('') +
+    `<div style="margin-top:6px;padding-top:12px;border-top:1px solid var(--border);color:var(--fg-dim);font-style:normal;">${closer}</div>`;
+
+  if(tier==='ok'){ verdictEl.textContent='ON TRACK'; verdictEl.className='deficit-status status-ok'; }
+  else if(tier==='warn'){ verdictEl.textContent='NEEDS A TWEAK'; verdictEl.className='deficit-status status-warn'; }
+  else { verdictEl.textContent='OFF TRACK'; verdictEl.className='deficit-status status-bad'; }
 }
 
 function renderWeekDeficit(){
@@ -586,6 +769,7 @@ function renderNutritionTab(){
   if(day.steps!=null) document.getElementById('stepsInput').value = day.steps;
   renderNutritionChecklist();
   renderWeekDeficit();
+  renderCoach();
 }
 
 /* ---------- PLAN ---------- */
@@ -777,7 +961,8 @@ document.getElementById('addSavingsBtn').addEventListener('click',()=>{
   document.getElementById('savingsInput').value='';
   renderSavings();
   renderSavingsList();
-  toast('Saved logged');
+  const total = data.savings.reduce((s,e)=>s+e.amount,0);
+  toast(`Saved — total €${total.toLocaleString()}`);
 });
 
 function deleteSaving(id){
@@ -785,7 +970,8 @@ function deleteSaving(id){
   saveData();
   renderSavings();
   renderSavingsList();
-  toast('Entry removed');
+  const total = data.savings.reduce((s,e)=>s+e.amount,0);
+  toast(`Removed — total €${total.toLocaleString()}`);
 }
 
 function renderSavingsList(){
