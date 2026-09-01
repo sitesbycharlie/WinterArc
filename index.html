@@ -727,7 +727,7 @@ function renderWeekDeficit(){
   const {tdee, calLow, calHigh} = data.profile;
   const targetDailyDeficit = tdee - (calLow+calHigh)/2;
   const targetWeekly = Math.round(targetDailyDeficit*7);
-  document.getElementById('weekDeficitNote').textContent = `Target: ${targetWeekly.toLocaleString()} kcal/week deficit (${Math.round(targetDailyDeficit)}/day avg)`;
+  document.getElementById('weekDeficitNote').textContent = `Target: ${Math.round(targetDailyDeficit)} kcal/day deficit (${targetWeekly.toLocaleString()}/week if kept up every day)`;
   document.getElementById('tdeeStat').textContent = tdee;
   document.getElementById('targetStat').textContent = calLow+'–'+calHigh;
 
@@ -745,15 +745,12 @@ function renderWeekDeficit(){
   document.getElementById('weekDeficitBar').style.width = Math.max(0,pct)+'%';
 
   const statusEl = document.getElementById('weekDeficitStatus');
-  // pace check: expected proportion of week elapsed
-  const now = new Date();
-  const dow = now.getDay(); const daysElapsed = dow===0?7:dow;
-  const expectedByNow = targetWeekly * (daysElapsed/7);
+  const avgDailyDeficit = loggedDays>0 ? loggedDeficit/loggedDays : 0;
   if(loggedDays===0){
     statusEl.textContent='NO DATA'; statusEl.className='deficit-status status-warn';
-  } else if(loggedDeficit >= expectedByNow*0.95){
+  } else if(avgDailyDeficit >= targetDailyDeficit*0.95){
     statusEl.textContent='ON TRACK'; statusEl.className='deficit-status status-ok';
-  } else if(loggedDeficit >= expectedByNow*0.7){
+  } else if(avgDailyDeficit >= targetDailyDeficit*0.7){
     statusEl.textContent='SLIGHTLY BEHIND'; statusEl.className='deficit-status status-warn';
   } else {
     statusEl.textContent='BEHIND'; statusEl.className='deficit-status status-bad';
