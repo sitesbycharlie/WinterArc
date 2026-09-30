@@ -40,7 +40,7 @@ header::before{content:"";position:absolute;top:-80%;left:50%;transform:translat
 
 /* TABS */
 .tabs{display:flex;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:10;}
-.tab{flex:1;text-align:center;padding:14px 4px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--fg-dim);cursor:pointer;border-bottom:2px solid transparent;transition:.15s ease;font-weight:600;}
+.tab{flex:1;text-align:center;padding:14px 2px;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--fg-dim);cursor:pointer;border-bottom:2px solid transparent;transition:.15s ease;font-weight:600;}
 .tab:hover{color:var(--fg);}
 .tab.active{color:var(--accent);border-bottom-color:var(--accent);}
 .panel{display:none;padding:24px 0 20px;animation:fade .2s ease;}
@@ -124,17 +124,52 @@ textarea{width:100%;}
 .truth-card{background:linear-gradient(155deg,#0c1117 0%,#0a1620 100%);border-color:var(--accent-dim);position:relative;overflow:hidden;}
 .truth-card::before{content:"”";position:absolute;top:-30px;right:6px;font-family:'Unbounded',sans-serif;font-size:130px;color:rgba(62,198,255,.06);line-height:1;pointer-events:none;}
 .truth-text{font-family:'Manrope',sans-serif;font-weight:700;font-size:20px;line-height:1.35;color:var(--ice);letter-spacing:-.2px;position:relative;z-index:1;}
+/* TRAIN */
+.sess-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.sess-name{font-family:'Unbounded',sans-serif;font-size:26px;line-height:1.05;}
+.sess-sub{font-size:12px;color:var(--fg-dim);margin-top:6px;}
+select.sess-select{width:auto;font-size:14px;padding:8px 10px;font-family:'Manrope',sans-serif;font-weight:700;}
+.ex{padding:18px 0;border-bottom:1px solid var(--border);}
+.ex:first-child{padding-top:0;}
+.ex:last-child{border-bottom:none;padding-bottom:0;}
+.ex-top{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.ex-name{font-weight:800;font-size:15px;}
+.ex-rx{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:var(--accent);margin-top:6px;}
+.ex-why{font-size:12px;color:var(--fg);opacity:.8;line-height:1.5;margin-top:6px;}
+.ex-last{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fg-dim);margin-top:4px;line-height:1.5;}
+.tag{font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:4px 8px;border-radius:2px;white-space:nowrap;}
+.tag-up{background:rgba(74,222,128,.15);color:var(--ok);}
+.tag-hold{background:rgba(62,198,255,.12);color:var(--accent);}
+.tag-reset{background:rgba(255,92,92,.15);color:var(--danger);}
+.tag-new{background:rgba(255,184,77,.15);color:var(--warn);}
+.set-row{display:grid;grid-template-columns:48px 1fr 1fr;gap:8px;align-items:center;margin-top:8px;}
+.set-row .sl{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fg-dim);}
+.set-row input{padding:10px;}
+.set-row input.hit{border-color:var(--ok);}
+.set-row input.miss{border-color:var(--warn);}
+.coach-note{font-size:14px;line-height:1.6;color:var(--ice);white-space:pre-line;position:relative;z-index:1;}
+/* CHECK-IN */
+.scale-row{margin-bottom:14px;}
+.scale-lbl{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;font-weight:700;margin-bottom:6px;}
+.scale-lbl .d{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--fg-dim);font-weight:400;}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.sbtn{background:#050709;border:1px solid var(--border);color:var(--fg-dim);padding:11px 0;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;border-radius:2px;cursor:pointer;transition:.15s ease;}
+.sbtn.on{background:var(--accent);border-color:var(--accent);color:#000;}
+textarea.ta{background:#050709;border:1px solid var(--border);color:var(--fg);padding:11px 12px;font-family:'Manrope',sans-serif;font-size:16px;border-radius:2px;outline:none;min-height:70px;resize:vertical;}
+textarea.ta:focus{border-color:var(--accent);}
+.trend{font-size:13px;line-height:1.7;color:var(--fg-dim);margin-top:14px;padding-top:12px;border-top:1px solid var(--border);}
+.trend strong{color:var(--fg);}
 </style>
 </head>
 <body>
-<div class="storage-banner" id="storageBanner">⚠ Storage is blocked in this browser tab — your entries won't save. Exit Incognito/Private mode and reopen this page to fix it.</div>
+<div class="storage-banner" id="storageBanner">⚠ Storage is blocked in this browser tab, your entries won't save. Exit Incognito/Private mode and reopen this page to fix it.</div>
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">SEP 1 — DEC 1 · 2026</div>
+    <div class="eyebrow">OCT 1 · DEC 24 · 2026</div>
     <div class="brand-name">SAGASTA'S</div>
     <div class="brand">WINTER <span>ARC</span></div>
-    <div class="tagline">91 days. One version of you walks out different.</div>
+    <div class="tagline">85 days. One version of you walks out different.</div>
     <div class="countdown">
       <div class="num" id="daysLeft">--</div>
       <div class="lbl">days remaining</div>
@@ -143,7 +178,8 @@ textarea{width:100%;}
 
   <div class="tabs">
     <div class="tab active" data-tab="today">Today</div>
-    <div class="tab" data-tab="nutrition">Nutrition</div>
+    <div class="tab" data-tab="train">Train</div>
+    <div class="tab" data-tab="nutrition">Food</div>
     <div class="tab" data-tab="plan">Plan</div>
     <div class="tab" data-tab="progress">Progress</div>
   </div>
@@ -160,6 +196,29 @@ textarea{width:100%;}
       <div class="day-sub" id="todaySub">--</div>
     </div>
 
+    <div class="card" id="checkinCard">
+      <div class="card-title">Morning Check-in <span class="pill" id="checkinState">Not done</span></div>
+      <div class="row2">
+        <label class="field"><span class="fl">Weight (lb)</span><input type="number" inputmode="decimal" step="0.1" id="ciWeight" placeholder="168.0"></label>
+        <label class="field"><span class="fl">Sleep (hours)</span><input type="number" inputmode="decimal" step="0.25" id="ciSleep" placeholder="7.5"></label>
+      </div>
+      <div id="ciScales"></div>
+      <div id="ciToggles" style="margin-bottom:10px;"></div>
+      <label class="field"><span class="fl">Pain or niggles</span><input type="text" id="ciPain" placeholder="e.g. left ankle, 3/10 on hack squat"></label>
+      <label class="field"><span class="fl">Anything else I should know</span><textarea class="ta" id="ciNotes" placeholder="Work stress, bad day, cravings, big win..."></textarea></label>
+      <button class="btn" id="saveCheckinBtn">Save check-in</button>
+      <div class="deficit-box" style="margin:18px 0 10px;">
+        <div style="font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:1px;">Coach read</div>
+        <div class="deficit-status status-warn" id="ciVerdict">NO DATA</div>
+      </div>
+      <div id="ciReadout" style="font-size:13px;line-height:1.6;color:var(--fg-dim);"></div>
+      <div class="trend" id="ciTrend"></div>
+      <div class="row2" style="margin-top:14px;">
+        <button class="btn ghost" id="copyDayBtn">Copy today for Claude</button>
+        <button class="btn ghost" id="copyWeekBtn">Copy last 7 days</button>
+      </div>
+    </div>
+
     <div class="card" id="checklistCard">
       <div class="card-title">Daily Non-Negotiables</div>
       <div id="checklist"></div>
@@ -173,11 +232,49 @@ textarea{width:100%;}
     <button class="btn ghost" id="markAllBtn" style="margin-top:4px;">Mark all done</button>
   </div>
 
+  <!-- TRAIN -->
+  <div class="panel" id="panel-train">
+    <div class="card truth-card" id="coachNoteCard" style="display:none;">
+      <div class="card-title">Coach Update <span class="pill" id="coachNoteDate"></span></div>
+      <div class="coach-note" id="coachNoteText"></div>
+    </div>
+    <div class="card" id="deloadCard" style="display:none;border-color:var(--warn);">
+      <div class="card-title" style="color:var(--warn);">Deload Week</div>
+      <div class="subtle-note" style="margin-top:0;">Same weights, one fewer set, stop 3 reps short of failure. This is where the last 6 weeks of work actually lands. Don't skip it, and don't turn it into a hard week.</div>
+    </div>
+    <div class="card">
+      <div class="sess-head">
+        <div>
+          <div class="card-title" style="margin-bottom:8px;" id="sessStatus">Next up</div>
+          <div class="sess-name" id="sessName">--</div>
+          <div class="sess-sub" id="sessSub"></div>
+        </div>
+        <select class="sess-select" id="sessSelect" aria-label="Change session"></select>
+      </div>
+    </div>
+    <div class="card"><div id="exList"></div></div>
+    <button class="btn" id="saveSessionBtn">Save session</button>
+    <div class="subtle-note" style="text-align:center;margin:8px 0 18px;">Only sets with reps entered are saved. Importing tonight's SetGraph CSV replaces this with the real data.</div>
+    <div class="card">
+      <div class="card-title">Import</div>
+      <input type="file" id="csvFile" accept=".csv,text/csv" style="display:none;">
+      <button class="btn" id="csvBtn">Import SetGraph CSV</button>
+      <div class="subtle-note" id="csvInfo"></div>
+      <div style="height:12px;"></div>
+      <input type="file" id="coachFile" accept=".json,application/json" style="display:none;">
+      <button class="btn ghost" id="coachBtn">Import coach update</button>
+    </div>
+    <div class="card">
+      <div class="card-title">Watchlist</div>
+      <div id="watchList"></div>
+    </div>
+  </div>
+
   <!-- NUTRITION -->
   <div class="panel" id="panel-nutrition">
     <div class="card">
       <div class="card-title">Log Today's Intake</div>
-      <label class="field"><span class="fl">Calories consumed</span><input type="number" id="calInput" placeholder="e.g. 1850"></label>
+      <label class="field"><span class="fl">Calories consumed</span><input type="number" id="calInput" placeholder="e.g. 2200"></label>
       <div class="divider-lbl" style="margin-top:0;">Macros (optional)</div>
       <div class="row3">
         <label class="field"><span class="fl">Protein (g)</span><input type="number" id="proteinInput"></label>
@@ -187,7 +284,7 @@ textarea{width:100%;}
       <div class="subtle-note">Macro calories: <strong id="macroCalOut">0</strong> kcal <button class="btn ghost" id="useMacroCalBtn" style="display:inline-block;width:auto;padding:5px 10px;font-size:10px;margin-left:6px;vertical-align:middle;">Use this</button></div>
       <label class="field" style="margin-top:14px;"><span class="fl">Steps</span><input type="number" id="stepsInput" placeholder="10000+"></label>
       <button class="btn" id="saveNutritionBtn">Save</button>
-      <div class="subtle-note" style="margin-top:8px;">Calories and macros save together — log either, both, or neither.</div>
+      <div class="subtle-note" style="margin-top:8px;">Calories and macros save together, log either, both, or neither.</div>
     </div>
 
     <div class="card">
@@ -223,25 +320,37 @@ textarea{width:100%;}
   <!-- PLAN -->
   <div class="panel" id="panel-plan">
     <div class="card">
-      <div class="card-title">Weekly Training Split</div>
-      <div class="week-schedule" id="weekSchedule"></div>
-      <div class="subtle-note">Fixed rotation for all 91 days: Push → Pull → Legs → Rest → Upper → Lower → Rest.</div>
+      <div class="card-title">Training Rotation</div>
+      <div class="week-schedule" id="rotation"></div>
+      <div class="subtle-note">Push, Pull, Legs, alternating A and B. Not tied to weekdays: rest when you need to and the rotation waits for you. Aim for 5 to 6 sessions a week.</div>
     </div>
     <div class="card">
-      <div class="card-title">This Week's Runs <span class="pill">Runna</span></div>
-      <div class="subtle-note" style="margin-bottom:8px;">Best fit for your split: <strong>Mon · Tue · Fri</strong> — Mon and Fri are full rest days (Mon follows Lower, Fri follows Legs, so both double as recovery runs), and Tue is Push with legs fresh off Monday's rest. Avoid running Thu (Legs) or Sun (Lower) where you can. Set this week's actual days from Runna below.</div>
-      <div id="runDaySelector"></div>
+      <div class="card-title">How Progression Works</div>
+      <div class="subtle-note" style="margin-top:0;">
+        • Every lift has a rep range. Compounds 6-10 or 8-12, isolations 10-15 or 12-20<br>
+        • Warm-ups don't count. All working sets at the target weight<br>
+        • Every working set at the top of the range: weight goes up next session<br>
+        • Otherwise: same weight, beat last session's reps<br>
+        • No progress for 3 sessions on a lift: drop 10% and rebuild<br>
+        • Last set within 1 to 2 reps of failure. If it felt easy, it didn't count<br>
+        • Deload week: Nov 9 to 15<br>
+        • Use the exact exercise names shown here in SetGraph so imports match
+      </div>
     </div>
     <div class="card">
       <div class="card-title">Rules</div>
       <div class="subtle-note">
-        • Calorie deficit: 1800–1900 kcal/day (TDEE 2500)<br>
-        • Whole foods only — minimal ultra-processed<br>
+        • Calories: 2,150 to 2,250/day (maintenance ~2,700). Don't eat back watch calories<br>
+        • Protein: 160g, every single day<br>
+        • Whole foods, minimal ultra-processed<br>
         • 10,000+ steps every day<br>
-        • Liquids: water, black coffee/tea, energy drinks only — no alcohol, no sugary drinks<br>
+        • Liquids: water, black coffee/tea, energy drinks only. No alcohol, no sugary drinks<br>
+        • Runs: optional, when you feel like it<br>
+        • Import SetGraph CSV after every session<br>
+        • Weigh daily, judge the weekly average<br>
         • 10 pages reading, daily<br>
-        • Dental + mental + physical health checked in daily<br>
-        • No unnecessary spending — track savings
+        • Dental + mental + physical checked in daily<br>
+        • No unnecessary spending, track savings
       </div>
     </div>
   </div>
@@ -264,24 +373,24 @@ textarea{width:100%;}
     </div>
 
     <div class="card">
-      <div class="card-title">Weight Trend <span class="pill">170 → 150 lb</span></div>
+      <div class="card-title">Weight Trend <span class="pill" id="weightPill">168 → 156 lb</span></div>
       <canvas id="weightChart"></canvas>
     </div>
 
     <div class="card">
-      <div class="card-title">Body Fat % Trend <span class="pill">23.9 → 15%</span></div>
+      <div class="card-title">Body Fat % Trend <span class="pill" id="bfPill">23 → 16%</span></div>
       <canvas id="bfChart"></canvas>
     </div>
 
     <div class="card">
-      <div class="card-title">91-Day Map</div>
+      <div class="card-title">85-Day Map</div>
       <div class="dotmap" id="dotmap"></div>
     </div>
 
     <div class="card">
       <div class="card-title">Savings</div>
       <div class="savings-total" id="savingsTotal">€0</div>
-      <div class="subtle-note" style="margin-bottom:10px;">Total logged since Sept 1</div>
+      <div class="subtle-note" style="margin-bottom:10px;">Total logged</div>
       <label class="field"><span class="fl">Add savings entry (€)</span><input type="number" id="savingsInput" placeholder="e.g. 20"></label>
       <button class="btn ghost" id="addSavingsBtn">Add</button>
       <div class="divider-lbl">Recent entries</div>
@@ -300,28 +409,19 @@ textarea{width:100%;}
 <div class="toast" id="toast"></div>
 
 <script>
-const START_DATE = new Date('2026-09-01T00:00:00');
-const END_DATE = new Date('2026-12-01T00:00:00');
+const START_DATE = new Date('2026-10-01T00:00:00');
+const END_DATE = new Date('2026-12-24T00:00:00');
+const TOTAL_DAYS = Math.round((END_DATE-START_DATE)/86400000)+1;
 const STORE_KEY = 'winterArcData';
-
-const DAY_SCHEDULE = {
-  2: {label:'Push'},
-  3: {label:'Pull'},
-  4: {label:'Legs'},
-  5: {label:'Rest'},
-  6: {label:'Upper'},
-  0: {label:'Lower'},
-  1: {label:'Rest'}
-};
 const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
 function defaultData(){
   return {
-    profile:{startWeight:170, goalWeight:150, startBF:23.9, goalBF:15, tdee:2500, calLow:1800, calHigh:1900, proteinTarget:153, fatTarget:60, carbTarget:175},
+    profile:{startWeight:168, goalWeight:156, startBF:23, goalBF:16, tdee:2700, calLow:2150, calHigh:2250, proteinTarget:160, fatTarget:65, carbTarget:240},
     days:{}, // 'YYYY-MM-DD': {calories, protein, carbs, fat, steps, wholeFoods, liquidsClean, training, run, reading, dental, mental, physical}
     bodyLog:[], // {date, weight, bf}
     savings:[], // {date, amount}
-    runSchedule:{} // 'weekMondayKey': [dow,dow,dow] — set weekly from your Runna plan
+    train:{sessions:{}, overrides:{}, forceNext:null, coachNote:null, program:null, lastImport:null}
   };
 }
 
@@ -338,7 +438,7 @@ function saveData(){
     localStorage.setItem(STORE_KEY, JSON.stringify(data));
     return true;
   }catch(e){
-    toast('Save failed — storage blocked or full');
+    toast('Save failed, storage blocked or full');
     console.error('winterArc save failed', e);
     return false;
   }
@@ -356,6 +456,23 @@ function storageHealthCheck(){
 }
 
 let data = loadData();
+function migrate(){
+  const def = defaultData();
+  if(!data.train) data.train = def.train;
+  ['sessions','overrides'].forEach(k=>{ if(!data.train[k]) data.train[k] = {}; });
+  if((data.version||1) < 2){
+    Object.assign(data.profile, {tdee:2700, calLow:2150, calHigh:2250, proteinTarget:160, fatTarget:65, carbTarget:240, goalWeight:156, goalBF:16});
+    data.train.forceNext = {tpl:'LEGS_A', setOn:'2026-09-30'};
+    data.version = 2;
+    saveData();
+  }
+  if(data.version < 3){
+    Object.assign(data.profile, {startWeight:168, startBF:23});
+    data.version = 3;
+    saveData();
+  }
+}
+migrate();
 
 function todayKey(){
   const d = new Date();
@@ -364,20 +481,6 @@ function todayKey(){
 function dateKey(d){
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
-function mondayKeyForDate(d){
-  const dow = d.getDay();
-  const offset = dow===0 ? -6 : 1-dow;
-  const monday = new Date(d); monday.setDate(d.getDate()+offset); monday.setHours(0,0,0,0);
-  return dateKey(monday);
-}
-function currentWeekKey(){ return mondayKeyForDate(new Date()); }
-const DEFAULT_RUN_DAYS = [1,2,5]; // Mon, Tue, Fri fallback — Mon/Fri are rest days either side of Legs(Thu)/Lower(Sun), Tue is Push with legs fresh off a rest day
-function getRunDays(){
-  const wk = currentWeekKey();
-  return (data.runSchedule[wk] && data.runSchedule[wk].length) ? data.runSchedule[wk] : DEFAULT_RUN_DAYS;
-}
-function isRunDay(dow){ return getRunDays().includes(dow); }
-
 function getDay(key){
   if(!data.days[key]) data.days[key] = {calories:null,protein:null,carbs:null,fat:null,steps:null,wholeFoods:false,liquidsClean:false,training:false,run:false,reading:false,dental:false,mental:false,physical:false};
   return data.days[key];
@@ -397,7 +500,8 @@ document.querySelectorAll('.tab').forEach(tab=>{
     document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
     tab.classList.add('active');
     document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
-    if(tab.dataset.tab==='today') renderChecklist();
+    if(tab.dataset.tab==='today'){ renderChecklist(); renderCheckin(); }
+    if(tab.dataset.tab==='train') renderTrain();
     if(tab.dataset.tab==='nutrition') renderNutritionTab();
     if(tab.dataset.tab==='plan') renderPlan();
     if(tab.dataset.tab==='progress') renderCharts();
@@ -413,15 +517,15 @@ function renderHeader(){
   document.getElementById('daysLeft').textContent = daysLeft;
 
   const dow = now.getDay();
-  const sched = DAY_SCHEDULE[dow];
-  document.getElementById('todayLabel').textContent = sched.label + (isRunDay(dow) ? ' + Run' : '');
+  const tpl = getProgram()[currentTemplate()];
+  document.getElementById('todayLabel').textContent = tpl ? tpl.name : 'Train';
   document.getElementById('todaySub').textContent = DAY_NAMES[dow] + ' · ' + now.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
 }
 
 /* ---------- TODAY CHECKLIST ---------- */
 const CHECK_ITEMS = [
-  {key:'training', label:()=>DAY_SCHEDULE[new Date().getDay()].label+' session', sub:'Weight training'},
-  {key:'run', label:()=>'Run', sub:'Runna plan', onlyIf:()=>isRunDay(new Date().getDay())},
+  {key:'training', label:()=>{ const t=getProgram()[currentTemplate()]; return (t?t.name:'Training')+' session'; }, sub:'Log it in the Train tab'},
+  {key:'run', label:()=>'Run', sub:'Optional bonus, not required'},
   {key:'steps', label:()=>'10,000+ steps', sub:'', isStat:true},
   {key:'wholeFoods', label:()=>'Whole foods only', sub:'No ultra-processed'},
   {key:'liquidsClean', label:()=>'Water / coffee / tea / energy only', sub:'No alcohol, no sugary drinks'},
@@ -430,7 +534,7 @@ const CHECK_ITEMS = [
 const HEALTH_ITEMS = [
   {key:'dental', label:()=>'Dental', sub:'Brush + floss'},
   {key:'mental', label:()=>'Mental', sub:'Check-in / decompress'},
-  {key:'physical', label:()=>'Physical', sub:'Beyond training — mobility, stretching, sleep'},
+  {key:'physical', label:()=>'Physical', sub:'Beyond training, mobility, stretching, sleep'},
 ];
 
 function renderChecklist(){
@@ -484,7 +588,6 @@ document.getElementById('markAllBtn').addEventListener('click',()=>{
   const day = getDay(todayKey());
   const dow = new Date().getDay();
   day.training=true;
-  if(isRunDay(dow)) day.run=true;
   day.wholeFoods=true; day.liquidsClean=true; day.reading=true;
   day.dental=true; day.mental=true; day.physical=true;
   if(!day.steps || day.steps<10000) day.steps=10000;
@@ -562,14 +665,14 @@ const COACH_LINES = {
   ok: {
     open: [
       "Good. This is the boring, repeatable stuff that actually works.",
-      "This is it. Not exciting, just correct — do it again tomorrow.",
+      "This is it. Not exciting, just correct, do it again tomorrow.",
       `${USER_NAME}, this is exactly the day that gets you to December.`,
       "No drama today. That's the point.",
       "Clean day. Bank it and move on.",
-      "This is what being on track is supposed to feel like — unremarkable."
+      "This is what being on track is supposed to feel like, unremarkable."
     ],
     close: [
-      "Don't overthink it — just repeat this.",
+      "Don't overthink it, just repeat this.",
       "Same again tomorrow. That's the whole strategy.",
       "Consistency is the only trick here, and you just did it.",
       "Nothing to fix. Go train.",
@@ -579,7 +682,7 @@ const COACH_LINES = {
   warn: {
     open: [
       "Close, but close doesn't move the needle by itself.",
-      `${USER_NAME}, this is fixable in one sentence — read below.`,
+      `${USER_NAME}, this is fixable in one sentence, read below.`,
       "Not a bad day. Not the day either, though.",
       "You're circling the target, not hitting it. Let's fix that.",
       "This is the kind of day that quietly stalls a cut if it repeats."
@@ -594,17 +697,17 @@ const COACH_LINES = {
   },
   bad: {
     open: [
-      `${USER_NAME}, straight talk — today worked against the goal, not for it.`,
+      `${USER_NAME}, straight talk, today worked against the goal, not for it.`,
       "This is the day that undoes a week if you let it become a pattern.",
       "I'm not going to soften this one. Read it.",
-      "This isn't a vibe check, it's math — and today the math didn't work.",
+      "This isn't a vibe check, it's math, and today the math didn't work.",
       "One day like this is noise. Three in a row is a new trajectory, and not the one you want."
     ],
     close: [
-      "Tomorrow's the actual test — not today. What you do next matters more than this.",
+      "Tomorrow's the actual test, not today. What you do next matters more than this.",
       "You don't need to punish yourself for it. You need to not repeat it.",
       "Reset tomorrow. Dwelling on today burns more energy than fixing it.",
-      "This is one data point out of 91 days. Don't let it become the story.",
+      `This is one data point out of ${TOTAL_DAYS} days. Don't let it become the story.`,
       "Fix what's above, then close this tab and go train."
     ]
   }
@@ -632,7 +735,7 @@ function renderCoach(){
 
   if(day.calories==null){
     verdictEl.textContent='NO DATA'; verdictEl.className='deficit-status status-warn';
-    textEl.innerHTML = "Log today's calories — and macros if you've got them — and I'll tell you exactly where you stand.";
+    textEl.innerHTML = "Log today's calories, and macros if you've got them, and I'll tell you exactly where you stand.";
     return;
   }
 
@@ -641,59 +744,59 @@ function renderCoach(){
   let flags = 0;
 
   if(cals < 1500){
-    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong> — too low. You set an ${calLow}–${calHigh} target for a reason: enough food to train hard, hold onto muscle, and actually stick to this for 91 days. Under-eating this hard now just sets up a binge later and drags your metabolism down for the whole arc.`);
+    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong>, too low. You set an ${calLow}–${calHigh} target for a reason: enough food to train hard, hold onto muscle, and actually stick to this until Christmas Eve. Under-eating this hard now just sets up a binge later and drags your metabolism down for the whole arc.`);
     flags+=2;
   } else if(cals < calLow){
-    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong> — a bit under target (${calLow}–${calHigh}). Not a crisis once in a while, but don't confuse "disciplined" with "starving." The deficit you already planned is enough — trust it.`);
+    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong>, a bit under target (${calLow}–${calHigh}). Not a crisis once in a while, but don't confuse "disciplined" with "starving." The deficit you already planned is enough, trust it.`);
     flags+=1;
   } else if(cals <= calHigh){
-    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong> — right in the ${calLow}–${calHigh} window. This is exactly what gets you to ${data.profile.goalWeight}lb on schedule. Repeat it.`);
+    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong>, right in the ${calLow}–${calHigh} window. This is exactly what gets you to ${data.profile.goalWeight}lb on schedule. Repeat it.`);
   } else if(cals <= calHigh+200){
-    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong> — over target. One day like this won't wreck the arc, but it eats into your weekly deficit. Tighten it up tomorrow.`);
+    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong>, over target. One day like this won't wreck the arc, but it eats into your weekly deficit. Tighten it up tomorrow.`);
     flags+=1;
   } else {
-    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong> — well over target. This single day can undo 2–3 days of a clean deficit. Figure out what happened and don't let it repeat.`);
+    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong>, well over target. This single day can undo 2–3 days of a clean deficit. Figure out what happened and don't let it repeat.`);
     flags+=2;
   }
 
   if(day.protein!=null){
     const p = day.protein;
     if(p < targets.protein*0.75){
-      lines.push(`<strong>Protein: ${p}g</strong> — low, target's ${targets.protein}g. In a deficit, protein is what tells your body to burn fat and hold onto muscle. Skip this enough and the weight you lose won't be the weight you wanted to lose.`);
+      lines.push(`<strong>Protein: ${p}g</strong>, low, target's ${targets.protein}g. In a deficit, protein is what tells your body to burn fat and hold onto muscle. Skip this enough and the weight you lose won't be the weight you wanted to lose.`);
       flags+=2;
     } else if(p < targets.protein){
-      lines.push(`<strong>Protein: ${p}g</strong> — close, but under the ${targets.protein}g target. Find another ${Math.round(targets.protein-p)}g tomorrow — extra chicken, a scoop of whey, or a couple eggs gets you there.`);
+      lines.push(`<strong>Protein: ${p}g</strong>, close, but under the ${targets.protein}g target. Find another ${Math.round(targets.protein-p)}g tomorrow, extra chicken, a scoop of whey, or a couple eggs gets you there.`);
       flags+=1;
     } else {
-      lines.push(`<strong>Protein: ${p}g</strong> — target hit. This is doing the most to protect your muscle while you cut.`);
+      lines.push(`<strong>Protein: ${p}g</strong>, target hit. This is doing the most to protect your muscle while you cut.`);
     }
   } else {
-    lines.push(`<strong>Protein:</strong> not logged. Aim for around ${targets.protein}g/day — it's the single biggest lever for keeping muscle while you're in a deficit.`);
+    lines.push(`<strong>Protein:</strong> not logged. Aim for around ${targets.protein}g/day, it's the single biggest lever for keeping muscle while you're in a deficit.`);
   }
 
   if(day.fat!=null){
     const f = day.fat;
     if(f < targets.fat){
-      lines.push(`<strong>Fat: ${f}g</strong> — under the ${targets.fat}g floor. Too low for too long messes with hormones (including testosterone), sleep, and recovery. Get some olive oil, nuts, or fatty fish in.`);
+      lines.push(`<strong>Fat: ${f}g</strong>, under the ${targets.fat}g floor. Too low for too long messes with hormones (including testosterone), sleep, and recovery. Get some olive oil, nuts, or fatty fish in.`);
       flags+=1;
     } else {
-      lines.push(`<strong>Fat: ${f}g</strong> — fine, no issue here.`);
+      lines.push(`<strong>Fat: ${f}g</strong>, fine, no issue here.`);
     }
   }
 
   if(day.carbs!=null){
     const c = day.carbs;
     const dow = new Date().getDay();
-    const isTrainingOrRunDay = DAY_SCHEDULE[dow].label!=='Rest' || isRunDay(dow);
+    const isTrainingOrRunDay = !!day.training || !!day.run;
     if(c < targets.carbs*0.6){
-      lines.push(`<strong>Carbs: ${c}g</strong> — quite low, target's around ${targets.carbs}g. Carbs aren't the enemy here — they're what fuels your lifts and runs. Starving them while training hard just tanks performance and recovery, it doesn't speed up fat loss.`);
+      lines.push(`<strong>Carbs: ${c}g</strong>, quite low, target's around ${targets.carbs}g. Carbs aren't the enemy here, they're what fuels your lifts and runs. Starving them while training hard just tanks performance and recovery, it doesn't speed up fat loss.`);
       flags+=1;
     } else if(c < targets.carbs*0.85){
-      lines.push(`<strong>Carbs: ${c}g</strong> — a bit under the ~${targets.carbs}g target.${isTrainingOrRunDay ? " You're training today — this is the fuel for that session, don't shortchange it." : " Fine on a rest day, just don't let it become the default."}`);
+      lines.push(`<strong>Carbs: ${c}g</strong>, a bit under the ~${targets.carbs}g target.${isTrainingOrRunDay ? " You're training today, this is the fuel for that session, don't shortchange it." : " Fine on a rest day, just don't let it become the default."}`);
     } else if(c <= targets.carbs*1.25){
-      lines.push(`<strong>Carbs: ${c}g</strong> — right where they should be. Good fuel for training, and it's not eating into your deficit if the total calories check out.`);
+      lines.push(`<strong>Carbs: ${c}g</strong>, right where they should be. Good fuel for training, and it's not eating into your deficit if the total calories check out.`);
     } else {
-      lines.push(`<strong>Carbs: ${c}g</strong> — well above target. Not inherently bad, but this usually means total calories crept up somewhere — check the number at the top matches.`);
+      lines.push(`<strong>Carbs: ${c}g</strong>, well above target. Not inherently bad, but this usually means total calories crept up somewhere, check the number at the top matches.`);
       flags+=1;
     }
   }
@@ -701,7 +804,7 @@ function renderCoach(){
   if(day.protein!=null && day.carbs!=null && day.fat!=null){
     const macroCals = day.protein*4 + day.carbs*4 + day.fat*9;
     if(Math.abs(macroCals - cals) > 150){
-      lines.push(`Heads up: your macros add up to ~${Math.round(macroCals)} kcal but you logged ${Math.round(cals)} kcal total — worth double-checking one of those numbers.`);
+      lines.push(`Heads up: your macros add up to ~${Math.round(macroCals)} kcal but you logged ${Math.round(cals)} kcal total, worth double-checking one of those numbers.`);
     }
   }
 
@@ -771,48 +874,16 @@ function renderNutritionTab(){
 
 /* ---------- PLAN ---------- */
 function renderPlan(){
-  const container = document.getElementById('weekSchedule');
-  container.innerHTML='';
-  const order = [1,2,3,4,5,6,0];
-  const todayDow = new Date().getDay();
-  order.forEach(dow=>{
-    const sched = DAY_SCHEDULE[dow];
+  const c = document.getElementById('rotation');
+  const prog = getProgram(), cur = currentTemplate();
+  c.innerHTML = '';
+  Object.keys(prog).forEach(k=>{
+    const t = prog[k];
     const row = document.createElement('div');
-    row.className='week-row'+(dow===todayDow?' today-row':'');
-    row.innerHTML = `<span>${DAY_NAMES[dow]}</span><span class="d">${sched.label}${isRunDay(dow)?' + RUN':''}</span>`;
-    container.appendChild(row);
-  });
-  renderRunSelector();
-}
-
-function renderRunSelector(){
-  const wk = currentWeekKey();
-  const selected = getRunDays();
-  const order = [1,2,3,4,5,6,0];
-  const container = document.getElementById('runDaySelector');
-  container.innerHTML='';
-  order.forEach(dow=>{
-    const on = selected.includes(dow);
-    const row = document.createElement('div');
-    row.className='check-item'+(on?' done':'');
-    row.innerHTML = `<div class="box ${on?'on':''}"></div><div class="check-txt">${DAY_NAMES[dow]}</div>`;
-    row.addEventListener('click',()=>{
-      let cur = data.runSchedule[wk] ? [...data.runSchedule[wk]] : [...selected];
-      if(cur.includes(dow)){
-        cur = cur.filter(x=>x!==dow);
-      } else {
-        if(cur.length>=3){ toast('Max 3 run days a week'); return; }
-        cur.push(dow);
-      }
-      data.runSchedule[wk] = cur;
-      saveData();
-      renderRunSelector();
-      renderPlan();
-      renderChecklist();
-      renderHeader();
-      renderDotmap();
-    });
-    container.appendChild(row);
+    row.className = 'week-row'+(k===cur?' today-row':'');
+    row.style.flexDirection='column'; row.style.alignItems='flex-start';
+    row.innerHTML = `<span><strong>${t.name}</strong> <span class="d">· ${t.focus}${k===cur?' · UP NEXT':''}</span></span><span class="d" style="margin-top:4px;line-height:1.6;">${t.ex.map(id=>getEx(id)?esc(getEx(id).name):id).join(', ')}</span>`;
+    c.appendChild(row);
   });
 }
 
@@ -859,8 +930,11 @@ function renderBodyLogList(){
 
 function renderProgressStats(){
   const {startWeight, goalWeight, startBF, goalBF} = data.profile;
+  document.getElementById('weightPill').textContent = `${startWeight} → ${goalWeight} lb`;
+  document.getElementById('bfPill').textContent = `${startBF} → ${goalBF}%`;
   const sorted = [...data.bodyLog].sort((a,b)=>a.date.localeCompare(b.date));
-  const lastWeight = [...sorted].reverse().find(e=>e.weight!=null);
+  const ws = weightSeries();
+  const lastWeight = ws.length ? {weight: ws[ws.length-1].v} : null;
   const lastBF = [...sorted].reverse().find(e=>e.bf!=null);
 
   if(lastWeight){
@@ -911,7 +985,7 @@ function drawLineChart(canvasId, points, goalLine, color){
 
 function renderCharts(){
   const sorted = [...data.bodyLog].sort((a,b)=>a.date.localeCompare(b.date));
-  const weightPts = sorted.filter(e=>e.weight!=null).map(e=>({v:e.weight}));
+  const weightPts = weightSeries().filter(p=>p.date>=dateKey(START_DATE));
   const bfPts = sorted.filter(e=>e.bf!=null).map(e=>({v:e.bf}));
   drawLineChart('weightChart', weightPts, data.profile.goalWeight, '#3ec6ff');
   drawLineChart('bfChart', bfPts, data.profile.goalBF, '#c9f1ff');
@@ -932,9 +1006,9 @@ function renderDotmap(){
     else{
       const day = data.days[key];
       if(day){
-        const trackedFlags = [day.training, day.wholeFoods, day.liquidsClean, day.reading, day.dental, day.mental, day.physical, (day.steps||0)>=10000];
+        const trackedFlags = [day.checkin, day.training, day.wholeFoods, day.liquidsClean, day.reading, day.dental, day.mental, day.physical, (day.steps||0)>=10000];
         const doneCount = trackedFlags.filter(Boolean).length;
-        if(doneCount>=7) cls+=' complete';
+        if(doneCount>=8) cls+=' complete';
         else if(doneCount>=3) cls+=' partial';
       }
     }
@@ -959,7 +1033,7 @@ document.getElementById('addSavingsBtn').addEventListener('click',()=>{
   renderSavings();
   renderSavingsList();
   const total = data.savings.reduce((s,e)=>s+e.amount,0);
-  toast(`Saved — total €${total.toLocaleString()}`);
+  toast(`Saved, total €${total.toLocaleString()}`);
 });
 
 function deleteSaving(id){
@@ -968,7 +1042,7 @@ function deleteSaving(id){
   renderSavings();
   renderSavingsList();
   const total = data.savings.reduce((s,e)=>s+e.amount,0);
-  toast(`Removed — total €${total.toLocaleString()}`);
+  toast(`Removed, total €${total.toLocaleString()}`);
 }
 
 function renderSavingsList(){
@@ -1003,6 +1077,7 @@ document.getElementById('importFile').addEventListener('change', e=>{
     try{
       const imported = JSON.parse(evt.target.result);
       data = Object.assign(defaultData(), imported);
+      migrate();
       saveData();
       toast('Imported');
       renderAll();
@@ -1010,6 +1085,616 @@ document.getElementById('importFile').addEventListener('change', e=>{
   };
   reader.readAsText(file);
 });
+
+/* ---------- TRAIN ---------- */
+const DELOAD_START = '2026-11-09', DELOAD_END = '2026-11-15';
+const BLOCK_START = '2026-10-01'; // stalls only count from the start of this block
+function isDeload(k){ return k>=DELOAD_START && k<=DELOAD_END; }
+const X = (id,name,aliases,sets,min,max,inc,compound)=>({id,name,aliases:[name,...aliases],sets,min,max,inc,compound:!!compound});
+const EX = {
+  smith_incline: X('smith_incline','Smith Incline Chest Press',['Smith Machine Incline Bench Press'],3,6,10,2.5,1),
+  smith_shoulder: X('smith_shoulder','Smith Sitting Shoulder Press',[],3,6,10,2.5,1),
+  pec_fly: X('pec_fly','Machine Pec Fly',[],3,10,15,2.5),
+  lateral: X('lateral','Seated Lateral Raise',['Seated Lateral Raises'],3,12,20,2.5),
+  pushdown: X('pushdown','Tricep Cable Pushdown',['Tricep Cable Pushdowns','Tricep Pushdown'],3,10,15,2.5),
+  incline_db: X('incline_db','Incline Dumbell Chest Press',['Incline Dumbbell Chest Press'],3,8,12,2,1),
+  db_shoulder: X('db_shoulder','Seated Dumbbell Shoulders',['Seated Dumbbell Shoulder Press'],3,8,12,2,1),
+  incline_machine: X('incline_machine','Incline Machine',[],3,8,12,2.5),
+  tricep_ext: X('tricep_ext','Machine Tricep Extension',[],3,10,15,2.5),
+  lat_pulldown: X('lat_pulldown','Lat Pulldown',['Lat Pulldowns','Lat pulls','Close Grip Lat Pulldowns'],3,8,12,2.5,1),
+  iso_pulldown: X('iso_pulldown','Iso Lat Pulldown',['Isolateral Pulldowns','Iso Lateral Pulldown'],3,8,12,2.5,1),
+  machine_row: X('machine_row','Seated Machine Row',[],3,6,10,2.5,1),
+  back_row: X('back_row','Seated Back Row',[],3,8,12,1),
+  face_pull: X('face_pull','Cable Face Pull',[],3,12,15,2.5),
+  rear_delt: X('rear_delt','Rear Delt Cable Pulls',[],3,12,20,1),
+  shrugs: X('shrugs','Kelso Shrugs',[],3,10,15,2.5),
+  cable_curl: X('cable_curl','Cable Bicep Curl',[],3,8,12,2.5),
+  hammer: X('hammer','Hammer Curls',['Standing hammer curl'],3,10,12,2),
+  db_curl: X('db_curl','Sitting Bicep Curls',['Seated Bicep Curls'],3,8,12,2),
+  preacher: X('preacher','Preacher Curl Machine',[],3,10,15,1),
+  hack: X('hack','Hack Squat',[],3,6,10,5,1),
+  free_lp: X('free_lp','Free Leg Press',[],3,8,12,10,1),
+  smith_squat: X('smith_squat','Smith Squat',['Smith Machine Squat'],3,6,10,5,1),
+  seated_lp: X('seated_lp','Seated Leg Press',[],3,8,12,5,1),
+  leg_curl: X('leg_curl','Leg curl machine',[],3,8,12,5),
+  leg_ext: X('leg_ext','Seated Leg Extension',[],3,10,15,5),
+  abductor: X('abductor','Abductor',['Hip Abduction Machine'],3,12,20,5),
+  adductor: X('adductor','Adductor',['Hip Adduction Machine'],3,12,20,5),
+  calf: X('calf','Standing Calf Bar Raise',[],3,10,15,5),
+  iso_bench: X('iso_bench','Isolateral Horizontal Bench Press',[],3,8,12,2.5,1),
+  iso_shoulder: X('iso_shoulder','Iso Shoulder Press',[],3,8,12,2.5,1),
+  tricep_press: X('tricep_press','Seated Tricep Press',[],3,10,15,2.5),
+  iso_row: X('iso_row','Iso-lateral Back Machine',[],3,8,12,2.5,1),
+  ham_curl: X('ham_curl','Hamstring curl',[],3,8,12,2.5),
+  calf_lp: X('calf_lp','Calf Raise',[],3,12,20,5),
+  seated_dip: X('seated_dip','Seated Dip',[],3,8,12,2.5,1),
+  shoulder_machine: X('shoulder_machine','Shoulder Press Machine',['Machine Shoulder Press'],3,8,12,2.5,1),
+  bar_row: X('bar_row','Bar Back Rows',[],3,8,12,2.5,1),
+  lying_curl: X('lying_curl','Laying Hamstring Curl',[],3,8,12,2.5),
+  bss: X('bss','Smith Bulgarian Split Squats',[],3,8,12,2.5,1),
+};
+const DEFAULT_PROGRAM = {
+  PUSH_A:{name:'Push A',focus:'Smith focus',cat:'push',ex:['smith_incline','smith_shoulder','pec_fly','lateral','pushdown']},
+  PULL_A:{name:'Pull A',focus:'Lats + mid back',cat:'pull',ex:['lat_pulldown','machine_row','back_row','face_pull','cable_curl','hammer']},
+  LEGS_A:{name:'Legs A',focus:'Hack focus',cat:'legs',ex:['hack','free_lp','leg_curl','leg_ext','abductor','adductor','calf']},
+  PUSH_B:{name:'Push B',focus:'Dumbbell + dips',cat:'push',ex:['incline_db','seated_dip','shoulder_machine','incline_machine','lateral','tricep_ext'],alt:['db_shoulder']},
+  PULL_B:{name:'Pull B',focus:'Rows + traps',cat:'pull',ex:['lat_pulldown','bar_row','shrugs','rear_delt','db_curl','preacher']},
+  LEGS_B:{name:'Legs B',focus:'Squat + unilateral',cat:'legs',ex:['smith_squat','bss','seated_lp','lying_curl','leg_ext','calf'],alt:['leg_curl']},
+};
+function getProgram(){ return (data.train.program && data.train.program.templates) ? data.train.program.templates : DEFAULT_PROGRAM; }
+function allEx(){ return Object.assign({}, EX, (data.train.program && data.train.program.exercises) || {}); }
+function getEx(id){ return allEx()[id]; }
+const norm = s => String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+function nameIndex(){
+  const idx = {};
+  Object.values(allEx()).forEach(e=>e.aliases.forEach(a=>{ idx[norm(a)] = e.id; }));
+  return idx;
+}
+function sessionKeys(){ return Object.keys(data.train.sessions).sort(); }
+function roundTo(v,inc){ return Math.max(inc, Math.round(v/inc)*inc); }
+function fmtW(w){ return String(Math.round(w*100)/100); }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function detectTemplate(sets){
+  const idx = nameIndex();
+  const ids = new Set(sets.map(s=>idx[norm(s[0])]).filter(Boolean));
+  const prog = getProgram();
+  let best = null, bs = 0;
+  Object.keys(prog).forEach(k=>{
+    const sc = [...new Set([...prog[k].ex, ...(prog[k].alt||[])])].filter(e=>ids.has(e)).length;
+    if(sc>bs){ bs=sc; best=k; }
+  });
+  return bs>=2 ? best : null;
+}
+
+function lastTemplateWhere(fn){
+  const prog = getProgram(), keys = sessionKeys();
+  for(let i=keys.length-1;i>=0;i--){
+    const tp = data.train.sessions[keys[i]].tpl;
+    if(tp && prog[tp] && fn(tp)) return tp;
+  }
+  return null;
+}
+function nextInRotation(){
+  const prog = getProgram(), order = Object.keys(prog);
+  const cats = [...new Set(order.map(k=>prog[k].cat))];
+  const lastTpl = lastTemplateWhere(()=>true);
+  if(!lastTpl) return order[0];
+  const nextCat = cats[(cats.indexOf(prog[lastTpl].cat)+1) % cats.length];
+  const variants = order.filter(k=>prog[k].cat===nextCat);
+  const lastVar = lastTemplateWhere(tp=>prog[tp].cat===nextCat);
+  if(!lastVar) return variants[0];
+  return variants[(variants.indexOf(lastVar)+1) % variants.length];
+}
+function currentTemplate(){
+  const prog = getProgram();
+  const s = data.train.sessions[todayKey()];
+  if(s && s.tpl && prog[s.tpl]) return s.tpl;
+  const keys = sessionKeys();
+  const latest = keys.length ? keys[keys.length-1] : '';
+  const fn = data.train.forceNext;
+  if(fn && prog[fn.tpl] && latest<=fn.setOn) return fn.tpl;
+  return nextInRotation();
+}
+
+function exHistory(id, beforeKey){
+  const idx = nameIndex(), out = [];
+  sessionKeys().forEach(k=>{
+    if(beforeKey && k>=beforeKey) return;
+    if(isDeload(k)) return;
+    const sets = data.train.sessions[k].sets
+      .filter(s=>idx[norm(s[0])]===id && +s[2]>0)
+      .map(s=>({w:+s[1]||0, r:+s[2]}));
+    if(sets.length) out.push({date:k, sets});
+  });
+  return out;
+}
+
+function computeTarget(id, beforeKey){
+  const ex = getEx(id);
+  const hist = exHistory(id, beforeKey);
+  const res = {ex, sets:ex.sets, min:ex.min, max:ex.max, weight:null, prevW:null, action:'new', why:'', last:'', stall:0, beat:[]};
+  if(hist.length){
+    const L = hist[hist.length-1];
+    res.last = 'Last ('+L.date.slice(8)+'/'+L.date.slice(5,7)+'): '+L.sets.map(s=>fmtW(s.w)+'×'+s.r).join(', ');
+  }
+  const over = data.train.overrides[id];
+  if(over && hist.length<=over.n){
+    res.weight = over.weight; res.action = 'coach'; res.why = over.note || 'Set by your coach.';
+    return res;
+  }
+  if(!hist.length){
+    res.why = `No history. Pick a weight you can do for ${ex.max-2} clean reps with 2 left in the tank, then log it.`;
+    return res;
+  }
+  let prev = null, stall = 0;
+  hist.forEach(h=>{
+    const W = Math.max(...h.sets.map(s=>s.w));
+    const atW = h.sets.filter(s=>Math.abs(s.w-W)<0.01);
+    const best = Math.max(...atW.map(s=>s.r));
+    if(!prev || Math.abs(W-prev.W)>=0.01 || best>prev.best || atW.length>prev.cnt) stall = 0; else if(h.date>=BLOCK_START) stall++;
+    prev = {W, best, cnt:atW.length, reps:atW.map(s=>s.r), date:h.date};
+  });
+  res.stall = stall;
+  const W = prev.W, reps = prev.reps, inc = ex.inc;
+  res.prevW = W;
+  const daysSince = Math.round((new Date(todayKey()) - new Date(prev.date))/86400000);
+  if(daysSince>42){
+    res.weight = roundTo(W*0.8, inc); res.action = 'return';
+    res.why = `Not trained in ${Math.round(daysSince/7)} weeks. Start about 20% lighter than your last ${fmtW(W)}kg and build back.`;
+    return res;
+  }
+  if(reps.length>=ex.sets && reps.every(r=>r>=ex.max)){
+    res.weight = W+inc; res.action = 'up';
+    res.why = `Hit ${ex.max}+ on all ${reps.length} sets at ${fmtW(W)}kg. Weight goes up. Expect ${ex.min} to ${ex.min+2} reps, that's normal.`;
+    return res;
+  }
+  if(stall>=3){
+    res.weight = roundTo(W*0.9, inc); res.action = 'reset';
+    res.why = `No progress in ${stall} sessions at ${fmtW(W)}kg. Drop 10%, clean reps, rebuild past it.`;
+    return res;
+  }
+  if(prev.date<BLOCK_START && reps.length===1 && reps[0]<ex.min){
+    res.weight = roundTo(W*0.92, inc); res.action = 'hold';
+    res.why = `Your top set at ${fmtW(W)}kg only got ${reps[0]} reps, so 3 straight sets there won't happen. Start at ${fmtW(res.weight)}kg, 3 sets of ${ex.min}+, and earn ${fmtW(W)}kg back.`;
+    return res;
+  }
+  res.weight = W; res.action = 'hold'; res.beat = reps;
+  if(reps.length<ex.sets) res.why = `Only ${reps.length} set${reps.length>1?'s':''} at ${fmtW(W)}kg last time. Get all ${ex.sets} working sets there at ${ex.min}+ reps.`;
+  else if(Math.min(...reps)<ex.min) res.why = `Below ${ex.min} reps last time. Same weight, beat ${reps.join('/')}.`;
+  else res.why = `Same weight, add reps. Beat ${reps.join('/')}. All sets at ${ex.max} and it goes up.`;
+  return res;
+}
+
+const TAGS = {
+  up:  t=>['tag-up','+'+fmtW(t.ex.inc)+'kg'],
+  hold:()=>['tag-hold','Hold'],
+  reset:()=>['tag-reset','-10%'],
+  new: ()=>['tag-new','New'],
+  return:()=>['tag-new','Return'],
+  coach:()=>['tag-up','Coach'],
+};
+
+function renderTrain(){
+  const prog = getProgram();
+  const tKey = todayKey();
+  const tpl = currentTemplate();
+  const T = prog[tpl];
+  const saved = data.train.sessions[tKey];
+  const deload = isDeload(tKey);
+
+  // coach note
+  const cn = data.train.coachNote;
+  document.getElementById('coachNoteCard').style.display = cn ? 'block' : 'none';
+  if(cn){
+    document.getElementById('coachNoteText').textContent = cn.text;
+    document.getElementById('coachNoteDate').textContent = cn.date.slice(8)+'/'+cn.date.slice(5,7);
+  }
+  document.getElementById('deloadCard').style.display = deload ? 'block' : 'none';
+
+  // header + selector
+  document.getElementById('sessStatus').textContent = saved ? 'Logged today' : 'Next up';
+  document.getElementById('sessName').textContent = T.name;
+  document.getElementById('sessSub').textContent = T.focus + ' · ' + T.ex.length + ' exercises';
+  const sel = document.getElementById('sessSelect');
+  sel.innerHTML = Object.keys(prog).map(k=>`<option value="${k}" ${k===tpl?'selected':''}>${prog[k].name}</option>`).join('');
+
+  // exercises
+  const idx = nameIndex();
+  const list = document.getElementById('exList');
+  list.innerHTML = '';
+  T.ex.forEach(id=>{
+    const ex = getEx(id);
+    if(!ex) return;
+    const t = computeTarget(id, tKey);
+    let sets = t.sets, weight = t.weight, repTxt = `${t.min}-${t.max}`;
+    let why = t.why;
+    if(deload){
+      sets = Math.max(2, t.sets-1);
+      if(t.action==='up') weight = t.prevW;
+      repTxt = `${t.min}, 3 in reserve`;
+      why = 'Deload: same weight, one fewer set, nowhere near failure.';
+    }
+    const [tagCls, tagTxt] = deload ? ['tag-new','Deload'] : TAGS[t.action](t);
+    const savedSets = saved ? saved.sets.filter(s=>idx[norm(s[0])]===id) : [];
+    const rows = Math.max(sets, savedSets.length);
+    const warm = (ex.compound && weight) ? `Warm-up: ${fmtW(roundTo(weight*.5,ex.inc))}×8, ${fmtW(roundTo(weight*.75,ex.inc))}×4 (don't log these)` : '';
+
+    const div = document.createElement('div');
+    div.className = 'ex';
+    let html = `<div class="ex-top"><div class="ex-name">${esc(ex.name)}</div><span class="tag ${tagCls}">${tagTxt}</span></div>
+      <div class="ex-rx">${sets} × ${repTxt} @ ${weight!=null?fmtW(weight)+'kg':'? kg'}</div>
+      <div class="ex-why">${esc(why)}</div>`;
+    if(warm) html += `<div class="ex-last">${warm}</div>`;
+    if(t.last) html += `<div class="ex-last">${esc(t.last)}</div>`;
+    for(let i=0;i<rows;i++){
+      const s = savedSets[i];
+      const wv = s ? s[1] : (weight!=null ? fmtW(weight) : '');
+      const rv = s ? s[2] : '';
+      const ph = (t.action==='hold' && t.beat[i]!=null && !deload) ? 'beat '+t.beat[i] : t.min+'+';
+      html += `<div class="set-row" data-name="${esc(ex.name)}" data-min="${t.min}">
+        <span class="sl">SET ${i+1}</span>
+        <input class="w" type="number" inputmode="decimal" step="0.5" value="${wv}" placeholder="kg">
+        <input class="r" type="number" inputmode="numeric" value="${rv}" placeholder="${ph}">
+      </div>`;
+    }
+    div.innerHTML = html;
+    div.querySelectorAll('.set-row .r').forEach(inp=>{
+      const paint = ()=>{
+        const r = parseInt(inp.value), min = +inp.parentElement.dataset.min;
+        inp.classList.toggle('hit', !isNaN(r) && r>=min);
+        inp.classList.toggle('miss', !isNaN(r) && r<min);
+      };
+      inp.addEventListener('input', paint); paint();
+    });
+    list.appendChild(div);
+  });
+
+  document.getElementById('saveSessionBtn').textContent = saved ? 'Update session' : 'Save session';
+  const li = data.train.lastImport;
+  document.getElementById('csvInfo').textContent = li ? `Last import ${li.date.slice(8)}/${li.date.slice(5,7)}: ${li.sessions} sessions, latest ${li.latest}.` : 'Export sets from SetGraph (CSV) and import here after each session.';
+  renderWatch();
+}
+
+function renderWatch(){
+  const ids = [...new Set(Object.values(getProgram()).flatMap(t=>t.ex))];
+  const items = [];
+  ids.forEach(id=>{
+    if(!getEx(id)) return;
+    const t = computeTarget(id);
+    if(t.action==='reset') items.push([t.ex.name,'No progress in 3+. Reset next time']);
+    else if(t.stall===2) items.push([t.ex.name,'Stuck 2 sessions. Push it next time']);
+    else if(t.action==='return') items.push([t.ex.name,'Out of rotation, coming back lighter']);
+  });
+  document.getElementById('watchList').innerHTML = items.length
+    ? items.map(([n,s])=>`<div class="entry-row"><span>${esc(n)}</span><span class="d" style="text-align:right;max-width:55%;">${s}</span></div>`).join('')
+    : '<div class="entry-empty">Nothing stalling. Keep it that way.</div>';
+}
+
+document.getElementById('sessSelect').addEventListener('change', e=>{
+  const v = e.target.value;
+  data.train.forceNext = {tpl:v, setOn:todayKey()};
+  const s = data.train.sessions[todayKey()];
+  if(s) s.tpl = v;
+  saveData(); renderTrain(); renderHeader(); renderChecklist(); renderPlan();
+});
+
+document.getElementById('saveSessionBtn').addEventListener('click', ()=>{
+  const tpl = document.getElementById('sessSelect').value;
+  const sets = [];
+  document.querySelectorAll('#exList .set-row').forEach(row=>{
+    const w = parseFloat(row.querySelector('.w').value);
+    const r = parseInt(row.querySelector('.r').value);
+    if(!isNaN(r) && r>0) sets.push([row.dataset.name, isNaN(w)?0:w, r]);
+  });
+  if(!sets.length){ toast('Enter reps for at least one set'); return; }
+  data.train.sessions[todayKey()] = {tpl, src:'app', sets};
+  getDay(todayKey()).training = true;
+  saveData();
+  toast('Session saved');
+  renderTrain(); renderChecklist(); renderDotmap(); renderHeader();
+});
+
+/* SetGraph CSV import */
+function parseCSV(text){
+  const rows=[]; let row=[], cur='', q=false;
+  for(let i=0;i<text.length;i++){
+    const c = text[i];
+    if(q){
+      if(c==='"'){ if(text[i+1]==='"'){ cur+='"'; i++; } else q=false; }
+      else cur+=c;
+    } else {
+      if(c==='"') q=true;
+      else if(c===','){ row.push(cur); cur=''; }
+      else if(c==='\n'){ row.push(cur); rows.push(row); row=[]; cur=''; }
+      else if(c!=='\r') cur+=c;
+    }
+  }
+  if(cur || row.length){ row.push(cur); rows.push(row); }
+  return rows;
+}
+function importSetgraph(text){
+  const rows = parseCSV(text.replace(/^﻿/,''));
+  const head = (rows.shift()||[]).map(h=>h.trim());
+  const iE=head.indexOf('Exercise'), iD=head.indexOf('Date'), iR=head.indexOf('Repetitions'), iKg=head.indexOf('Weight (kg)'), iLb=head.indexOf('Weight (lb)');
+  if(iE<0 || iD<0 || iR<0) throw new Error('bad');
+  const byDate = {};
+  rows.forEach(r=>{
+    if(!r[iE] || !r[iD]) return;
+    const reps = parseFloat(r[iR]);
+    if(!(reps>0)) return;
+    let w = iKg>=0 ? parseFloat(r[iKg]) : NaN;
+    if(isNaN(w) && iLb>=0) w = parseFloat(r[iLb])/2.20462;
+    if(isNaN(w)) w = 0;
+    const k = r[iD].trim().slice(0,10);
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(k)) return;
+    (byDate[k] = byDate[k] || []).push([r[iE].trim(), Math.round(w*100)/100, Math.round(reps)]);
+  });
+  const keys = Object.keys(byDate).sort();
+  if(!keys.length) throw new Error('empty');
+  let added = 0;
+  const startK = dateKey(START_DATE), tK = todayKey();
+  keys.forEach(k=>{
+    if(!data.train.sessions[k]) added++;
+    data.train.sessions[k] = {tpl:detectTemplate(byDate[k]), src:'csv', sets:byDate[k]};
+    if(k>=startK && k<=tK) getDay(k).training = true;
+  });
+  data.train.lastImport = {date:tK, sessions:keys.length, latest:keys[keys.length-1]};
+  saveData();
+  return {added, total:keys.length};
+}
+document.getElementById('csvBtn').addEventListener('click', ()=>document.getElementById('csvFile').click());
+document.getElementById('csvFile').addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = evt=>{
+    try{
+      const r = importSetgraph(evt.target.result);
+      toast(`Imported ${r.total} sessions (${r.added} new)`);
+      renderAll();
+    }catch(err){ toast('Not a SetGraph set export'); }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+});
+
+/* Coach update import */
+document.getElementById('coachBtn').addEventListener('click', ()=>document.getElementById('coachFile').click());
+document.getElementById('coachFile').addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = evt=>{
+    try{
+      const j = JSON.parse(evt.target.result);
+      if(j.type!=='winterArcCoach') throw new Error('type');
+      const d0 = todayKey();
+      if(j.program!==undefined) data.train.program = j.program;
+      if(j.overrides) Object.entries(j.overrides).forEach(([id,o])=>{
+        if(o===null){ delete data.train.overrides[id]; return; }
+        data.train.overrides[id] = {weight:o.weight, note:o.note||'', n:exHistory(id).length, date:d0};
+      });
+      if(j.note) data.train.coachNote = {text:j.note, date:d0};
+      if(j.forceNext) data.train.forceNext = {tpl:j.forceNext, setOn:d0};
+      saveData();
+      toast('Coach update applied');
+      renderAll();
+    }catch(err){ toast('Not a coach update file'); }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+});
+
+/* Baseline history from SetGraph export (Jun 2025 to 30 Sep 2026), so targets work before the first import */
+const SEED_SESSIONS = {"2025-06-01":[["Smith Machine Incline Bench Press",30.0,10],["Smith Machine Incline Bench Press",40.0,10],["Smith Machine Incline Bench Press",50.0,10],["Seated Back Row",4.0,10],["Seated Back Row",5.0,10],["Seated Back Row",6.0,10],["Seated Back Row",7.0,8],["Machine Pec Fly",25.0,10],["Machine Pec Fly",30.0,10],["Machine Pec Fly",35.0,10],["Seated Machine Row",37.5,10],["Seated Machine Row",45.0,10],["Seated Machine Row",52.5,10],["Incline Machine",30.0,10],["Incline Machine",35.0,10],["Incline Machine",40.0,10],["Lat pulls",28.0,10]],"2025-06-03":[["Seated Bicep Curls",12.5,10],["Standing hammer curl",12.5,10],["Standing hammer curl",10.0,10],["Seated Bicep Curls",10.0,10],["Seated Bicep Curls",10.0,8],["Standing hammer curl",10.0,10],["Seated Tricep Press",52.5,10],["Seated Tricep Press",57.5,10]],"2025-06-04":[["Iso-lateral Back Machine",30.0,10],["Iso-lateral Back Machine",30.0,10],["Iso-lateral Back Machine",40.0,8]],"2025-06-05":[["Hamstring curl",33.0,10],["Hamstring curl",40.0,10],["Hamstring curl",40.0,8],["Calf Raise",40.0,10],["Calf Raise",60.0,10]],"2025-06-07":[["Seated Bicep Curls",12.5,10],["Standing hammer curl",12.5,10],["Seated Bicep Curls",10.0,10],["Standing hammer curl",10.0,10],["Seated Bicep Curls",10.0,8],["Standing hammer curl",10.0,10],["Seated Tricep Press",55.0,10],["Seated Tricep Press",57.5,10],["Seated Tricep Press",60.0,10],["Tricep Cable Pushdown",20.0,10],["Tricep Cable Pushdown",25.0,10],["Tricep Cable Pushdown",30.0,5]],"2025-06-08":[["Iso-lateral Back Machine",30.0,10],["Iso-lateral Back Machine",30.0,10],["Iso-lateral Back Machine",40.0,10],["Smith Incline Chest Press",30.0,10],["Smith Incline Chest Press",40.0,10],["Smith Incline Chest Press",50.0,8]],"2025-06-11":[["Hamstring curl",33.0,10],["Hamstring curl",40.0,10],["Hamstring curl",40.0,10],["Calf Raise",40.0,10],["Calf Raise",70.0,10]],"2025-06-13":[["Standing hammer curl",12.0,10],["Standing hammer curl",10.0,10],["Standing hammer curl",10.0,10],["Seated Dip",42.0,10],["Seated Dip",49.0,10],["Seated Dip",56.0,12],["Seated Lateral Raise",25.0,10],["Seated Lateral Raise",30.0,10],["Seated Lateral Raise",35.0,10]],"2025-06-14":[["Smith Machine Incline Bench Press",30.0,10],["Smith Machine Incline Bench Press",50.0,8],["Smith Machine Incline Bench Press",50.0,6],["Seated Back Row",5.0,10],["Seated Back Row",6.0,10],["Seated Back Row",7.0,10],["Machine Pec Fly",30.0,10],["Machine Pec Fly",35.0,10],["Machine Pec Fly",40.0,8],["Lat pulls",28.0,10],["Lat pulls",35.0,10],["Lat pulls",42.0,10],["Incline Machine",30.0,10],["Incline Machine",35.0,10],["Incline Machine",40.0,12]],"2025-06-15":[["Leg curl machine",50.0,10],["Leg curl machine",60.0,10],["Leg curl machine",70.0,8],["Seated Leg Extension",50.0,10],["Seated Leg Extension",50.0,10],["Seated Leg Extension",60.0,8],["Calf Raise",50.0,10],["Calf Raise",70.0,10],["Calf Raise",80.0,10],["Seated Leg Press",82.0,10],["Seated Leg Press",95.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",116.0,8],["Abductor",30.0,10],["Abductor",30.0,10],["Adductor",30.0,10],["Adductor",30.0,10]],"2025-06-17":[["Seated Bicep Curls",12.5,10],["Standing hammer curl",12.5,10],["Seated Bicep Curls",10.0,10],["Standing hammer curl",10.0,10],["Standing hammer curl",10.0,10],["Seated Bicep Curls",10.0,8],["Seated Tricep Press",55.0,10],["Seated Tricep Press",57.5,10],["Seated Tricep Press",60.0,12],["Machine Shoulder Press",25.0,10],["Machine Shoulder Press",30.0,10],["Machine Shoulder Press",35.0,6]],"2025-06-19":[["Smith Incline Chest Press",30.0,10],["Smith Incline Chest Press",40.0,10],["Smith Incline Chest Press",50.0,10],["Iso-lateral Back Machine",30.0,10],["Iso-lateral Back Machine",30.0,10],["Iso-lateral Back Machine",40.0,12]],"2025-06-20":[["Hamstring curl",33.0,10],["Hamstring curl",40.0,10],["Hamstring curl",40.0,10],["Hip Abduction Machine",45.0,10],["Hip Abduction Machine",50.0,10],["Hip Abduction Machine",55.0,10],["Hip Adduction Machine",40.0,10],["Hip Adduction Machine",50.0,10],["Hip Adduction Machine",60.0,12]],"2025-06-22":[["Seated Bicep Curls",12.5,10],["Standing hammer curl",12.5,10],["Seated Bicep Curls",10.0,10],["Standing hammer curl",10.0,10],["Seated Bicep Curls",10.0,10],["Standing hammer curl",10.0,10],["Seated Tricep Press",57.5,10],["Seated Tricep Press",60.0,10],["Seated Tricep Press",62.5,10]],"2025-06-23":[["Iso Lateral Pulldown",30.0,10],["Iso Lateral Pulldown",30.0,10],["Iso Lateral Pulldown",40.0,10]],"2025-06-27":[["Smith Squat",40.0,8],["Smith Squat",50.0,8],["Smith Squat",60.0,8],["Seated Leg Press",82.0,10],["Seated Leg Press",95.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",116.0,10],["Leg curl machine",50.0,10],["Leg curl machine",60.0,10],["Leg curl machine",70.0,10],["Free Leg Press",40.0,10],["Free Leg Press",80.0,10],["Free Leg Press",120.0,8]],"2025-06-28":[["Standing hammer curl",12.0,10],["Standing hammer curl",12.0,10],["Standing hammer curl",10.0,10],["Seated Dip",49.0,10],["Seated Dip",56.0,10],["Seated Dip",63.0,8],["Seated Lateral Raise",25.0,10],["Seated Lateral Raise",30.0,10],["Seated Lateral Raise",35.0,8]],"2025-06-29":[["Smith Machine Incline Bench Press",30.0,10],["Smith Machine Incline Bench Press",50.0,10],["Smith Machine Incline Bench Press",50.0,8],["Seated Machine Row",37.5,10],["Seated Machine Row",45.0,10],["Seated Machine Row",52.5,10],["Machine Pec Fly",30.0,10],["Machine Pec Fly",35.0,10],["Machine Pec Fly",40.0,10],["Lat pulls",28.0,10],["Lat pulls",35.0,10],["Lat pulls",42.0,10],["Incline Machine",30.0,10],["Incline Machine",35.0,10],["Incline Machine",40.0,10],["Seated Back Row",5.0,10],["Seated Back Row",6.0,10],["Seated Back Row",7.0,5]],"2025-07-04":[["Smith Incline Chest Press",30.0,10],["Smith Incline Chest Press",40.0,10],["Smith Incline Chest Press",50.0,8],["Iso-lateral Back Machine",30.0,10],["Iso-lateral Back Machine",40.0,10],["Iso-lateral Back Machine",40.0,10]],"2025-07-11":[["Standing hammer curl",12.0,10],["Standing hammer curl",12.0,10],["Seated Lateral Raise",25.0,10],["Seated Lateral Raise",30.0,10],["Seated Lateral Raise",35.0,10],["Seated Dip",49.0,10],["Seated Dip",56.0,10],["Seated Dip",63.0,10]],"2025-07-12":[["Smith Machine Incline Bench Press",30.0,10],["Smith Machine Incline Bench Press",40.0,10],["Smith Machine Incline Bench Press",50.0,10],["Seated Machine Row",37.5,10],["Seated Machine Row",45.0,10],["Seated Machine Row",52.5,10],["Seated Back Row",5.0,10],["Seated Back Row",6.0,10],["Seated Back Row",7.0,8],["Machine Pec Fly",30.0,10],["Machine Pec Fly",35.0,10],["Machine Pec Fly",40.0,10],["Lat pulls",28.0,10],["Lat pulls",35.0,10],["Lat pulls",42.0,10],["Incline Machine",35.0,10],["Incline Machine",40.0,10],["Incline Machine",45.0,8]],"2025-07-13":[["Smith Squat",40.0,8],["Smith Squat",50.0,8],["Smith Squat",60.0,8],["Leg curl machine",60.0,10],["Leg curl machine",60.0,10],["Leg curl machine",70.0,6],["Seated Leg Press",88.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",116.0,10],["Calf Raise",88.0,10],["Calf Raise",95.0,10],["Calf Raise",102.0,10]],"2025-07-15":[["Seated Bicep Curls",12.5,10],["Seated Bicep Curls",12.5,7],["Standing hammer curl",12.0,10],["Standing hammer curl",12.0,10],["Standing hammer curl",12.0,10],["Seated Tricep Press",50.0,10]],"2025-07-19":[["Iso-lateral Back Machine",40.0,10],["Iso-lateral Back Machine",40.0,10],["Iso-lateral Back Machine",40.0,10]],"2025-07-20":[["Hamstring curl",33.0,10],["Hamstring curl",40.0,10],["Hamstring curl",47.0,8],["Calf Raise",40.0,10],["Calf Raise",70.0,9]],"2025-07-21":[["Iso Shoulder Press",30.0,10],["Iso Shoulder Press",30.0,10],["Iso Shoulder Press",30.0,10],["Seated Tricep Press",57.5,10],["Seated Tricep Press",60.0,10],["Seated Tricep Press",62.5,12]],"2025-07-22":[["Smith Incline Chest Press",30.0,10],["Smith Incline Chest Press",40.0,10],["Smith Incline Chest Press",50.0,7],["Iso-lateral Back Machine",40.0,10],["Iso-lateral Back Machine",40.0,10],["Iso-lateral Back Machine",50.0,8]],"2025-07-25":[["Standing hammer curl",12.0,10],["Standing hammer curl",12.0,10],["Standing hammer curl",12.0,6],["Seated Dip",56.0,10],["Seated Dip",63.0,10],["Seated Dip",70.0,8],["Seated Lateral Raise",30.0,10],["Seated Lateral Raise",30.0,10]],"2025-07-26":[["Smith Machine Incline Bench Press",30.0,10],["Smith Machine Incline Bench Press",50.0,10],["Smith Machine Incline Bench Press",50.0,8],["Seated Machine Row",37.5,10],["Seated Machine Row",52.5,10],["Seated Machine Row",52.5,10],["Machine Pec Fly",30.0,10],["Machine Pec Fly",35.0,10],["Machine Pec Fly",40.0,10],["Seated Back Row",5.0,10],["Seated Back Row",6.0,10],["Seated Back Row",7.0,8],["Incline Machine",40.0,10],["Incline Machine",40.0,10],["Incline Machine",45.0,8]],"2025-07-27":[["Seated Leg Press",95.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",116.0,12],["Free Leg Press",80.0,10],["Free Leg Press",80.0,10],["Free Leg Press",120.0,10],["Leg curl machine",60.0,10],["Leg curl machine",60.0,10],["Leg curl machine",70.0,10],["Abductor",30.0,10],["Abductor",30.0,10],["Abductor",30.0,10],["Adductor",30.0,10],["Adductor",30.0,10]],"2025-08-01":[["Standing hammer curl",12.0,10],["Seated Dip",49.0,12],["Seated Dip",56.0,12],["Seated Dip",63.0,12],["Seated Lateral Raise",30.0,10],["Seated Lateral Raise",30.0,10],["Seated Lateral Raise",35.0,10],["Tricep Cable Pushdowns",15.0,10],["Tricep Cable Pushdowns",17.5,10],["Tricep Cable Pushdowns",20.0,10],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,15]],"2025-08-02":[["Smith Machine Incline Bench Press",40.0,10],["Smith Machine Incline Bench Press",50.0,10],["Smith Machine Incline Bench Press",50.0,8],["Seated Machine Row",45.0,10],["Seated Machine Row",52.5,10],["Seated Machine Row",52.5,10],["Machine Pec Fly",30.0,10],["Machine Pec Fly",35.0,10],["Machine Pec Fly",40.0,10],["Seated Back Row",5.0,10],["Seated Back Row",6.0,10],["Seated Back Row",7.0,10]],"2025-08-03":[["Smith Squat",40.0,8],["Smith Squat",50.0,8]],"2025-08-08":[["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.0,10],["Seated Bicep Curls",10.0,8],["Standing hammer curl",10.0,10],["Seated Bicep Curls",10.0,8],["Standing hammer curl",10.0,10],["Tricep Cable Pushdown",20.0,10],["Tricep Cable Pushdown",25.0,10],["Tricep Cable Pushdown",25.0,10],["Iso Shoulder Press",30.0,10],["Iso Shoulder Press",40.0,10],["Iso Shoulder Press",40.0,8],["Seated Tricep Press",57.5,10],["Seated Tricep Press",60.0,10],["Seated Tricep Press",65.0,10]],"2025-08-09":[["Iso-lateral Back Machine",40.0,10],["Iso-lateral Back Machine",40.0,10],["Iso-lateral Back Machine",50.0,8]],"2025-08-10":[["Hamstring curl",33.0,10],["Hamstring curl",40.0,10],["Hamstring curl",47.0,8]],"2025-08-16":[["Standing hammer curl",10.0,10],["Standing hammer curl",10.0,12],["Standing hammer curl",10.0,12],["Seated Dip",49.0,12],["Seated Dip",56.0,12],["Seated Dip",63.0,10],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,21],["Seated Lateral Raise",30.0,10],["Seated Lateral Raise",30.0,10],["Seated Lateral Raise",35.0,10]],"2025-08-17":[["Smith Machine Incline Bench Press",40.0,10],["Smith Machine Incline Bench Press",50.0,10],["Smith Machine Incline Bench Press",50.0,8],["Seated Machine Row",45.0,10],["Seated Machine Row",52.5,10],["Seated Machine Row",60.0,8],["Seated Back Row",5.0,10],["Seated Back Row",6.0,10],["Seated Back Row",7.0,10],["Machine Pec Fly",30.0,10],["Machine Pec Fly",35.0,10],["Machine Pec Fly",40.0,10]],"2025-08-22":[["Standing hammer curl",12.0,12],["Standing hammer curl",12.0,12],["Standing hammer curl",10.0,12],["Tricep Cable Pushdowns",15.0,10],["Tricep Cable Pushdowns",17.5,12],["Tricep Cable Pushdowns",20.0,10],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,18],["Seated Lateral Raise",30.0,10],["Seated Lateral Raise",30.0,10],["Seated Lateral Raise",35.0,10]],"2025-08-23":[["Smith Machine Incline Bench Press",40.0,10],["Smith Machine Incline Bench Press",50.0,10],["Smith Machine Incline Bench Press",60.0,6],["Seated Machine Row",45.0,10],["Seated Machine Row",52.5,10],["Seated Machine Row",60.0,10],["Machine Pec Fly",35.0,10],["Machine Pec Fly",40.0,10],["Machine Pec Fly",45.0,8],["Seated Back Row",5.0,10],["Seated Back Row",6.0,10],["Seated Back Row",7.0,10]],"2025-08-24":[["Free Leg Press",80.0,10],["Free Leg Press",80.0,10],["Free Leg Press",120.0,10],["Free Leg Press",120.0,6],["Leg curl machine",60.0,10],["Leg curl machine",70.0,10],["Leg curl machine",80.0,7],["Standing Calf Bar Raise",40.0,10],["Standing Calf Bar Raise",70.0,10],["Standing Calf Bar Raise",70.0,10],["Seated Leg Press",95.0,10],["Seated Leg Press",116.0,10],["Seated Leg Press",122.0,10],["Abductor",30.0,10],["Abductor",30.0,10],["Abductor",30.0,10],["Adductor",30.0,10],["Adductor",30.0,10],["Adductor",30.0,10]],"2025-08-29":[["Seated Bicep Curls",12.5,10],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Standing hammer curl",10.0,10],["Seated Bicep Curls",10.0,10],["Tricep Cable Pushdown",20.0,10],["Tricep Cable Pushdown",25.0,10],["Tricep Cable Pushdown",25.0,10],["Seated Tricep Press",57.5,10],["Seated Tricep Press",62.5,10],["Seated Tricep Press",65.0,10]],"2025-08-30":[["Smith Incline Chest Press",30.0,10],["Smith Incline Chest Press",40.0,10],["Smith Incline Chest Press",50.0,10],["Iso-lateral Back Machine",40.0,10],["Iso-lateral Back Machine",40.0,10],["Iso-lateral Back Machine",50.0,10]],"2025-08-31":[["Hamstring curl",33.0,10],["Hamstring curl",40.0,10],["Hamstring curl",47.0,9],["Calf Raise",40.0,10],["Calf Raise",70.0,10],["Calf Raise",80.0,10],["Hip Abduction Machine",45.0,10],["Hip Abduction Machine",50.0,12],["Hip Abduction Machine",55.0,12],["Hip Adduction Machine",50.0,10],["Hip Adduction Machine",55.0,10],["Hip Adduction Machine",60.0,12]],"2025-09-01":[["Iso Shoulder Press",30.0,10],["Iso Shoulder Press",40.0,10],["Iso Shoulder Press",40.0,10],["Isolateral Horizontal Bench Press",30.0,10],["Isolateral Horizontal Bench Press",40.0,10],["Isolateral Horizontal Bench Press",40.0,10],["Smith Sitting Shoulder Press",20.0,10],["Smith Sitting Shoulder Press",20.0,10],["Smith Sitting Shoulder Press",25.0,10],["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",40.0,8]],"2025-09-02":[["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,12],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,6],["Standing hammer curl",12.5,8]],"2025-09-05":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",50.0,8],["Smith Sitting Shoulder Press",20.0,10],["Smith Sitting Shoulder Press",20.0,10],["Smith Sitting Shoulder Press",30.0,10],["Machine Pec Fly",35.0,10],["Machine Pec Fly",40.0,10],["Machine Pec Fly",45.0,7],["Seated Lateral Raise",30.0,10],["Seated Lateral Raise",30.0,10],["Seated Lateral Raise",35.0,10],["Incline Machine",40.0,10],["Incline Machine",40.0,10],["Incline Machine",45.0,8]],"2025-09-06":[["Sitting Bicep Curls",12.0,10],["Hammer Curls",12.0,10],["Hammer Curls",12.0,10],["Sitting Bicep Curls",12.0,10],["Sitting Bicep Curls",12.0,10],["Hammer Curls",12.0,10],["Seated Machine Row",45.0,10],["Seated Machine Row",52.5,10],["Seated Machine Row",60.0,10],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,15],["Seated Back Row",5.0,10],["Seated Back Row",6.0,10]],"2025-09-09":[["Hamstring curl",40.0,10],["Hamstring curl",40.0,10],["Hamstring curl",47.0,10],["Calf Raise",50.0,10],["Calf Raise",70.0,10],["Calf Raise",80.0,12]],"2025-09-10":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",50.0,8],["Smith Sitting Shoulder Press",20.0,10],["Smith Sitting Shoulder Press",30.0,10],["Smith Sitting Shoulder Press",30.0,10],["Isolateral Horizontal Bench Press",30.0,10],["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",40.0,8],["Iso Shoulder Press",30.0,10],["Iso Shoulder Press",40.0,10],["Iso Shoulder Press",40.0,10],["Tricep Cable Pushdown",25.0,10],["Tricep Cable Pushdown",25.0,10],["Tricep Cable Pushdown",25.0,10]],"2025-09-12":[["Seated Bicep Curls",12.5,10],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Iso-lateral Back Machine",40.0,12],["Iso-lateral Back Machine",40.0,10],["Iso-lateral Back Machine",50.0,10]],"2025-09-13":[["Smith Incline Chest Press",40.0,10],["Smith Incline Chest Press",40.0,10],["Smith Incline Chest Press",40.0,10],["Smith Sitting Shoulder Press",20.0,10],["Smith Sitting Shoulder Press",20.0,10],["Seated Tricep Press",57.5,10],["Seated Tricep Press",62.5,10],["Seated Tricep Press",65.0,10],["Tricep Cable Pushdown",20.0,10],["Tricep Cable Pushdown",20.0,10],["Tricep Cable Pushdown",25.0,10]],"2025-09-14":[["Hamstring curl",40.0,10],["Hamstring curl",47.0,8],["Hamstring curl",47.0,8],["Calf Raise",40.0,10],["Calf Raise",80.0,10],["Calf Raise",80.0,10],["Hip Abduction Machine",47.5,10],["Hip Abduction Machine",52.5,10],["Hip Adduction Machine",52.5,10],["Hip Adduction Machine",57.5,10]],"2025-09-16":[["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Seated Tricep Press",65.0,10],["Seated Tricep Press",65.0,10],["Seated Tricep Press",65.0,10],["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,6],["Smith Incline Chest Press",50.0,5],["Smith Sitting Shoulder Press",20.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8]],"2025-09-18":[["Isolateral Pulldowns",40.0,10],["Isolateral Pulldowns",40.0,10],["Isolateral Pulldowns",40.0,8],["Standing hammer curl",12.5,10],["Standing hammer curl",12.5,12],["Standing hammer curl",12.5,12],["Iso-lateral Back Machine",40.0,10],["Iso-lateral Back Machine",40.0,10],["Iso-lateral Back Machine",50.0,10]],"2025-09-20":[["Smith Squat",40.0,8],["Smith Squat",50.0,8],["Smith Squat",50.0,8],["Standing Calf Bar Raise",40.0,10],["Standing Calf Bar Raise",70.0,10],["Standing Calf Bar Raise",80.0,10],["Leg curl machine",60.0,10],["Leg curl machine",70.0,10],["Leg curl machine",80.0,8],["Seated Leg Extension",50.0,10],["Free Leg Press",80.0,10],["Free Leg Press",100.0,10],["Free Leg Press",120.0,10],["Free Leg Press",80.0,10],["Abductor",30.0,10],["Abductor",35.0,10],["Abductor",35.0,10],["Adductor",30.0,10],["Adductor",30.0,10],["Seated Leg Press",95.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",116.0,10]],"2025-09-23":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",50.0,8],["Smith Sitting Shoulder Press",20.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",35.0,8],["Seated Tricep Press",65.0,8],["Seated Tricep Press",67.5,8],["Seated Tricep Press",70.0,8],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",50.0,6],["Tricep Cable Pushdown",20.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,6]],"2025-09-25":[["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,8],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,8],["Seated Bicep Curls",12.5,5],["Standing hammer curl",12.5,8],["Iso-lateral Back Machine",40.0,8],["Iso-lateral Back Machine",50.0,8],["Iso-lateral Back Machine",60.0,8]],"2025-09-27":[["Hamstring curl",40.0,10],["Hamstring curl",47.0,10],["Hamstring curl",54.0,5],["Calf Raise",40.0,10],["Calf Raise",70.0,8],["Calf Raise",80.0,8]],"2025-09-29":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",50.0,8],["Smith Sitting Shoulder Press",25.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",35.0,8],["Seated Tricep Press",65.0,8],["Seated Tricep Press",67.5,8],["Seated Tricep Press",70.0,8],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Tricep Cable Pushdown",20.0,8]],"2025-09-30":[["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,5]],"2025-10-01":[["Calf Raise",40.0,10],["Calf Raise",60.0,8],["Calf Raise",70.0,8]],"2025-10-04":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,6],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Machine Pec Fly",35.0,8],["Machine Pec Fly",40.0,8],["Machine Pec Fly",45.0,8],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,7],["Seated Dip",56.0,8],["Seated Dip",63.0,8],["Seated Dip",70.0,8]],"2025-10-05":[["Sitting Bicep Curls",12.0,8],["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,8],["Hammer Curls",12.0,8],["Hammer Curls",12.0,8],["Sitting Bicep Curls",12.0,7],["Seated Machine Row",45.0,10],["Seated Machine Row",52.5,10],["Seated Machine Row",60.0,10],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,8],["Seated Back Row",5.0,8],["Seated Back Row",6.0,8],["Seated Back Row",7.0,8]],"2025-10-07":[["Hamstring curl",40.0,10],["Hamstring curl",47.0,8],["Hamstring curl",54.0,7],["Calf Raise",80.0,8],["Calf Raise",80.0,8],["Calf Raise",80.0,8]],"2025-10-09":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,5],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",35.0,8],["Smith Sitting Shoulder Press",35.0,8],["Seated Tricep Press",67.5,8],["Seated Tricep Press",67.5,8],["Seated Tricep Press",70.0,8]],"2025-10-11":[["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Seated Bicep Curls",12.5,6],["Standing hammer curl",12.5,10],["Iso-lateral Back Machine",40.0,8],["Iso-lateral Back Machine",50.0,8],["Iso-lateral Back Machine",60.0,8],["Seated Lateral Raises",20.0,8],["Seated Lateral Raises",20.0,8],["Seated Lateral Raises",20.0,8]],"2025-10-13":[["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",45.0,8],["Isolateral Horizontal Bench Press",50.0,8],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Seated Tricep Press",67.5,8],["Seated Tricep Press",70.0,8],["Seated Tricep Press",70.0,7],["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",50.0,6]],"2025-10-18":[["Calf Raise",40.0,8],["Calf Raise",60.0,8],["Calf Raise",80.0,8]],"2025-10-20":[["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",50.0,8],["Isolateral Horizontal Bench Press",60.0,8],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",55.0,5],["Seated Tricep Press",67.5,8],["Seated Tricep Press",70.0,8],["Seated Tricep Press",70.0,10],["Tricep Cable Pushdown",20.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,5]],"2025-10-21":[["Standing hammer curl",12.5,10],["Standing hammer curl",12.5,10],["Standing hammer curl",12.5,12]],"2025-10-23":[["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",54.0,8],["Calf Raise",40.0,8],["Calf Raise",70.0,8],["Calf Raise",90.0,8],["Hip Abduction Machine",50.0,8],["Hip Abduction Machine",50.0,8],["Hip Abduction Machine",50.0,8],["Hip Adduction Machine",50.0,8],["Hip Adduction Machine",50.0,8]],"2025-10-25":[["Hip Adduction Machine",50.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Smith Sitting Shoulder Press",20.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,6],["Seated Dip",56.0,8],["Seated Dip",63.0,8],["Seated Dip",70.0,8],["Machine Pec Fly",35.0,8],["Machine Pec Fly",40.0,8],["Machine Pec Fly",45.0,8],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8],["Tricep Cable Pushdown",20.0,8]],"2025-10-26":[["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",20.0,8],["Preacher Curl Machine",4.0,8],["Preacher Curl Machine",5.0,8],["Preacher Curl Machine",6.0,6],["Seated Back Row",5.0,8],["Seated Back Row",6.0,8],["Seated Back Row",6.0,8],["Seated Back Row",7.0,8],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",6.0,8],["Seated Machine Row",45.0,8],["Seated Machine Row",52.5,8],["Seated Machine Row",60.0,8],["Hammer Curls",12.0,10],["Hammer Curls",12.0,10],["Hammer Curls",12.0,10]],"2025-10-31":[["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,6],["Smith Incline Chest Press",40.0,10],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,6],["Seated Tricep Press",72.5,10],["Seated Tricep Press",72.5,8],["Seated Tricep Press",72.5,8]],"2025-11-01":[["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Lat Pulldown",26.0,8],["Lat Pulldown",33.0,8],["Lat Pulldown",40.0,8],["Seated Lateral Raises",20.0,8],["Seated Lateral Raises",22.5,8],["Seated Lateral Raises",22.5,8]],"2025-11-02":[["Smith Machine Squat",40.0,8],["Smith Machine Squat",50.0,8],["Smith Machine Squat",60.0,7],["Calf Raise",60.0,10],["Calf Raise",80.0,8],["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",54.0,8]],"2025-11-04":[["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",50.0,8],["Isolateral Horizontal Bench Press",60.0,8],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",55.0,8],["Tricep Cable Pushdown",20.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8]],"2025-11-08":[["Seated Bicep Curls",10.0,10],["Standing hammer curl",10.0,10],["Standing hammer curl",10.0,10],["Standing hammer curl",12.5,10],["Seated Bicep Curls",10.0,10],["Seated Bicep Curls",12.5,8],["Sitting Bicep Curls",10.0,10],["Sitting Bicep Curls",10.0,10],["Sitting Bicep Curls",12.0,8],["Hammer Curls",10.0,10],["Hammer Curls",10.0,10],["Hammer Curls",12.0,10],["Seated Back Row",6.0,8],["Seated Back Row",6.0,8],["Seated Back Row",7.0,8],["Preacher Curl Machine",5.0,8],["Preacher Curl Machine",6.0,6],["Rear Delt Cable Pulls",4.0,8]],"2025-11-09":[["Seated Leg Press",95.0,10],["Seated Leg Press",116.0,10],["Seated Leg Press",122.0,10],["Free Leg Press",80.0,10],["Free Leg Press",120.0,10],["Free Leg Press",160.0,10],["Abductor",35.0,10],["Abductor",30.0,10],["Abductor",30.0,10],["Adductor",30.0,10],["Adductor",30.0,10],["Adductor",30.0,10],["Leg curl machine",60.0,8],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8]],"2025-11-14":[["Smith Incline Chest Press",45.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,6],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",35.0,8],["Seated Tricep Press",72.5,10],["Seated Tricep Press",72.5,8]],"2025-11-15":[["Seated Tricep Press",72.5,8],["Seated Bicep Curls",10.0,8],["Standing hammer curl",10.0,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,8],["Standing hammer curl",12.5,8],["Seated Bicep Curls",12.5,8],["Seated Lateral Raises",22.5,8],["Seated Lateral Raises",22.5,8],["Seated Lateral Raises",28.0,8],["Lat Pulldown",26.0,8],["Lat Pulldown",33.0,8]],"2025-11-16":[["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",24.49,7],["Calf Raise",27.22,8],["Calf Raise",31.75,8],["Calf Raise",40.82,8]],"2025-11-21":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,7],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,6],["Machine Pec Fly",35.0,8],["Machine Pec Fly",40.0,8],["Machine Pec Fly",45.0,8],["Seated Dip",56.0,8],["Seated Dip",63.0,8]],"2025-11-22":[["Hammer Curls",10.0,10],["Hammer Curls",10.0,10],["Hammer Curls",10.0,10],["Seated Back Row",6.0,8],["Seated Back Row",7.0,8],["Seated Back Row",7.0,8],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,21],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",6.0,8]],"2025-11-23":[["Free Leg Press",80.0,10],["Free Leg Press",120.0,10],["Free Leg Press",160.0,10],["Hack Squat",20.0,8],["Hack Squat",30.0,8],["Hack Squat",40.0,8],["Seated Leg Press",95.0,10],["Seated Leg Press",116.0,10],["Seated Leg Press",122.0,10],["Leg curl machine",60.0,10],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Standing Calf Bar Raise",40.0,8],["Standing Calf Bar Raise",60.0,8],["Standing Calf Bar Raise",80.0,8]],"2025-12-01":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,6],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Tricep Cable Pushdown",20.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",50.0,8],["Isolateral Horizontal Bench Press",60.0,6],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",50.0,6]],"2025-12-08":[["Seated Bicep Curls",10.0,8],["Standing hammer curl",10.0,10],["Seated Bicep Curls",10.0,8],["Standing hammer curl",10.0,10]],"2025-12-09":[["Calf Raise",40.0,10],["Calf Raise",65.0,10],["Calf Raise",80.0,10],["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",54.0,7]],"2025-12-12":[["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",50.0,8],["Isolateral Horizontal Bench Press",60.0,8],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",50.0,8],["Tricep Cable Pushdown",20.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Smith Sitting Shoulder Press",40.0,6]],"2025-12-13":[["Seated Bicep Curls",10.0,8],["Standing hammer curl",10.0,10],["Seated Bicep Curls",10.0,8],["Standing hammer curl",10.0,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Iso-lateral Back Machine",40.0,8],["Iso-lateral Back Machine",50.0,8],["Iso-lateral Back Machine",50.0,8],["Seated Lateral Raises",22.5,8],["Seated Lateral Raises",22.5,8],["Seated Lateral Raises",28.0,8],["Lat Pulldown",33.0,8],["Lat Pulldown",33.0,8]],"2025-12-14":[["Calf Raise",40.0,10],["Calf Raise",80.0,10],["Calf Raise",80.0,10],["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",54.0,7],["Hip Abduction Machine",50.0,8],["Hip Abduction Machine",50.0,8],["Hip Abduction Machine",50.0,8],["Hip Adduction Machine",50.0,8],["Hip Adduction Machine",50.0,8]],"2025-12-19":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,7],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,6],["Smith Sitting Shoulder Press",40.0,4],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Machine Pec Fly",35.0,8],["Machine Pec Fly",40.0,8],["Machine Pec Fly",45.0,8],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8],["Seated Dip",56.0,8],["Seated Dip",63.0,8]],"2025-12-20":[["Seated Bicep Curls",10.0,8],["Standing hammer curl",10.0,10],["Seated Bicep Curls",10.0,8],["Standing hammer curl",10.0,10],["Seated Bicep Curls",12.0,8],["Standing hammer curl",12.0,10],["Sitting Bicep Curls",10.0,10],["Sitting Bicep Curls",10.0,10],["Sitting Bicep Curls",12.0,10],["Hammer Curls",10.0,10],["Hammer Curls",10.0,10],["Hammer Curls",12.0,10],["Seated Back Row",6.0,8],["Seated Back Row",7.0,8],["Seated Back Row",8.0,7],["Seated Machine Row",45.0,8],["Seated Machine Row",52.5,8],["Seated Machine Row",60.0,8],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",4.0,8]],"2025-12-21":[["Smith Squat",40.0,8],["Smith Squat",50.0,8],["Smith Squat",60.0,8],["Free Leg Press",80.0,10],["Free Leg Press",120.0,10],["Free Leg Press",160.0,10],["Abductor",30.0,10],["Abductor",30.0,10],["Abductor",30.0,10],["Adductor",30.0,10],["Adductor",30.0,10],["Adductor",30.0,10],["Seated Leg Press",95.0,10],["Seated Leg Press",95.0,10],["Seated Leg Press",116.0,10],["Seated Leg Press",116.0,10],["Seated Leg Press",116.0,10],["Seated Leg Press",116.0,10]],"2025-12-22":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,7],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Machine Pec Fly",37.5,8],["Machine Pec Fly",42.5,8],["Machine Pec Fly",47.5,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,6],["Incline Machine",30.0,8],["Incline Machine",40.0,8],["Incline Machine",45.0,8],["Seated Dip",56.0,8],["Seated Dip",63.0,8],["Seated Dip",70.0,8]],"2025-12-23":[["Sitting Bicep Curls",10.0,10],["Hammer Curls",10.0,10],["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Seated Machine Row",52.5,8],["Seated Machine Row",60.0,8],["Seated Machine Row",67.0,8],["Kelso Shrugs",20.0,10],["Kelso Shrugs",20.0,10],["Kelso Shrugs",25.0,10],["Seated Back Row",6.0,8],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",4.0,8]],"2025-12-24":[["Hack Squat",30.0,8],["Hack Squat",40.0,8],["Hack Squat",50.0,8],["Leg curl machine",60.0,8],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Free Leg Press",80.0,10],["Free Leg Press",120.0,10],["Free Leg Press",160.0,10]],"2025-12-27":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,7],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,6],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Machine Pec Fly",37.5,8],["Machine Pec Fly",42.5,8],["Machine Pec Fly",47.5,8],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",35.0,8]],"2025-12-28":[["Sitting Bicep Curls",10.0,10],["Sitting Bicep Curls",12.0,8],["Hammer Curls",10.0,10],["Hammer Curls",12.0,10],["Hammer Curls",12.0,10],["Sitting Bicep Curls",12.0,8],["Kelso Shrugs",20.0,10],["Kelso Shrugs",20.0,10],["Kelso Shrugs",30.0,10],["Seated Machine Row",52.5,8],["Seated Machine Row",60.0,8],["Seated Machine Row",67.0,8],["Bar Back Rows",25.0,10],["Bar Back Rows",30.0,10],["Bar Back Rows",30.0,10],["Rear Delt Cable Pulls",4.0,10],["Rear Delt Cable Pulls",4.0,10]],"2025-12-30":[["Machine Pec Fly",35.0,8],["Machine Pec Fly",40.0,8],["Machine Pec Fly",45.0,8],["Smith Sitting Shoulder Press",25.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",35.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Incline Machine",35.0,8],["Incline Machine",40.0,8],["Incline Machine",45.0,8],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",35.0,8],["Seated Dip",56.0,8],["Seated Dip",63.0,8],["Seated Dip",70.0,8]],"2025-12-31":[["Sitting Bicep Curls",10.0,10],["Hammer Curls",10.0,10],["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Kelso Shrugs",30.0,8],["Kelso Shrugs",30.0,8],["Kelso Shrugs",30.0,8],["Seated Machine Row",45.0,8],["Seated Machine Row",52.5,8],["Seated Machine Row",60.0,8],["Bar Back Rows",30.0,8],["Bar Back Rows",30.0,8],["Bar Back Rows",30.0,8],["Seated Back Row",5.0,8],["Seated Back Row",6.0,8],["Seated Back Row",7.0,8],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",6.0,8]],"2026-01-01":[["Free Leg Press",120.0,8],["Free Leg Press",160.0,8],["Free Leg Press",200.0,8],["Leg curl machine",60.0,8],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Standing Calf Bar Raise",50.0,8],["Standing Calf Bar Raise",70.0,8],["Standing Calf Bar Raise",80.0,8],["Hack Squat",40.0,8],["Hack Squat",40.0,8],["Hack Squat",50.0,8],["Abductor",30.0,8],["Abductor",30.0,8],["Abductor",30.0,8],["Adductor",30.0,8],["Adductor",30.0,8],["Adductor",30.0,8]],"2026-01-02":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,7],["Machine Pec Fly",37.5,8],["Machine Pec Fly",42.5,8],["Machine Pec Fly",47.5,8],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",35.0,8],["Seated Dip",56.0,8],["Seated Dip",63.0,8],["Incline Machine",37.5,8],["Incline Machine",42.5,8],["Incline Machine",47.5,8]],"2026-01-09":[["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",50.0,8],["Tricep Cable Pushdown",20.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8]],"2026-01-10":[["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Iso Lat Pulldown",30.0,8],["Iso Lat Pulldown",40.0,8],["Iso Lat Pulldown",50.0,8],["Seated Lateral Raises",22.5,8],["Seated Lateral Raises",22.5,8],["Seated Lateral Raises",28.0,8],["Iso-lateral Back Machine",40.0,8],["Iso-lateral Back Machine",50.0,8],["Iso-lateral Back Machine",50.0,8]],"2026-01-11":[["Smith Machine Squat",30.0,8],["Smith Machine Squat",40.0,8],["Smith Machine Squat",50.0,8],["Calf Raise",60.0,10],["Calf Raise",70.0,10],["Calf Raise",90.0,8],["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",54.0,8],["Hip Abduction Machine",55.0,8],["Hip Abduction Machine",55.0,8],["Hip Abduction Machine",60.0,10]],"2026-01-12":[["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",50.0,8],["Isolateral Horizontal Bench Press",60.0,8],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",50.0,8],["Seated Tricep Press",65.0,8]],"2026-01-13":[["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Iso-lateral Back Machine",30.0,8],["Iso-lateral Back Machine",40.0,8],["Iso-lateral Back Machine",40.0,8]],"2026-01-16":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Smith Sitting Shoulder Press",40.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Machine Pec Fly",40.0,8],["Machine Pec Fly",45.0,8],["Machine Pec Fly",47.5,8],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8],["Seated Dip",63.0,8],["Seated Dip",63.0,8]],"2026-01-17":[["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Kelso Shrugs",30.0,8],["Kelso Shrugs",30.0,8],["Kelso Shrugs",30.0,8],["Seated Machine Row",52.5,8],["Seated Machine Row",60.0,8],["Seated Machine Row",67.5,8],["Seated Back Row",6.0,8],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Lat Pulldowns",35.0,8],["Lat Pulldowns",35.0,8],["Lat Pulldowns",42.0,8],["Bar Back Rows",30.0,8],["Bar Back Rows",30.0,8],["Bar Back Rows",30.0,8],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",4.0,8]],"2026-01-18":[["Smith Squat",40.0,8],["Smith Squat",50.0,8],["Smith Squat",70.0,8],["Standing Calf Bar Raise",50.0,8],["Standing Calf Bar Raise",70.0,8],["Standing Calf Bar Raise",90.0,8],["Leg curl machine",60.0,8],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Free Leg Press",120.0,8],["Free Leg Press",160.0,8],["Free Leg Press",200.0,8],["Abductor",30.0,8],["Abductor",35.0,8],["Abductor",30.0,8],["Adductor",30.0,8],["Adductor",30.0,8],["Adductor",35.0,8],["Seated Leg Press",95.0,10],["Seated Leg Press",95.0,10],["Seated Leg Press",106.0,10],["Seated Leg Press",106.0,10],["Seated Leg Press",106.0,10],["Seated Leg Press",106.0,10]],"2026-01-23":[["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",50.0,5],["Seated Tricep Press",65.0,10],["Seated Tricep Press",65.0,8],["Seated Tricep Press",72.5,8]],"2026-01-24":[["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Lateral Raises",22.5,8],["Seated Lateral Raises",28.0,8],["Seated Lateral Raises",28.0,8],["Iso-lateral Back Machine",40.0,8],["Iso-lateral Back Machine",50.0,8],["Iso-lateral Back Machine",60.0,8]],"2026-01-25":[["Calf Raise",50.0,8],["Calf Raise",80.0,8],["Calf Raise",80.0,8],["Hip Adduction Machine",55.0,8],["Hip Adduction Machine",55.0,8],["Hip Adduction Machine",55.0,8],["Hip Abduction Machine",55.0,8],["Hip Abduction Machine",55.0,8],["Hip Abduction Machine",55.0,8],["Hamstring curl",40.0,8],["Hamstring curl",47.0,8]],"2026-01-26":[["Hamstring curl",47.0,8],["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",50.0,8],["Isolateral Horizontal Bench Press",60.0,8],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",50.0,8],["Seated Lateral Raises",22.5,8],["Seated Lateral Raises",22.5,8],["Seated Lateral Raises",28.0,8],["Seated Tricep Press",72.5,8],["Seated Tricep Press",72.5,8]],"2026-01-30":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,5],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Tricep Cable Pushdown",20.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",50.0,8],["Isolateral Horizontal Bench Press",60.0,6],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",50.0,8],["Seated Tricep Press",72.5,8]],"2026-01-31":[["Seated Tricep Press",72.5,8],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Iso-lateral Back Machine",40.0,8],["Iso-lateral Back Machine",60.0,8],["Iso-lateral Back Machine",70.0,6],["Lat Pulldown",33.0,8],["Lat Pulldown",33.0,8],["Lat Pulldown",33.0,8]],"2026-02-01":[["Smith Machine Squat",30.0,8],["Smith Machine Squat",45.0,8],["Smith Machine Squat",60.0,8],["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",54.0,8],["Calf Raise",60.0,8],["Calf Raise",80.0,8],["Calf Raise",100.0,8],["Hip Adduction Machine",55.0,8],["Hip Adduction Machine",55.0,8],["Hip Adduction Machine",60.0,8],["Hip Abduction Machine",55.0,8],["Hip Abduction Machine",55.0,8],["Hip Abduction Machine",60.0,8]],"2026-02-06":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Smith Sitting Shoulder Press",40.0,8],["Machine Pec Fly",42.5,8],["Machine Pec Fly",47.5,8],["Machine Pec Fly",50.0,7],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,6],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8]],"2026-02-07":[["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Kelso Shrugs",20.0,8],["Kelso Shrugs",20.0,8],["Seated Back Row",6.0,8],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Bar Back Rows",30.0,8],["Bar Back Rows",30.0,8],["Bar Back Rows",30.0,8]],"2026-02-08":[["Smith Squat",40.0,8],["Smith Squat",60.0,8],["Smith Squat",70.0,8],["Standing Calf Bar Raise",50.0,8],["Standing Calf Bar Raise",70.0,8],["Standing Calf Bar Raise",90.0,8],["Free Leg Press",120.0,8],["Free Leg Press",160.0,8],["Free Leg Press",200.0,8],["Leg curl machine",60.0,8],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Abductor",30.0,8],["Abductor",30.0,8],["Abductor",35.0,8],["Adductor",30.0,8],["Adductor",30.0,8],["Adductor",35.0,8]],"2026-02-13":[["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",60.0,8],["Iso Shoulder Press",60.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",40.0,8],["Seated Lateral Raises",22.5,8],["Seated Lateral Raises",28.0,8],["Seated Lateral Raises",28.0,8],["Seated Tricep Press",65.0,8],["Seated Tricep Press",72.5,8],["Seated Tricep Press",72.5,8]],"2026-02-14":[["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Iso-lateral Back Machine",40.0,8],["Iso-lateral Back Machine",60.0,8],["Iso-lateral Back Machine",70.0,6]],"2026-02-15":[["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",54.0,8],["Calf Raise",40.0,8],["Calf Raise",80.0,8],["Calf Raise",110.0,8],["Hip Abduction Machine",55.0,8],["Hip Abduction Machine",55.0,8],["Hip Abduction Machine",60.0,8]],"2026-02-20":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Smith Sitting Shoulder Press",30.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Machine Pec Fly",42.5,8],["Machine Pec Fly",47.5,8],["Machine Pec Fly",47.5,8],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",35.0,8]],"2026-02-21":[["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Kelso Shrugs",30.0,8],["Kelso Shrugs",30.0,8],["Kelso Shrugs",30.0,8],["Seated Back Row",6.0,8],["Seated Back Row",7.0,8],["Seated Back Row",7.0,8],["Seated Machine Row",52.5,8],["Seated Machine Row",60.0,8],["Seated Machine Row",67.5,8],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",6.0,8],["Bar Back Rows",30.0,8],["Bar Back Rows",30.0,8],["Bar Back Rows",30.0,8]],"2026-02-22":[["Smith Squat",40.0,8],["Smith Squat",60.0,8],["Smith Squat",70.0,8],["Standing Calf Bar Raise",50.0,8],["Standing Calf Bar Raise",70.0,8],["Standing Calf Bar Raise",90.0,8],["Free Leg Press",120.0,8],["Free Leg Press",160.0,8],["Free Leg Press",200.0,8],["Leg curl machine",60.0,8],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Hack Squat",30.0,8],["Hack Squat",40.0,8],["Hack Squat",40.0,8],["Seated Leg Press",95.0,10],["Seated Leg Press",95.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10]],"2026-02-27":[["Smith Incline Chest Press",30.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",50.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",50.0,8],["Isolateral Horizontal Bench Press",50.0,6],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",60.0,4],["Seated Tricep Press",72.5,8],["Seated Tricep Press",72.5,8],["Seated Tricep Press",72.5,8]],"2026-02-28":[["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Iso Lat Pulldown",30.0,8],["Iso Lat Pulldown",40.0,8],["Iso Lat Pulldown",50.0,8]],"2026-03-01":[["Smith Machine Squat",40.0,8],["Smith Machine Squat",60.0,8],["Smith Machine Squat",60.0,8],["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",54.0,8]],"2026-03-06":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,7],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Machine Pec Fly",42.5,8],["Machine Pec Fly",47.5,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",35.0,8],["Seated Dip",70.0,6],["Seated Dip",70.0,6]],"2026-03-07":[["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Kelso Shrugs",30.0,8],["Kelso Shrugs",30.0,8],["Kelso Shrugs",30.0,8],["Seated Back Row",6.0,8],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,10],["Preacher Curl Machine",4.0,10],["Seated Machine Row",52.5,8],["Seated Machine Row",60.0,8],["Seated Machine Row",67.5,8],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",6.0,8],["Bar Back Rows",30.0,8]],"2026-03-08":[["Smith Squat",40.0,8],["Smith Squat",60.0,8],["Smith Squat",70.0,8],["Smith Bulgarian Split Squats",30.0,8],["Leg curl machine",60.0,8],["Leg curl machine",70.0,8],["Leg curl machine",90.0,8],["Free Leg Press",120.0,8],["Free Leg Press",160.0,8],["Free Leg Press",200.0,8],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Adductor",30.0,8]],"2026-03-13":[["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",50.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Machine Pec Fly",45.0,8],["Machine Pec Fly",47.5,8],["Machine Pec Fly",50.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,6],["Seated Dip",63.0,8],["Seated Dip",70.0,8]],"2026-03-14":[["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Kelso Shrugs",40.0,8],["Kelso Shrugs",40.0,8],["Kelso Shrugs",40.0,8],["Seated Back Row",6.0,8],["Seated Machine Row",52.5,8],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Seated Machine Row",60.0,8],["Seated Machine Row",67.5,8],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",8.0,4]],"2026-03-15":[["Smith Squat",40.0,8],["Smith Squat",60.0,8],["Smith Squat",80.0,8],["Smith Bulgarian Split Squats",20.0,8],["Smith Bulgarian Split Squats",20.0,8],["Smith Bulgarian Split Squats",30.0,8],["Standing Calf Bar Raise",50.0,8],["Standing Calf Bar Raise",70.0,10],["Standing Calf Bar Raise",90.0,8],["Free Leg Press",120.0,8],["Free Leg Press",160.0,8],["Free Leg Press",200.0,8],["Adductor",30.0,8],["Adductor",30.0,8],["Adductor",35.0,8],["Abductor",30.0,8],["Abductor",30.0,8],["Hack Squat",30.0,8],["Hack Squat",40.0,8],["Hack Squat",50.0,8],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10]],"2026-03-20":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,6],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",60.0,7],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",60.0,7],["Seated Tricep Press",72.5,8],["Seated Tricep Press",72.5,8],["Seated Tricep Press",72.5,8]],"2026-03-27":[["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",50.0,8],["Isolateral Horizontal Bench Press",60.0,8],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",60.0,8],["Seated Tricep Press",70.0,8],["Seated Tricep Press",72.5,8],["Seated Tricep Press",72.5,8],["Seated Lateral Raises",28.0,8],["Seated Lateral Raises",28.0,8],["Seated Lateral Raises",28.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8]],"2026-03-28":[["Tricep Cable Pushdown",25.0,8],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Hammer Curls",12.0,10],["Sitting Bicep Curls",12.0,8],["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Kelso Shrugs",40.0,8],["Kelso Shrugs",40.0,8],["Kelso Shrugs",40.0,8],["Seated Back Row",6.0,8],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",6.0,8]],"2026-03-29":[["Smith Squat",50.0,8],["Smith Squat",80.0,8],["Smith Squat",90.0,4],["Free Leg Press",120.0,8],["Free Leg Press",160.0,8],["Free Leg Press",220.0,7],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Abductor",30.0,8],["Abductor",35.0,8],["Adductor",30.0,8],["Adductor",35.0,8],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10]],"2026-03-31":[["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8]],"2026-04-03":[["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,7],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Smith Sitting Shoulder Press",40.0,5],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8],["Machine Pec Fly",45.0,8],["Machine Pec Fly",47.5,8],["Machine Pec Fly",50.0,8],["Incline Machine",37.5,8],["Incline Machine",42.5,8],["Incline Machine",50.0,8]],"2026-04-04":[["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Kelso Shrugs",40.0,8],["Kelso Shrugs",40.0,8],["Kelso Shrugs",40.0,8],["Seated Back Row",6.0,8],["Seated Back Row",8.0,8],["Seated Back Row",8.0,8],["Seated Machine Row",52.5,8],["Seated Machine Row",60.0,8],["Seated Machine Row",67.5,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",8.0,4]],"2026-04-05":[["Hack Squat",40.0,8],["Hack Squat",50.0,8],["Hack Squat",60.0,8],["Smith Bulgarian Split Squats",20.0,8],["Smith Bulgarian Split Squats",30.0,8],["Smith Bulgarian Split Squats",30.0,8],["Standing Calf Bar Raise",50.0,8],["Standing Calf Bar Raise",80.0,8],["Standing Calf Bar Raise",100.0,8],["Free Leg Press",120.0,8],["Free Leg Press",160.0,8],["Free Leg Press",220.0,4],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Abductor",30.0,8],["Abductor",35.0,8],["Adductor",30.0,8],["Adductor",35.0,8]],"2026-04-10":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",50.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8],["Seated Lateral Raises",28.0,8],["Seated Lateral Raises",28.0,8],["Seated Lateral Raises",28.0,8],["Seated Tricep Press",70.0,8],["Seated Tricep Press",72.5,8]],"2026-04-11":[["Seated Bicep Curls",15.0,8],["Standing hammer curl",15.0,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Iso-lateral Back Machine",40.0,8],["Iso-lateral Back Machine",60.0,8],["Iso-lateral Back Machine",70.0,8]],"2026-04-12":[["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Free Leg Press",120.0,8],["Free Leg Press",160.0,8],["Free Leg Press",220.0,8],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Seated Leg Extension",50.0,8],["Seated Leg Extension",60.0,8],["Seated Leg Extension",70.0,8],["Abductor",30.0,8],["Abductor",35.0,8],["Adductor",30.0,8],["Adductor",35.0,8],["Standing Calf Bar Raise",50.0,8],["Standing Calf Bar Raise",80.0,8],["Standing Calf Bar Raise",100.0,8]],"2026-04-13":[["Machine Pec Fly",45.0,8],["Machine Pec Fly",47.5,8],["Machine Pec Fly",50.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8],["Seated Lateral Raise",40.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8],["Incline Machine",40.0,8],["Incline Machine",45.0,8],["Incline Machine",50.0,8],["Shoulder Press Machine",20.0,8],["Shoulder Press Machine",25.0,8],["Shoulder Press Machine",25.0,6]],"2026-04-14":[["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Kelso Shrugs",50.0,8],["Kelso Shrugs",50.0,8],["Kelso Shrugs",50.0,8],["Seated Machine Row",60.0,8],["Seated Machine Row",60.0,8],["Seated Machine Row",67.5,8]],"2026-04-15":[["Smith Squat",50.0,8],["Smith Squat",80.0,8],["Smith Squat",90.0,5],["Standing Calf Bar Raise",70.0,8],["Standing Calf Bar Raise",90.0,8],["Standing Calf Bar Raise",100.0,8],["Seated Leg Extension",50.0,8],["Seated Leg Extension",60.0,8],["Seated Leg Extension",70.0,8],["Free Leg Press",120.0,8],["Free Leg Press",160.0,8],["Free Leg Press",220.0,8],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10],["Hack Squat",40.0,8],["Hack Squat",50.0,8],["Hack Squat",60.0,6],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Abductor",35.0,8],["Abductor",35.0,8],["Adductor",35.0,8],["Adductor",35.0,8]],"2026-04-17":[["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Smith Sitting Shoulder Press",50.0,4],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8],["Machine Pec Fly",45.0,8],["Machine Pec Fly",50.0,8],["Machine Pec Fly",50.0,8],["Seated Lateral Raise",40.0,8],["Seated Lateral Raise",40.0,8],["Seated Lateral Raise",40.0,6],["Incline Machine",40.0,8],["Incline Machine",45.0,8],["Incline Machine",52.5,8],["Shoulder Press Machine",20.0,8]],"2026-04-18":[["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Seated Back Row",8.0,8],["Kelso Shrugs",50.0,8],["Kelso Shrugs",50.0,8],["Kelso Shrugs",50.0,8]],"2026-04-19":[["Calf Raise",80.0,8],["Calf Raise",100.0,8],["Calf Raise",110.0,8],["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",54.0,8],["Hip Abduction Machine",55.0,8],["Hip Abduction Machine",60.0,8],["Hip Adduction Machine",55.0,8]],"2026-04-20":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,6],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Smith Sitting Shoulder Press",40.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8]],"2026-04-21":[["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Iso-lateral Back Machine",50.0,8],["Iso-lateral Back Machine",60.0,8],["Iso-lateral Back Machine",70.0,8]],"2026-04-24":[["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,7],["Smith Sitting Shoulder Press",40.0,8],["Smith Sitting Shoulder Press",50.0,5],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",65.0,6],["Seated Tricep Press",72.5,8]],"2026-04-25":[["Seated Tricep Press",77.5,8],["Seated Bicep Curls",15.0,8],["Standing hammer curl",15.0,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Iso-lateral Back Machine",60.0,8],["Iso-lateral Back Machine",70.0,8],["Iso-lateral Back Machine",70.0,8]],"2026-04-26":[["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",54.0,8],["Calf Raise",80.0,8],["Calf Raise",100.0,8],["Calf Raise",100.0,8],["Hip Adduction Machine",55.0,8],["Hip Adduction Machine",60.0,8],["Hip Abduction Machine",57.5,8],["Hip Abduction Machine",60.0,8]],"2026-04-28":[["Machine Shoulder Press",25.0,12],["Machine Shoulder Press",30.0,10],["Machine Shoulder Press",35.0,5],["Hammer Curls",12.5,12],["Hammer Curls",14.0,10],["Hammer Curls",14.0,10]],"2026-05-02":[["Smith Incline Chest Press",40.0,10],["Smith Incline Chest Press",60.0,8],["Smith Incline Chest Press",60.0,8],["Smith Sitting Shoulder Press",40.0,8],["Smith Sitting Shoulder Press",40.0,8],["Smith Sitting Shoulder Press",40.0,6],["Machine Pec Fly",47.5,8],["Machine Pec Fly",50.0,8],["Machine Pec Fly",52.5,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,4]],"2026-05-03":[["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Sitting Bicep Curls",12.5,8],["Hammer Curls",12.5,10],["Seated Machine Row",52.5,8],["Seated Machine Row",60.0,8],["Seated Machine Row",67.5,8],["Seated Back Row",6.0,8],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",8.0,4]],"2026-05-08":[["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,6],["Seated Machine Row",60.0,8],["Seated Machine Row",67.5,8],["Seated Machine Row",75.0,6],["Kelso Shrugs",40.0,8],["Kelso Shrugs",50.0,8],["Kelso Shrugs",60.0,6],["Seated Back Row",6.0,8],["Seated Back Row",8.0,8],["Seated Back Row",9.0,6],["Rear Delt Cable Pulls",4.0,10],["Rear Delt Cable Pulls",6.0,8]],"2026-05-09":[["Hack Squat",40.0,8],["Hack Squat",50.0,8],["Hack Squat",60.0,6],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Seated Leg Extension",50.0,8],["Seated Leg Extension",60.0,8],["Seated Leg Extension",70.0,8],["Free Leg Press",120.0,8],["Free Leg Press",160.0,8],["Free Leg Press",220.0,8],["Standing Calf Bar Raise",70.0,8],["Standing Calf Bar Raise",90.0,8],["Standing Calf Bar Raise",110.0,8],["Seated Leg Press",34.0,8],["Seated Leg Press",41.0,8],["Seated Leg Press",46.0,8],["Abductor",35.0,8],["Abductor",35.0,8],["Adductor",35.0,8],["Adductor",35.0,8]],"2026-05-14":[["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Smith Incline Chest Press",70.0,4],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Smith Sitting Shoulder Press",50.0,5],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,4],["Machine Pec Fly",47.5,8],["Machine Pec Fly",52.5,8],["Machine Pec Fly",52.5,5],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8],["Seated Lateral Raise",40.0,5],["Incline Machine",40.0,8],["Incline Machine",47.5,8],["Incline Machine",55.0,8]],"2026-05-15":[["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Seated Machine Row",60.0,8],["Seated Machine Row",67.5,8],["Seated Machine Row",75.0,7],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",8.0,6],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8]],"2026-05-16":[["Hack Squat",40.0,8],["Hack Squat",50.0,8],["Hack Squat",60.0,7],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Free Leg Press",120.0,8],["Free Leg Press",180.0,8],["Free Leg Press",220.0,8],["Abductor",35.0,8],["Abductor",35.0,8],["Abductor",35.0,8],["Adductor",35.0,8],["Adductor",35.0,8],["Adductor",35.0,8],["Seated Leg Press",34.0,8],["Seated Leg Press",48.0,8],["Seated Leg Press",48.0,8],["Seated Leg Extension",50.0,8],["Seated Leg Extension",60.0,8]],"2026-05-18":[["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Smith Incline Chest Press",70.0,4],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8],["Seated Lateral Raise",40.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,5],["Machine Pec Fly",50.0,8],["Machine Pec Fly",52.5,8],["Machine Pec Fly",52.5,6],["Seated Dip",63.0,8],["Seated Dip",63.0,8],["Seated Dip",70.0,5],["Seated Dumbbell Shoulders",14.0,8],["Seated Dumbbell Shoulders",16.0,8],["Seated Dumbbell Shoulders",18.0,8],["Shoulder Press Machine",20.0,8],["Shoulder Press Machine",25.0,8],["Shoulder Press Machine",27.5,6],["Incline Machine",50.0,8],["Incline Machine",52.5,6],["Incline Machine",55.0,3]],"2026-05-22":[["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Smith Incline Chest Press",70.0,4],["Smith Sitting Shoulder Press",20.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,5],["Machine Pec Fly",50.0,8],["Machine Pec Fly",52.5,8],["Machine Pec Fly",55.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8],["Seated Lateral Raise",40.0,8],["Seated Dip",63.0,8],["Seated Dip",70.0,8],["Seated Dip",77.0,4],["Incline Dumbell Chest Press",16.0,8],["Incline Dumbell Chest Press",20.0,8],["Incline Dumbell Chest Press",22.0,8],["Seated Dumbbell Shoulders",14.0,8]],"2026-05-23":[["Seated Dumbbell Shoulders",16.0,8],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Kelso Shrugs",40.0,8],["Kelso Shrugs",50.0,8],["Kelso Shrugs",50.0,8],["Seated Machine Row",60.0,8],["Seated Machine Row",67.5,8],["Seated Machine Row",75.0,7],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",8.0,7],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Seated Back Row",9.0,7]],"2026-05-24":[["Hack Squat",40.0,8],["Hack Squat",50.0,8],["Hack Squat",60.0,8],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Free Leg Press",150.0,8],["Free Leg Press",190.0,8],["Free Leg Press",230.0,6],["Seated Leg Extension",50.0,8],["Seated Leg Extension",60.0,8],["Seated Leg Extension",70.0,8],["Standing Calf Bar Raise",70.0,8],["Standing Calf Bar Raise",80.0,8],["Standing Calf Bar Raise",90.0,8],["Seated Leg Press",41.0,8],["Seated Leg Press",48.0,8],["Seated Leg Press",54.0,8],["Abductor",35.0,8],["Abductor",35.0,8],["Adductor",35.0,8]],"2026-05-25":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,10],["Smith Incline Chest Press",60.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Machine Pec Fly",50.0,8],["Machine Pec Fly",52.5,8],["Machine Pec Fly",55.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,6],["Incline Dumbell Chest Press",20.0,8],["Incline Dumbell Chest Press",22.0,8],["Incline Dumbell Chest Press",20.0,10],["Seated Dip",63.0,8],["Seated Dip",70.0,8],["Seated Dip",77.0,5],["Incline Machine",50.0,8],["Incline Machine",52.5,7],["Incline Machine",55.0,4],["Seated Lateral Raise",35.0,8]],"2026-05-29":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,7],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,8],["Seated Lateral Raises",22.5,8],["Seated Lateral Raises",28.0,8],["Seated Lateral Raises",33.5,6],["Seated Tricep Press",70.0,8],["Seated Tricep Press",72.5,8],["Seated Tricep Press",77.5,8]],"2026-05-30":[["Seated Bicep Curls",15.0,8],["Standing hammer curl",15.0,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Iso-lateral Back Machine",60.0,8],["Iso-lateral Back Machine",60.0,8],["Iso-lateral Back Machine",60.0,8]],"2026-06-01":[["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",54.0,8],["Calf Raise",80.0,8],["Calf Raise",80.0,8],["Calf Raise",100.0,8]],"2026-06-05":[["Seated Bicep Curls",15.0,8],["Standing hammer curl",15.0,10],["Seated Bicep Curls",15.0,8],["Standing hammer curl",15.0,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Iso Lat Pulldown",40.0,8],["Iso Lat Pulldown",40.0,8],["Iso Lat Pulldown",60.0,6],["Iso-lateral Back Machine",60.0,8],["Iso-lateral Back Machine",70.0,8],["Iso-lateral Back Machine",70.0,6]],"2026-06-06":[["Smith Machine Squat",40.0,8],["Smith Machine Squat",60.0,8],["Smith Machine Squat",60.0,6],["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",54.0,8],["Calf Raise",80.0,8],["Calf Raise",80.0,8],["Calf Raise",80.0,8],["Hip Adduction Machine",55.0,8],["Hip Adduction Machine",55.0,8],["Hip Abduction Machine",57.5,8]],"2026-06-08":[["Isolateral Horizontal Bench Press",40.0,8],["Isolateral Horizontal Bench Press",50.0,8],["Isolateral Horizontal Bench Press",60.0,8],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",60.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8],["Seated Lateral Raises",22.5,8],["Seated Lateral Raises",28.0,8],["Seated Lateral Raises",33.5,8],["Seated Tricep Press",72.5,8],["Seated Tricep Press",75.0,8],["Seated Tricep Press",82.5,8]],"2026-06-09":[["Seated Bicep Curls",15.0,8],["Standing hammer curl",15.0,10],["Standing hammer curl",15.0,10],["Seated Bicep Curls",15.0,8],["Seated Bicep Curls",15.0,4],["Standing hammer curl",15.0,10]],"2026-06-12":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,6],["Incline Dumbell Chest Press",20.0,8],["Incline Dumbell Chest Press",20.0,8],["Incline Dumbell Chest Press",20.0,8],["Machine Pec Fly",50.0,8],["Machine Pec Fly",52.5,8],["Machine Pec Fly",55.0,8],["Seated Dip",63.0,8],["Seated Dip",70.0,8],["Seated Dip",77.0,7]],"2026-06-14":[["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Kelso Shrugs",40.0,8],["Kelso Shrugs",40.0,8],["Kelso Shrugs",40.0,8],["Seated Machine Row",60.0,8],["Seated Machine Row",67.5,8],["Seated Machine Row",67.5,8],["Cable Bicep Curl",25.0,10],["Cable Bicep Curl",30.0,10],["Cable Bicep Curl",35.0,10],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",8.0,8],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Seated Back Row",9.0,8]],"2026-06-15":[["Hack Squat",40.0,8],["Hack Squat",50.0,8],["Hack Squat",60.0,8],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Seated Leg Extension",50.0,8],["Seated Leg Extension",60.0,8],["Seated Leg Extension",70.0,8],["Free Leg Press",160.0,8],["Free Leg Press",200.0,8],["Free Leg Press",220.0,8],["Abductor",30.0,8],["Abductor",35.0,8],["Abductor",40.0,8],["Adductor",30.0,8],["Adductor",35.0,8]],"2026-06-19":[["Isolateral Horizontal Bench Press",50.0,8],["Isolateral Horizontal Bench Press",60.0,8],["Isolateral Horizontal Bench Press",70.0,6],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",60.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,8],["Seated Lateral Raises",28.0,8],["Seated Lateral Raises",33.5,8],["Seated Lateral Raises",39.0,4],["Seated Tricep Press",75.0,8],["Seated Tricep Press",80.0,8],["Seated Tricep Press",85.0,8]],"2026-06-20":[["Seated Bicep Curls",15.0,8],["Standing hammer curl",15.0,10],["Standing hammer curl",15.0,10],["Seated Bicep Curls",15.0,8],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Iso-lateral Back Machine",50.0,8],["Iso-lateral Back Machine",60.0,8],["Iso-lateral Back Machine",70.0,7]],"2026-06-21":[["Calf Raise",70.0,8],["Calf Raise",80.0,8],["Calf Raise",90.0,8],["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",54.0,8]],"2026-06-26":[["Isolateral Horizontal Bench Press",50.0,8],["Isolateral Horizontal Bench Press",60.0,8],["Isolateral Horizontal Bench Press",70.0,7],["Seated Lateral Raises",28.0,8],["Seated Lateral Raises",33.5,8],["Seated Lateral Raises",39.0,5],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,8]],"2026-06-27":[["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Hammer Curls",14.0,10],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Sitting Bicep Curls",14.0,8],["Kelso Shrugs",40.0,8],["Kelso Shrugs",50.0,8],["Kelso Shrugs",60.0,5],["Cable Bicep Curl",30.0,10],["Cable Bicep Curl",35.0,10],["Cable Bicep Curl",35.0,10],["Seated Machine Row",60.0,8],["Seated Machine Row",67.5,8],["Seated Machine Row",75.0,7],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",8.0,6]],"2026-06-28":[["Hack Squat",40.0,8],["Hack Squat",50.0,8],["Hack Squat",70.0,6],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Seated Leg Extension",60.0,8],["Seated Leg Extension",70.0,8],["Seated Leg Extension",80.0,7],["Smith Bulgarian Split Squats",20.0,8],["Smith Bulgarian Split Squats",30.0,8],["Smith Bulgarian Split Squats",40.0,8],["Abductor",35.0,8],["Abductor",40.0,8],["Adductor",35.0,8],["Adductor",40.0,8],["Seated Leg Press",41.0,8],["Seated Leg Press",48.0,8],["Seated Leg Press",54.0,8],["Seated Leg Press",102.0,10],["Seated Leg Press",102.0,10]],"2026-06-29":[["Smith Incline Chest Press",40.0,10],["Smith Incline Chest Press",50.0,10],["Smith Incline Chest Press",60.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,5],["Machine Pec Fly",52.5,8],["Machine Pec Fly",55.0,8],["Machine Pec Fly",57.5,4],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8],["Seated Lateral Raise",45.0,3]],"2026-06-30":[["Sitting Bicep Curls",12.0,10],["Hammer Curls",12.0,10],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,8],["Sitting Bicep Curls",16.0,4],["Hammer Curls",16.0,8],["Seated Machine Row",60.0,8],["Seated Machine Row",67.5,8],["Seated Machine Row",75.0,8],["Cable Bicep Curl",30.0,10],["Cable Bicep Curl",35.0,8],["Cable Bicep Curl",40.0,10],["Seated Back Row",7.0,10],["Seated Back Row",7.0,10],["Seated Back Row",7.0,10],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",6.0,8],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,21]],"2026-07-02":[["Incline Dumbell Chest Press",20.0,8],["Incline Dumbell Chest Press",22.0,8],["Incline Dumbell Chest Press",24.0,8],["Seated Dumbbell Shoulders",14.0,8],["Seated Dumbbell Shoulders",16.0,8],["Seated Dumbbell Shoulders",18.0,6],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,4],["Machine Pec Fly",50.0,8],["Machine Pec Fly",55.0,8],["Machine Pec Fly",57.5,4],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8],["Incline Machine",45.0,8],["Incline Machine",50.0,8]],"2026-07-03":[["Sitting Bicep Curls",16.0,8],["Hammer Curls",16.0,10],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Kelso Shrugs",40.0,8],["Kelso Shrugs",40.0,8],["Seated Machine Row",67.5,8],["Seated Machine Row",75.0,8],["Seated Machine Row",82.5,8],["Cable Bicep Curl",35.0,8],["Cable Bicep Curl",40.0,8],["Cable Bicep Curl",45.0,6],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",8.0,8],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Seated Back Row",9.0,8],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,10],["Cable Face Pull",20.0,8],["Cable Face Pull",25.0,8],["Cable Face Pull",30.0,8]],"2026-07-05":[["Smith Squat",50.0,8],["Smith Squat",50.0,8],["Smith Squat",60.0,8],["Leg curl machine",70.0,10],["Leg curl machine",80.0,8],["Leg curl machine",100.0,5],["Seated Leg Extension",60.0,8],["Seated Leg Extension",70.0,8],["Seated Leg Extension",80.0,8],["Seated Leg Press",41.0,8],["Seated Leg Press",48.0,8],["Seated Leg Press",54.0,8],["Seated Leg Press",116.0,10],["Seated Leg Press",116.0,10],["Abductor",35.0,8],["Abductor",40.0,8],["Adductor",35.0,8]],"2026-07-10":[["Isolateral Horizontal Bench Press",50.0,8],["Isolateral Horizontal Bench Press",60.0,8],["Isolateral Horizontal Bench Press",70.0,7],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",60.0,6],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,8],["Seated Lateral Raises",28.0,8],["Seated Lateral Raises",33.5,8],["Seated Lateral Raises",39.0,5],["Seated Tricep Press",80.0,8],["Seated Tricep Press",82.5,8]],"2026-07-11":[["Seated Tricep Press",85.0,8],["Seated Bicep Curls",15.0,8],["Standing hammer curl",15.0,10],["Seated Bicep Curls",15.0,8],["Standing hammer curl",15.0,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Iso-lateral Back Machine",50.0,8],["Iso-lateral Back Machine",60.0,8],["Iso-lateral Back Machine",70.0,8]],"2026-07-12":[["Hamstring curl",47.0,8],["Hamstring curl",54.0,8],["Hamstring curl",61.0,2],["Calf Raise",70.0,8],["Calf Raise",80.0,8],["Calf Raise",90.0,8]],"2026-07-17":[["Incline Dumbell Chest Press",20.0,8],["Incline Dumbell Chest Press",22.0,8],["Incline Dumbell Chest Press",26.0,8],["Seated Dumbbell Shoulders",14.0,8],["Seated Dumbbell Shoulders",16.0,8],["Seated Dumbbell Shoulders",18.0,6],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,3],["Machine Pec Fly",50.0,8],["Machine Pec Fly",55.0,8],["Machine Pec Fly",57.5,6],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8],["Seated Dip",63.0,8],["Seated Dip",70.0,8],["Seated Dip",77.0,8]],"2026-07-18":[["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Kelso Shrugs",40.0,8],["Kelso Shrugs",50.0,8],["Kelso Shrugs",50.0,8],["Seated Machine Row",60.0,8],["Seated Machine Row",67.5,8],["Seated Machine Row",75.0,8],["Cable Bicep Curl",35.0,8],["Cable Bicep Curl",40.0,8],["Cable Bicep Curl",45.0,8],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Seated Back Row",9.0,4],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",8.0,8]],"2026-07-19":[["Hack Squat",50.0,8],["Hack Squat",60.0,8],["Hack Squat",70.0,6],["Seated Leg Extension",60.0,8],["Seated Leg Extension",70.0,8],["Seated Leg Extension",80.0,8],["Free Leg Press",160.0,8],["Free Leg Press",180.0,8],["Free Leg Press",220.0,8],["Seated Leg Press",41.0,8],["Seated Leg Press",48.0,8],["Seated Leg Press",54.0,8],["Seated Leg Press",122.0,8],["Seated Leg Press",122.0,8],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Leg curl machine",100.0,4]],"2026-07-24":[["Isolateral Horizontal Bench Press",50.0,8],["Isolateral Horizontal Bench Press",60.0,8],["Isolateral Horizontal Bench Press",70.0,7],["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",60.0,7],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,8],["Seated Lateral Raises",28.0,8],["Seated Lateral Raises",33.5,8],["Seated Lateral Raises",39.0,5],["Seated Tricep Press",82.5,8],["Seated Tricep Press",85.0,8]],"2026-07-25":[["Seated Bicep Curls",15.0,8],["Standing hammer curl",15.0,10],["Standing hammer curl",15.0,10],["Seated Bicep Curls",15.0,8],["Standing hammer curl",15.0,10],["Seated Bicep Curls",15.0,4],["Iso-lateral Back Machine",50.0,8],["Iso-lateral Back Machine",60.0,8],["Iso-lateral Back Machine",70.0,8]],"2026-07-31":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,6],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,6],["Machine Pec Fly",50.0,8],["Machine Pec Fly",55.0,8],["Machine Pec Fly",57.5,7],["Incline Machine",40.0,8],["Incline Machine",45.0,8],["Incline Machine",50.0,8],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8]],"2026-08-01":[["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Kelso Shrugs",40.0,8],["Kelso Shrugs",50.0,8],["Kelso Shrugs",60.0,8],["Seated Machine Row",67.5,8],["Seated Machine Row",75.0,8],["Seated Machine Row",82.5,6],["Cable Bicep Curl",35.0,8],["Cable Bicep Curl",40.0,8],["Cable Bicep Curl",45.0,8],["Cable Face Pull",30.0,8],["Cable Face Pull",35.0,8],["Cable Face Pull",40.0,8],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,21],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Seated Back Row",9.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",6.0,8]],"2026-08-03":[["Rear Delt Cable Pulls",8.0,8],["Hack Squat",50.0,8],["Hack Squat",60.0,8],["Hack Squat",60.0,8],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Seated Leg Extension",60.0,8],["Seated Leg Extension",70.0,8],["Seated Leg Extension",80.0,8],["Free Leg Press",160.0,8],["Free Leg Press",200.0,8],["Free Leg Press",200.0,8],["Abductor",35.0,8],["Abductor",40.0,8],["Adductor",35.0,8],["Adductor",40.0,8],["Seated Leg Press",41.0,8],["Seated Leg Press",48.0,8],["Seated Leg Press",54.0,8]],"2026-08-04":[["Seated Leg Press",122.0,8],["Seated Leg Press",122.0,8],["Smith Incline Chest Press",40.0,10],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,6],["Machine Pec Fly",52.5,7],["Machine Pec Fly",55.0,8],["Machine Pec Fly",57.5,6],["Seated Dip",63.0,8],["Seated Dip",70.0,8],["Seated Dip",77.0,8],["Incline Machine",40.0,8],["Incline Machine",45.0,8],["Incline Machine",52.5,8]],"2026-08-08":[["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,8],["Iso-lateral Back Machine",60.0,8],["Iso-lateral Back Machine",70.0,8],["Iso-lateral Back Machine",80.0,8],["Seated Lateral Raises",28.0,8],["Seated Lateral Raises",33.5,8],["Seated Lateral Raises",39.0,7]],"2026-08-09":[["Hamstring curl",47.0,8],["Hamstring curl",54.0,8],["Hamstring curl",54.0,8],["Calf Raise",80.0,8],["Calf Raise",80.0,8],["Calf Raise",80.0,8]],"2026-08-14":[["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Machine Pec Fly",52.5,8],["Machine Pec Fly",55.0,6]],"2026-08-24":[["Smith Incline Chest Press",40.0,8],["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,6],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",35.0,8],["Smith Sitting Shoulder Press",40.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,8],["Seated Tricep Press",80.0,8]],"2026-08-25":[["Iso-lateral Back Machine",60.0,8],["Iso-lateral Back Machine",70.0,8],["Iso-lateral Back Machine",80.0,8]],"2026-08-27":[["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",54.0,8]],"2026-08-28":[["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",60.0,8],["Seated Tricep Press",80.0,8],["Seated Tricep Press",82.5,8],["Seated Tricep Press",85.0,8],["Seated Lateral Raises",28.0,8],["Seated Lateral Raises",33.5,8],["Seated Lateral Raises",39.0,5]],"2026-08-29":[["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Iso-lateral Back Machine",60.0,8],["Iso-lateral Back Machine",70.0,8],["Iso-lateral Back Machine",80.0,8]],"2026-08-30":[["Calf Raise",80.0,8],["Calf Raise",80.0,8],["Calf Raise",100.0,8],["Hamstring curl",40.0,8],["Hamstring curl",47.0,8],["Hamstring curl",54.0,6]],"2026-09-01":[["Iso Shoulder Press",40.0,8],["Iso Shoulder Press",50.0,8],["Iso Shoulder Press",60.0,6],["Seated Tricep Press",80.0,8],["Seated Tricep Press",82.5,8],["Seated Tricep Press",87.5,8]],"2026-09-02":[["Seated Bicep Curls",12.5,8],["Standing hammer curl",12.5,10],["Standing hammer curl",12.5,10],["Seated Bicep Curls",12.5,8],["Standing hammer curl",15.0,10],["Seated Bicep Curls",15.0,6]],"2026-09-04":[["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Smith Incline Chest Press",70.0,3],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Smith Sitting Shoulder Press",40.0,6],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8],["Machine Pec Fly",50.0,8],["Machine Pec Fly",52.5,7],["Machine Pec Fly",55.0,6],["Seated Lateral Raise",30.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8]],"2026-09-05":[["Sitting Bicep Curls",14.0,8],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Hammer Curls",14.0,10],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Seated Machine Row",67.5,8],["Seated Machine Row",75.0,8],["Seated Machine Row",82.5,7],["Cable Bicep Curl",35.0,8],["Cable Bicep Curl",40.0,8],["Cable Bicep Curl",45.0,8],["Cable Face Pull",30.0,8],["Cable Face Pull",40.0,8],["Cable Face Pull",45.0,8],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Seated Back Row",9.0,8],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",8.0,8]],"2026-09-06":[["Smith Squat",40.0,8],["Smith Squat",50.0,8],["Smith Squat",60.0,8],["Standing Calf Bar Raise",70.0,8],["Standing Calf Bar Raise",80.0,8],["Standing Calf Bar Raise",90.0,8],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Free Leg Press",120.0,8],["Free Leg Press",160.0,8],["Free Leg Press",200.0,8],["Seated Leg Press",41.0,8],["Seated Leg Press",48.0,8],["Seated Leg Press",54.0,8],["Abductor",35.0,8],["Abductor",40.0,8]],"2026-09-07":[["Incline Dumbell Chest Press",22.0,8],["Incline Dumbell Chest Press",24.0,8],["Incline Dumbell Chest Press",26.0,8],["Seated Dumbbell Shoulders",14.0,8],["Seated Dumbbell Shoulders",14.0,8],["Seated Dumbbell Shoulders",14.0,8],["Machine Pec Fly",50.0,8],["Machine Pec Fly",50.0,8],["Machine Pec Fly",52.5,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,4],["Incline Machine",40.0,8],["Incline Machine",45.0,8]],"2026-09-08":[["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Kelso Shrugs",40.0,8],["Kelso Shrugs",50.0,8],["Kelso Shrugs",60.0,8],["Seated Machine Row",67.5,8],["Seated Machine Row",75.0,8],["Seated Machine Row",82.5,8],["Preacher Curl Machine",4.0,21]],"2026-09-09":[["Hack Squat",50.0,8],["Hack Squat",50.0,8],["Hack Squat",50.0,8],["Leg curl machine",70.0,8],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Seated Leg Press",48.0,8],["Seated Leg Press",54.0,8],["Seated Leg Press",61.0,8],["Abductor",35.0,8],["Abductor",40.0,8],["Adductor",35.0,8]],"2026-09-11":[["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Smith Incline Chest Press",70.0,4],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Smith Sitting Shoulder Press",50.0,3],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",35.0,4],["Machine Pec Fly",50.0,8],["Machine Pec Fly",52.5,8],["Machine Pec Fly",55.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8],["Seated Dip",63.0,8],["Seated Dip",70.0,8],["Seated Dip",84.0,4]],"2026-09-12":[["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Seated Machine Row",75.0,8],["Seated Machine Row",82.5,8],["Seated Machine Row",90.0,3],["Cable Bicep Curl",35.0,8],["Cable Bicep Curl",40.0,8],["Cable Bicep Curl",45.0,8],["Cable Face Pull",35.0,8],["Cable Face Pull",40.0,8],["Cable Face Pull",45.0,8],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Seated Back Row",9.0,8],["Rear Delt Cable Pulls",4.0,8],["Rear Delt Cable Pulls",6.0,8]],"2026-09-13":[["Rear Delt Cable Pulls",8.0,8],["Hack Squat",50.0,8],["Hack Squat",50.0,8],["Hack Squat",50.0,8],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Leg curl machine",100.0,4],["Free Leg Press",120.0,8],["Free Leg Press",160.0,8],["Free Leg Press",200.0,8],["Seated Leg Press",48.0,8],["Seated Leg Press",54.0,8],["Seated Leg Press",61.0,8],["Seated Leg Extension",60.0,8],["Seated Leg Extension",70.0,8],["Seated Leg Extension",80.0,8],["Abductor",35.0,8],["Abductor",40.0,8],["Adductor",35.0,8],["Adductor",40.0,8]],"2026-09-14":[["Incline Dumbell Chest Press",24.0,8],["Incline Dumbell Chest Press",24.0,8],["Incline Dumbell Chest Press",24.0,8],["Seated Dumbbell Shoulders",14.0,8],["Seated Dumbbell Shoulders",14.0,8],["Seated Dumbbell Shoulders",14.0,8],["Incline Machine",40.0,8],["Incline Machine",42.5,8],["Incline Machine",45.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8]],"2026-09-15":[["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Hammer Curls",12.0,10],["Sitting Bicep Curls",12.0,8],["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Kelso Shrugs",40.0,8],["Kelso Shrugs",60.0,8],["Kelso Shrugs",60.0,8],["Seated Machine Row",75.0,8],["Seated Machine Row",82.5,8],["Seated Machine Row",90.0,6],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,21],["Cable Bicep Curl",35.0,8],["Cable Bicep Curl",35.0,8]],"2026-09-16":[["Hack Squat",50.0,8],["Hack Squat",50.0,8],["Hack Squat",60.0,8],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Leg curl machine",100.0,6],["Abductor",35.0,8],["Abductor",40.0,8],["Abductor",40.0,8],["Adductor",35.0,8],["Adductor",40.0,8],["Adductor",40.0,8],["Seated Leg Press",122.0,8],["Seated Leg Press",122.0,8]],"2026-09-18":[["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Smith Incline Chest Press",70.0,5],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Smith Sitting Shoulder Press",40.0,8],["Tricep Cable Pushdown",25.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8],["Machine Pec Fly",50.0,8],["Machine Pec Fly",52.5,8],["Machine Pec Fly",55.0,8],["Seated Lateral Raise",35.0,8],["Seated Lateral Raise",40.0,8],["Seated Lateral Raise",40.0,8]],"2026-09-19":[["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Hammer Curls",16.0,10],["Sitting Bicep Curls",16.0,5],["Seated Machine Row",75.0,8],["Seated Machine Row",82.5,8],["Seated Machine Row",90.0,6],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",5.0,8],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Seated Back Row",9.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",8.0,8],["Rear Delt Cable Pulls",4.0,15]],"2026-09-20":[["Smith Squat",40.0,8],["Smith Squat",60.0,8],["Smith Squat",70.0,5],["Standing Calf Bar Raise",80.0,8],["Standing Calf Bar Raise",100.0,8],["Standing Calf Bar Raise",110.0,8],["Laying Hamstring Curl",36.0,8],["Laying Hamstring Curl",41.0,8],["Laying Hamstring Curl",41.0,8],["Seated Leg Extension",60.0,8],["Seated Leg Extension",70.0,8],["Seated Leg Extension",80.0,10],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Leg curl machine",100.0,8],["Seated Leg Press",48.0,8],["Seated Leg Press",54.0,8],["Seated Leg Press",61.0,6]],"2026-09-22":[["Incline Dumbell Chest Press",24.0,8],["Incline Dumbell Chest Press",24.0,8],["Incline Dumbell Chest Press",26.0,8],["Seated Dumbbell Shoulders",14.0,8],["Seated Dumbbell Shoulders",16.0,8],["Seated Dumbbell Shoulders",16.0,8],["Machine Tricep Extension",50.0,8],["Machine Tricep Extension",62.5,8],["Machine Tricep Extension",62.5,8],["Machine Pec Fly",50.0,8],["Machine Pec Fly",52.5,8],["Machine Pec Fly",55.0,8]],"2026-09-24":[["Free Leg Press",160.0,8],["Free Leg Press",160.0,8],["Free Leg Press",200.0,8],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Leg curl machine",100.0,5],["Seated Leg Extension",60.0,8],["Seated Leg Extension",70.0,8],["Seated Leg Extension",90.0,7],["Abductor",35.0,8],["Abductor",40.0,8],["Abductor",45.0,8],["Adductor",35.0,8],["Adductor",40.0,8]],"2026-09-25":[["Smith Incline Chest Press",50.0,8],["Smith Incline Chest Press",60.0,8],["Smith Incline Chest Press",70.0,6],["Smith Sitting Shoulder Press",30.0,8],["Smith Sitting Shoulder Press",40.0,8],["Smith Sitting Shoulder Press",50.0,4],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8],["Machine Pec Fly",52.5,8],["Machine Pec Fly",55.0,8],["Machine Pec Fly",57.5,7],["Seated Lateral Raise",40.0,8],["Seated Lateral Raise",40.0,8]],"2026-09-26":[["Sitting Bicep Curls",12.0,8],["Hammer Curls",12.0,10],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Sitting Bicep Curls",16.0,6],["Hammer Curls",16.0,10],["Seated Machine Row",75.0,8],["Seated Machine Row",82.5,8],["Seated Machine Row",90.0,7],["Cable Bicep Curl",40.0,8],["Cable Bicep Curl",45.0,8],["Cable Bicep Curl",50.0,6],["Seated Back Row",7.0,8],["Seated Back Row",8.0,8],["Seated Back Row",9.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",8.0,8]],"2026-09-27":[["Hack Squat",50.0,8],["Hack Squat",60.0,8],["Hack Squat",60.0,6],["Leg curl machine",80.0,8],["Leg curl machine",90.0,8],["Leg curl machine",100.0,8],["Seated Leg Extension",70.0,8],["Seated Leg Extension",80.0,8],["Seated Leg Extension",90.0,8],["Abductor",35.0,8],["Abductor",40.0,8],["Abductor",45.0,8],["Adductor",35.0,8],["Adductor",40.0,8],["Adductor",45.0,8]],"2026-09-29":[["Incline Dumbell Chest Press",24.0,8],["Incline Dumbell Chest Press",26.0,8],["Incline Dumbell Chest Press",28.0,8],["Seated Dumbbell Shoulders",14.0,8],["Seated Dumbbell Shoulders",14.0,8],["Seated Dumbbell Shoulders",14.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8],["Tricep Cable Pushdown",30.0,8],["Incline Machine",45.0,8],["Incline Machine",50.0,8],["Incline Machine",55.0,8]],"2026-09-30":[["Sitting Bicep Curls",14.0,8],["Hammer Curls",14.0,10],["Hammer Curls",14.0,10],["Sitting Bicep Curls",14.0,8],["Sitting Bicep Curls",16.0,7],["Hammer Curls",16.0,6],["Seated Machine Row",75.0,8],["Seated Machine Row",82.5,8],["Seated Machine Row",82.5,8],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",4.0,21],["Preacher Curl Machine",5.0,8],["Preacher Curl Machine",6.0,6],["Seated Back Row",8.0,8],["Seated Back Row",9.0,8],["Seated Back Row",10.0,4],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",6.0,8],["Rear Delt Cable Pulls",6.0,8],["Cable Bicep Curl",40.0,8],["Cable Bicep Curl",45.0,8]]};
+const SEED_VERSION = 4;
+function seedHistory(){
+  if(data.train.seeded===SEED_VERSION) return;
+  Object.entries(SEED_SESSIONS).forEach(([k,sets])=>{
+    const ex = data.train.sessions[k];
+    if(!ex || ex.src==='seed') data.train.sessions[k] = {tpl:null, src:'seed', sets};
+  });
+  // re-tag every session against the current program
+  Object.values(data.train.sessions).forEach(ses=>{ if(ses.src!=='app') ses.tpl = detectTemplate(ses.sets); });
+  data.train.seeded = SEED_VERSION;
+  saveData();
+}
+seedHistory();
+
+/* ---------- DAILY CHECK-IN ---------- */
+const SCALES = [
+  {key:'energy',   label:'Energy',   lo:'Dead',  hi:'Flying'},
+  {key:'soreness', label:'Soreness', lo:'None',  hi:'Wrecked'},
+  {key:'hunger',   label:'Hunger',   lo:'None',  hi:'Starving'},
+  {key:'stress',   label:'Stress',   lo:'Calm',  hi:'Maxed'},
+];
+let ciDraft = {};
+
+function weightSeries(){
+  const m = {};
+  data.bodyLog.forEach(e=>{ if(e.weight!=null) m[e.date] = e.weight; });
+  Object.entries(data.days).forEach(([k,d])=>{ if(d && d.weight!=null) m[k] = d.weight; });
+  return Object.keys(m).sort().map(k=>({date:k, v:m[k]}));
+}
+function avgWeight(fromKey, toKey){
+  const pts = weightSeries().filter(p=>p.date>=fromKey && p.date<=toKey);
+  if(pts.length<3) return null;
+  return pts.reduce((s,p)=>s+p.v,0)/pts.length;
+}
+function shiftKey(k, n){ const d = new Date(k+'T00:00:00'); d.setDate(d.getDate()+n); return dateKey(d); }
+
+function weeklyTrend(){
+  const t = todayKey();
+  const cur = avgWeight(shiftKey(t,-6), t);
+  const prev = avgWeight(shiftKey(t,-13), shiftKey(t,-7));
+  return {cur, prev};
+}
+
+function renderCheckin(){
+  const day = getDay(todayKey());
+  ciDraft = {};
+  SCALES.forEach(s=>{ ciDraft[s.key] = day[s.key] ?? null; });
+  ciDraft.alcohol = !!day.alcohol; ciDraft.offplan = !!day.offplan;
+  document.getElementById('ciWeight').value = day.weight ?? '';
+  document.getElementById('ciSleep').value = day.sleep ?? '';
+  document.getElementById('ciPain').value = day.pain || '';
+  document.getElementById('ciNotes').value = day.notes || '';
+  const st = document.getElementById('checkinState');
+  st.textContent = day.checkin ? 'Done' : 'Not done';
+  st.style.borderColor = day.checkin ? 'var(--ok)' : 'var(--warn)';
+  st.style.color = day.checkin ? 'var(--ok)' : 'var(--warn)';
+  drawScales();
+  renderReadout();
+}
+
+function drawScales(){
+  const wrap = document.getElementById('ciScales');
+  wrap.innerHTML = '';
+  SCALES.forEach(s=>{
+    const row = document.createElement('div');
+    row.className = 'scale-row';
+    let btns = '';
+    for(let i=1;i<=5;i++) btns += `<button type="button" class="sbtn ${ciDraft[s.key]===i?'on':''}" data-k="${s.key}" data-v="${i}">${i}</button>`;
+    row.innerHTML = `<div class="scale-lbl"><span>${s.label}</span><span class="d">1 ${s.lo} · 5 ${s.hi}</span></div><div class="scale">${btns}</div>`;
+    wrap.appendChild(row);
+  });
+  wrap.querySelectorAll('.sbtn').forEach(b=>b.addEventListener('click',()=>{
+    const k = b.dataset.k, v = +b.dataset.v;
+    ciDraft[k] = ciDraft[k]===v ? null : v;
+    drawScales();
+  }));
+  const tg = document.getElementById('ciToggles');
+  tg.innerHTML = '';
+  [['alcohol','Drank alcohol'],['offplan','Off-plan meal']].forEach(([k,l])=>{
+    const row = document.createElement('div');
+    row.className = 'check-item'+(ciDraft[k]?' done':'');
+    row.innerHTML = `<div class="box ${ciDraft[k]?'on':''}"></div><div class="check-txt">${l}</div>`;
+    row.addEventListener('click',()=>{ ciDraft[k] = !ciDraft[k]; drawScales(); });
+    tg.appendChild(row);
+  });
+}
+
+function lastNDays(n){
+  const out = [];
+  for(let i=0;i<n;i++) out.push(data.days[shiftKey(todayKey(),-i)] || {});
+  return out;
+}
+
+function renderReadout(){
+  const day = getDay(todayKey());
+  const el = document.getElementById('ciReadout');
+  const verdict = document.getElementById('ciVerdict');
+  const lines = [];
+  if(!day.checkin){
+    verdict.textContent = 'NO DATA'; verdict.className = 'deficit-status status-warn';
+    el.innerHTML = 'Check in every morning. Weigh after the toilet, before food or water. Takes 30 seconds.';
+    renderTrend();
+    return;
+  }
+  let score = 0, parts = 0;
+  if(day.energy){ score += day.energy; parts++; }
+  if(day.soreness){ score += 6-day.soreness; parts++; }
+  if(day.stress){ score += 6-day.stress; parts++; }
+  if(day.sleep!=null){ score += day.sleep>=7.5?5:day.sleep>=7?4:day.sleep>=6?3:1; parts++; }
+  const avg = parts ? score/parts : 3;
+
+  const last3 = lastNDays(3);
+  if(day.sleep!=null && day.sleep<6) lines.push(`<strong>Sleep ${day.sleep}h.</strong> That's not enough. Short sleep in a deficit means more hunger, worse lifts and more muscle lost. Bed 30 minutes earlier tonight, no negotiation.`);
+  else if(day.sleep!=null && day.sleep<7) lines.push(`<strong>Sleep ${day.sleep}h.</strong> Under 7. Get it up, this is free recovery.`);
+  if(day.soreness>=4 && day.energy && day.energy<=2) lines.push(`<strong>Sore and flat.</strong> Still train, but drop one set per exercise and stop 2 to 3 reps short. Same tomorrow and it's a rest day.`);
+  else if(day.soreness>=4) lines.push(`<strong>Very sore.</strong> Warm up longer. If it's the muscle you're training today, keep the weight, cut a set.`);
+  if(last3.every(d=>d.energy && d.energy<=2)) lines.push(`<strong>Energy low 3 days running.</strong> Either sleep is short or the deficit is too aggressive. Tell me tonight.`);
+  if(last3.every(d=>d.hunger>=4)) lines.push(`<strong>Hungry 3 days running.</strong> Protein at every meal, big-volume veg, don't save calories for night. If it keeps up I'll add 100 to 150 kcal.`);
+  if(day.stress>=4) lines.push(`<strong>High stress.</strong> It holds water, so the scale may lie this week. Stay on plan, don't react to one weigh-in.`);
+  if(day.pain) lines.push(`<strong>Pain logged: ${esc(day.pain)}.</strong> Don't train through sharp or joint pain. Tell me tonight and I'll adjust the session.`);
+  if(day.alcohol) lines.push(`<strong>Alcohol.</strong> Log the calories honestly, and expect a worse session tomorrow.`);
+  if(day.offplan) lines.push(`<strong>Off-plan meal.</strong> Log it, don't compensate by starving tomorrow. Back on plan next meal.`);
+  if(!lines.length) lines.push('All green. Go train hard today.');
+
+  let tier = avg>=3.75 ? 'ok' : avg>=2.75 ? 'warn' : 'bad';
+  if(day.pain && tier==='ok') tier = 'warn';
+  verdict.textContent = tier==='ok' ? 'READY' : tier==='warn' ? 'CAUTION' : 'RECOVER';
+  verdict.className = 'deficit-status ' + (tier==='ok'?'status-ok':tier==='warn'?'status-warn':'status-bad');
+  el.innerHTML = lines.map(l=>`<div style="margin-bottom:8px;">${l}</div>`).join('');
+  renderTrend();
+}
+
+function renderTrend(){
+  const {cur, prev} = weeklyTrend();
+  const el = document.getElementById('ciTrend');
+  if(cur==null){ el.innerHTML = 'Weekly trend appears after 3+ weigh-ins this week.'; return; }
+  let html = `7-day average: <strong>${cur.toFixed(1)} lb</strong>`;
+  if(prev!=null){
+    const diff = cur - prev, pct = diff/prev*100;
+    html += ` · ${diff<=0?'':'+'}${diff.toFixed(1)} lb (${pct.toFixed(2)}%) vs last week<br>`;
+    if(diff>0) html += `<span style="color:var(--danger)">Going up. Check your logging is honest, especially weekends.</span>`;
+    else if(-diff < 0.9) html += `<span style="color:var(--warn)">Under 0.4kg/week. Two weeks like this and calories drop 150.</span>`;
+    else if(-diff > 2.2) html += `<span style="color:var(--warn)">Over 1kg/week. Too fast, you'll lose muscle. Add 150 kcal.</span>`;
+    else html += `<span style="color:var(--ok)">Right in the 0.4 to 1kg/week zone. Don't change a thing.</span>`;
+  }
+  el.innerHTML = html;
+}
+
+document.getElementById('saveCheckinBtn').addEventListener('click', ()=>{
+  const day = getDay(todayKey());
+  const w = parseFloat(document.getElementById('ciWeight').value);
+  const sl = parseFloat(document.getElementById('ciSleep').value);
+  day.weight = isNaN(w) ? null : w;
+  day.sleep = isNaN(sl) ? null : sl;
+  SCALES.forEach(s=>{ day[s.key] = ciDraft[s.key]; });
+  day.alcohol = ciDraft.alcohol; day.offplan = ciDraft.offplan;
+  day.pain = document.getElementById('ciPain').value.trim();
+  day.notes = document.getElementById('ciNotes').value.trim();
+  day.checkin = true;
+  saveData();
+  toast('Check-in saved');
+  renderCheckin(); renderDotmap(); renderProgressStats(); renderCharts();
+});
+
+function coachSummary(days){
+  const lines = [`WINTER ARC CHECK-IN · last ${days} days`];
+  const t = weeklyTrend();
+  if(t.cur!=null) lines.push(`7-day avg ${t.cur.toFixed(1)} lb` + (t.prev!=null?` (last week ${t.prev.toFixed(1)})`:''));
+  for(let i=days-1;i>=0;i--){
+    const k = shiftKey(todayKey(),-i), d = data.days[k];
+    if(!d) { lines.push(`${k.slice(8)}/${k.slice(5,7)}: nothing logged`); continue; }
+    const p = [];
+    if(d.weight!=null) p.push(d.weight+'lb');
+    if(d.sleep!=null) p.push('sleep '+d.sleep+'h');
+    const sc = SCALES.filter(s=>d[s.key]).map(s=>s.label[0]+(s.key==='stress'?'t':'')+d[s.key]).join(' ');
+    if(sc) p.push(sc);
+    if(d.calories!=null) p.push(d.calories+'kcal');
+    if(d.protein!=null) p.push('P'+d.protein);
+    if(d.steps!=null) p.push(d.steps+' steps');
+    const s = data.train.sessions[k];
+    if(s) p.push((s.tpl && getProgram()[s.tpl] ? getProgram()[s.tpl].name : 'Session')+' done');
+    else if(d.training) p.push('trained');
+    if(d.run) p.push('ran');
+    if(d.alcohol) p.push('ALCOHOL');
+    if(d.offplan) p.push('OFF-PLAN MEAL');
+    if(d.pain) p.push('pain: '+d.pain);
+    if(d.notes) p.push('note: '+d.notes);
+    lines.push(`${k.slice(8)}/${k.slice(5,7)}: `+(p.join(' · ')||'nothing logged'));
+  }
+  lines.push('(E energy, S soreness, H hunger, St stress, 1 to 5)');
+  return lines.join('\n');
+}
+function copyText(txt){
+  const done = ()=>toast('Copied. Paste it to Claude');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done).catch(()=>fallbackCopy(txt,done));
+  } else fallbackCopy(txt,done);
+}
+function fallbackCopy(txt, done){
+  const ta = document.createElement('textarea');
+  ta.value = txt; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); done(); }catch(e){ toast('Copy failed'); }
+  ta.remove();
+}
+document.getElementById('copyDayBtn').addEventListener('click', ()=>copyText(coachSummary(1)));
+document.getElementById('copyWeekBtn').addEventListener('click', ()=>copyText(coachSummary(7)));
 
 /* ---------- DAILY TRUTH ---------- */
 const TRUTH_QUOTES = [
@@ -1038,7 +1723,7 @@ const TRUTH_QUOTES = [
   "One more rep, one more page, one more clean meal. That's the arc.",
   "Winter doesn't care about your excuses. Neither should you.",
   "The gap between who you are and who you want to be is today's checklist.",
-  "You committed in September. December is watching.",
+  "You committed on October 1st. December is watching.",
   "Progress is boring, unglamorous, and repeated. Do it anyway.",
   "Skip today and tomorrow gets easier to skip too.",
   "Your future self is either thanking you or blaming you for today.",
@@ -1071,7 +1756,9 @@ function renderAll(){
   }
   renderHeader();
   renderTruth();
+  renderCheckin();
   renderChecklist();
+  renderTrain();
   renderNutritionTab();
   renderPlan();
   renderProgressStats();
