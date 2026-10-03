@@ -160,6 +160,20 @@ textarea.ta{background:#050709;border:1px solid var(--border);color:var(--fg);pa
 textarea.ta:focus{border-color:var(--accent);}
 .trend{font-size:13px;line-height:1.7;color:var(--fg-dim);margin-top:14px;padding-top:12px;border-top:1px solid var(--border);}
 .trend strong{color:var(--fg);}
+/* REVIEW + FUEL */
+.rv-row{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.rv-row:last-of-type{border-bottom:none;}
+.rv-ic{font-size:13px;width:14px;flex-shrink:0;margin-top:1px;font-weight:800;}
+.rv-name{color:var(--fg);font-weight:700;font-size:13px;}
+.rv-sets{font-family:'JetBrains Mono',monospace;font-weight:400;font-size:11px;color:var(--fg-dim);margin-left:4px;}
+.rv-msg{font-size:12px;margin-top:2px;}
+.fuel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.fuel-chip{border:1px solid var(--border);border-radius:2px;padding:8px 6px;text-align:center;}
+.fuel-chip span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--fg-dim);}
+.fuel-chip strong{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;margin-top:3px;color:var(--fg);}
+.fuel-ok{border-color:rgba(74,222,128,.5);} .fuel-ok strong{color:var(--ok);}
+.fuel-warn{border-color:rgba(255,184,77,.5);} .fuel-warn strong{color:var(--warn);}
+.fuel-bad{border-color:rgba(255,92,92,.5);} .fuel-bad strong{color:var(--danger);}
 </style>
 </head>
 <body>
@@ -253,6 +267,13 @@ textarea.ta:focus{border-color:var(--accent);}
         <select class="sess-select" id="sessSelect" aria-label="Change session"></select>
       </div>
     </div>
+    <div class="card truth-card" id="reviewCard" style="display:none;">
+      <div class="deficit-box" style="margin-bottom:12px;">
+        <div class="card-title" style="margin:0;">Coach Review</div>
+        <div class="deficit-status status-warn" id="reviewVerdict">--</div>
+      </div>
+      <div id="reviewText" style="font-size:13px;line-height:1.6;color:var(--fg-dim);position:relative;z-index:1;"></div>
+    </div>
     <div class="card"><div id="exList"></div></div>
     <button class="btn" id="saveSessionBtn">Save session</button>
     <div class="subtle-note" style="text-align:center;margin:8px 0 18px;">Only sets with reps entered are saved. Importing tonight's SetGraph CSV replaces this with the real data.</div>
@@ -289,8 +310,7 @@ textarea.ta:focus{border-color:var(--accent);}
     </div>
 
     <div class="card">
-      <div class="card-title">Coach</div>
-      <div class="subtle-note" style="margin-top:-8px;margin-bottom:14px;">Brutally honest. Genuinely in your corner. No fluff, no filler compliments.</div>
+      <div class="card-title">Fuel Check</div>
       <div class="deficit-box" style="margin-bottom:10px;">
         <div style="font-size:11px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:1px;">Today's read</div>
         <div class="deficit-status status-warn" id="coachVerdict">NO DATA</div>
@@ -323,7 +343,7 @@ textarea.ta:focus{border-color:var(--accent);}
     <div class="card">
       <div class="card-title">Weekly Split</div>
       <div class="week-schedule" id="rotation"></div>
-      <div class="subtle-note">A days Friday to Sunday, B days Monday to Wednesday, Thursday active recovery. Weights shown are your next targets and update every time you import. Miss a day? Pick the session from the dropdown in Train.</div>
+      <div class="subtle-note">A days Friday to Sunday, B days Monday to Wednesday, Thursday active recovery. Weights, reps and rest for each session are in the Train tab. Miss a day? Pick the session from the dropdown in Train.</div>
     </div>
     <div class="card">
       <div class="card-title">How Progression Works</div>
@@ -740,99 +760,46 @@ function renderCoach(){
   const verdictEl = document.getElementById('coachVerdict');
   const textEl = document.getElementById('coachText');
   const {calLow, calHigh} = data.profile;
-  const targets = getMacroTargets();
-
-  if(day.calories==null){
+  const T = getMacroTargets();
+  if(day.calories==null && day.protein==null){
     verdictEl.textContent='NO DATA'; verdictEl.className='deficit-status status-warn';
-    textEl.innerHTML = "Log today's calories, and macros if you've got them, and I'll tell you exactly where you stand.";
+    textEl.innerHTML = "Log calories and macros and you'll get a quick read here.";
     return;
   }
-
-  const cals = day.calories;
-  const lines = [];
+  const chips = [], notes = [];
   let flags = 0;
-
-  if(cals < 1500){
-    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong>, too low. You set an ${calLow}–${calHigh} target for a reason: enough food to train hard, hold onto muscle, and actually stick to this until Christmas Eve. Under-eating this hard now just sets up a binge later and drags your metabolism down for the whole arc.`);
-    flags+=2;
-  } else if(cals < calLow){
-    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong>, a bit under target (${calLow}–${calHigh}). Not a crisis once in a while, but don't confuse "disciplined" with "starving." The deficit you already planned is enough, trust it.`);
-    flags+=1;
-  } else if(cals <= calHigh){
-    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong>, right in the ${calLow}–${calHigh} window. This is exactly what gets you to ${data.profile.goalWeight}lb on schedule. Repeat it.`);
-  } else if(cals <= calHigh+200){
-    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong>, over target. One day like this won't wreck the arc, but it eats into your weekly deficit. Tighten it up tomorrow.`);
-    flags+=1;
-  } else {
-    lines.push(`<strong>Calories: ${Math.round(cals)} kcal</strong>, well over target. This single day can undo 2–3 days of a clean deficit. Figure out what happened and don't let it repeat.`);
-    flags+=2;
-  }
-
+  const chip = (label, val, st) => `<div class="fuel-chip fuel-${st}"><span>${label}</span><strong>${val}</strong></div>`;
+  if(day.calories!=null){
+    const c = Math.round(day.calories);
+    if(c < calLow-300){ chips.push(chip('Calories', c, 'bad')); notes.push(`Calories too low. Under-eating costs muscle and ends in a binge. Get to ${calLow}+.`); flags+=2; }
+    else if(c < calLow){ chips.push(chip('Calories', c, 'warn')); notes.push(`Slightly under ${calLow}. Add a snack, don't make it a habit.`); flags+=1; }
+    else if(c <= calHigh){ chips.push(chip('Calories', c, 'ok')); }
+    else if(c <= calHigh+200){ chips.push(chip('Calories', c, 'warn')); notes.push('A bit over. Tighten it tomorrow, no compensating.'); flags+=1; }
+    else { chips.push(chip('Calories', c, 'bad')); notes.push('Well over. That wipes out 2 to 3 days of deficit. Find the leak.'); flags+=2; }
+  } else chips.push(chip('Calories','–','none'));
   if(day.protein!=null){
     const p = day.protein;
-    if(p < targets.protein*0.75){
-      lines.push(`<strong>Protein: ${p}g</strong>, low, target's ${targets.protein}g. In a deficit, protein is what tells your body to burn fat and hold onto muscle. Skip this enough and the weight you lose won't be the weight you wanted to lose.`);
-      flags+=2;
-    } else if(p < targets.protein){
-      lines.push(`<strong>Protein: ${p}g</strong>, close, but under the ${targets.protein}g target. Find another ${Math.round(targets.protein-p)}g tomorrow, extra chicken, a scoop of whey, or a couple eggs gets you there.`);
-      flags+=1;
-    } else {
-      lines.push(`<strong>Protein: ${p}g</strong>, target hit. This is doing the most to protect your muscle while you cut.`);
-    }
-  } else {
-    lines.push(`<strong>Protein:</strong> not logged. Aim for around ${targets.protein}g/day, it's the single biggest lever for keeping muscle while you're in a deficit.`);
-  }
-
+    if(p >= T.protein){ chips.push(chip('Protein', p+'g', 'ok')); }
+    else if(p >= T.protein*0.85){ chips.push(chip('Protein', p+'g', 'warn')); notes.push(`Protein ${Math.round(T.protein-p)}g short. A shake fixes that.`); flags+=1; }
+    else { chips.push(chip('Protein', p+'g', 'bad')); notes.push(`Protein well short of ${T.protein}g. This is what protects your muscle in a cut. Non-negotiable.`); flags+=2; }
+  } else chips.push(chip('Protein','–','none'));
   if(day.fat!=null){
     const f = day.fat;
-    if(f < targets.fat){
-      lines.push(`<strong>Fat: ${f}g</strong>, under the ${targets.fat}g floor. Too low for too long messes with hormones (including testosterone), sleep, and recovery. Get some olive oil, nuts, or fatty fish in.`);
-      flags+=1;
-    } else {
-      lines.push(`<strong>Fat: ${f}g</strong>, fine, no issue here.`);
-    }
-  }
-
+    chips.push(chip('Fat', f+'g', f < T.fat*0.8 ? 'warn' : 'ok'));
+    if(f < T.fat*0.8){ notes.push(`Fat under ${T.fat}g. Too low hurts hormones and recovery.`); flags+=1; }
+  } else chips.push(chip('Fat','–','none'));
   if(day.carbs!=null){
-    const c = day.carbs;
-    const dow = new Date().getDay();
-    const isTrainingOrRunDay = !!day.training || !!day.run;
-    if(c < targets.carbs*0.6){
-      lines.push(`<strong>Carbs: ${c}g</strong>, quite low, target's around ${targets.carbs}g. Carbs aren't the enemy here, they're what fuels your lifts and runs. Starving them while training hard just tanks performance and recovery, it doesn't speed up fat loss.`);
-      flags+=1;
-    } else if(c < targets.carbs*0.85){
-      lines.push(`<strong>Carbs: ${c}g</strong>, a bit under the ~${targets.carbs}g target.${isTrainingOrRunDay ? " You're training today, this is the fuel for that session, don't shortchange it." : " Fine on a rest day, just don't let it become the default."}`);
-    } else if(c <= targets.carbs*1.25){
-      lines.push(`<strong>Carbs: ${c}g</strong>, right where they should be. Good fuel for training, and it's not eating into your deficit if the total calories check out.`);
-    } else {
-      lines.push(`<strong>Carbs: ${c}g</strong>, well above target. Not inherently bad, but this usually means total calories crept up somewhere, check the number at the top matches.`);
-      flags+=1;
-    }
-  }
-
-  if(day.protein!=null && day.carbs!=null && day.fat!=null){
-    const macroCals = day.protein*4 + day.carbs*4 + day.fat*9;
-    if(Math.abs(macroCals - cals) > 150){
-      lines.push(`Heads up: your macros add up to ~${Math.round(macroCals)} kcal but you logged ${Math.round(cals)} kcal total, worth double-checking one of those numbers.`);
-    }
-  }
-
-  let tier;
-  if(flags===0) tier='ok';
-  else if(flags<=2) tier='warn';
-  else tier='bad';
-
-  const opener = pickCoachLine(COACH_LINES[tier].open, 0);
-  const closer = pickCoachLine(COACH_LINES[tier].close, 3);
-
-  textEl.innerHTML =
-    `<div style="font-weight:700;color:var(--fg);margin-bottom:12px;">${opener}</div>` +
-    lines.map(l=>`<div style="margin-bottom:10px;">${l}</div>`).join('') +
-    `<div style="margin-top:6px;padding-top:12px;border-top:1px solid var(--border);color:var(--fg-dim);font-style:normal;">${closer}</div>`;
-
-  if(tier==='ok'){ verdictEl.textContent='ON TRACK'; verdictEl.className='deficit-status status-ok'; }
-  else if(tier==='warn'){ verdictEl.textContent='NEEDS A TWEAK'; verdictEl.className='deficit-status status-warn'; }
-  else { verdictEl.textContent='OFF TRACK'; verdictEl.className='deficit-status status-bad'; }
+    const c = day.carbs, trained = !!day.training || !!data.train.sessions[todayKey()];
+    const st = c < T.carbs*0.6 ? 'warn' : c > T.carbs*1.3 ? 'warn' : 'ok';
+    chips.push(chip('Carbs', c+'g', st));
+    if(c < T.carbs*0.6 && trained){ notes.push('Low carbs on a training day. That\'s your fuel, not the enemy.'); flags+=1; }
+    if(c > T.carbs*1.3){ notes.push('Carbs high. Usually means calories crept up.'); flags+=1; }
+  } else chips.push(chip('Carbs','–','none'));
+  const tier = flags===0 ? 'ok' : flags<=2 ? 'warn' : 'bad';
+  verdictEl.textContent = tier==='ok' ? 'ON TRACK' : tier==='warn' ? 'NEEDS A TWEAK' : 'OFF TRACK';
+  verdictEl.className = 'deficit-status ' + (tier==='ok'?'status-ok':tier==='warn'?'status-warn':'status-bad');
+  textEl.innerHTML = `<div class="fuel-grid">${chips.join('')}</div>` +
+    (notes.length ? notes.map(n=>`<div style="margin-top:8px;">• ${n}</div>`).join('') : `<div style="margin-top:8px;">All on target. Repeat tomorrow.</div>`);
 }
 
 function renderWeekDeficit(){
@@ -891,11 +858,7 @@ function renderPlan(){
     const row = document.createElement('div');
     row.className = 'week-row'+(dow===todayDow?' today-row':'');
     row.style.flexDirection='column'; row.style.alignItems='flex-start';
-    const exs = t ? t.ex.map(id=>{
-      const e = getEx(id); if(!e) return id;
-      const tg = computeTarget(id);
-      return `${esc(e.name)} <span style="color:var(--accent)">${tg.weight!=null?fmtW(tg.weight)+'kg':'?'} · ${tg.sets}×${tg.min}-${tg.max}</span> <span style="opacity:.7">· rest ${restFor(e)}</span>`;
-    }).join('<br>') : 'Walk 10k+, mobility, stretch, sleep';
+    const exs = t ? t.ex.map(id=>getEx(id)?esc(getEx(id).name):id).join(', ') : 'Walk 10k+, mobility, stretch, sleep';
     row.innerHTML = `<span><strong>${DAY_NAMES[dow]}</strong> <span class="d">· ${t?t.name+' · '+t.focus:'Active Recovery'}${dow===todayDow?' · TODAY':''}</span></span><span class="d" style="margin-top:4px;line-height:1.6;">${exs}</span>`;
     c.appendChild(row);
   });
@@ -1326,6 +1289,7 @@ function renderTrain(){
     document.getElementById('sessSub').textContent = 'No lifting. Walk 10k+, stretch, mobility, sleep';
     document.getElementById('exList').innerHTML = '<div class="ex-why" style="line-height:1.7;">Thursday is earned rest. Get your steps in, 10 to 15 min of mobility (hips, ankles, thoracic), hit protein, sleep early. Push A tomorrow.<br><br>If you need to swap days this week, pick a session from the dropdown.</div>';
     document.getElementById('saveSessionBtn').style.display = 'none';
+    renderReview();
     renderWatch();
     return;
   }
@@ -1429,6 +1393,7 @@ function renderTrain(){
     });
   }
   document.getElementById('saveSessionBtn').textContent = saved ? 'Update session' : 'Save session';
+  renderReview();
   const li = data.train.lastImport;
   document.getElementById('csvInfo').textContent = li ? `Last import ${li.date.slice(8)}/${li.date.slice(5,7)}: ${li.sessions} sessions, latest ${li.latest}.` : 'Export sets from SetGraph (CSV) and import here after each session.';
   renderWatch();
@@ -1494,7 +1459,7 @@ function parseCSV(text){
 function importSetgraph(text){
   const rows = parseCSV(text.replace(/^﻿/,''));
   const head = (rows.shift()||[]).map(h=>h.trim());
-  const iE=head.indexOf('Exercise'), iD=head.indexOf('Date'), iR=head.indexOf('Repetitions'), iKg=head.indexOf('Weight (kg)'), iLb=head.indexOf('Weight (lb)');
+  const iN=head.indexOf('Note'), iE=head.indexOf('Exercise'), iD=head.indexOf('Date'), iR=head.indexOf('Repetitions'), iKg=head.indexOf('Weight (kg)'), iLb=head.indexOf('Weight (lb)');
   if(iE<0 || iD<0 || iR<0) throw new Error('bad');
   const byDate = {};
   rows.forEach(r=>{
@@ -1506,7 +1471,9 @@ function importSetgraph(text){
     if(isNaN(w)) w = 0;
     const k = r[iD].trim().slice(0,10);
     if(!/^\d{4}-\d{2}-\d{2}$/.test(k)) return;
-    (byDate[k] = byDate[k] || []).push([r[iE].trim(), Math.round(w*100)/100, Math.round(reps)]);
+    const st = [r[iE].trim(), Math.round(w*100)/100, Math.round(reps*2)/2];
+    if(iN>=0 && r[iN] && r[iN].trim()) st.push(r[iN].trim());
+    (byDate[k] = byDate[k] || []).push(st);
   });
   const keys = Object.keys(byDate).sort();
   if(!keys.length) throw new Error('empty');
@@ -1579,6 +1546,139 @@ function seedHistory(){
   saveData();
 }
 seedHistory();
+
+/* ---------- WORKOUT REVIEW (coach) ---------- */
+const REVIEW_LINES = {
+  ok: {
+    open: [
+      "That's a session that moves the needle. More of this.",
+      "You beat last time. That's the whole game, and you played it.",
+      `${USER_NAME}, this is what progressive overload looks like on paper.`,
+      "Strong session. Not perfect, but strong.",
+    ],
+    close: [
+      "Eat, sleep, and come back ready to beat these numbers.",
+      "Bank it. Next session is where you prove it wasn't a fluke.",
+      "This is how December gets built. One beaten logbook at a time.",
+    ]
+  },
+  warn: {
+    open: [
+      "Decent session. Decent doesn't change bodies by Christmas.",
+      "Some wins, some holding pattern. Read below and fix the holds.",
+      `${USER_NAME}, you showed up. Now make the sets count.`,
+      "Middle of the road. The logbook barely moved.",
+    ],
+    close: [
+      "Pick the one flag below and fix it next session. Just one.",
+      "Same weights next time, more reps. No excuses.",
+      "You're close. Close is where most people quit pushing.",
+    ]
+  },
+  bad: {
+    open: [
+      "Straight talk: you went backwards today.",
+      `${USER_NAME}, the logbook says this was a step back. Find out why.`,
+      "Not the session. Sleep, food, effort, one of them was off.",
+      "This is a red day. One is noise. Two is a problem.",
+    ],
+    close: [
+      "Check your sleep and food from the last 48 hours. The answer is usually there.",
+      "Don't chase it with extra volume. Recover, then beat it next time.",
+      "Log the check-in honestly so I can see what's behind this.",
+    ]
+  }
+};
+
+function reviewSession(key){
+  const ses = data.train.sessions[key];
+  if(!ses || !ses.sets.length) return null;
+  const idx = nameIndex(), prog = getProgram();
+  const T = ses.tpl && prog[ses.tpl] ? prog[ses.tpl] : null;
+  const groups = {}, order = [];
+  ses.sets.forEach(st=>{
+    const id = idx[norm(st[0])] || ('x:'+st[0]);
+    if(!groups[id]){ groups[id] = []; order.push(id); }
+    groups[id].push({w:+st[1]||0, r:+st[2]||0, note:st[3]||''});
+  });
+  const rows = [], flags = [];
+  let beat = 0, held = 0, dropped = 0, compared = 0;
+  order.forEach(id=>{
+    const sets = groups[id];
+    const ex = id.startsWith('x:') ? null : getEx(id);
+    const name = ex ? ex.name : id.slice(2);
+    const setsTxt = sets.map(s=>fmtW(s.w)+'×'+s.r).join(', ');
+    const notes = sets.map(s=>s.note).filter(Boolean);
+    if(!ex){ rows.push({name, setsTxt, tag:'extra', msg:'Not in your program. Logged, no target.'}); return; }
+
+    const W = Math.max(...sets.map(s=>s.w));
+    const work = sets.filter(s=>Math.abs(s.w-W)<0.01).map(s=>s.r);
+    const e1 = Math.max(...sets.map(s=>s.w*(1+s.r/30)));
+    const prevH = exHistory(id, key);
+    const P = prevH.length ? prevH[prevH.length-1] : null;
+    let tag = 'new', msg = 'First logged session in this block. This is your baseline.';
+    if(P){
+      compared++;
+      const pW = Math.max(...P.sets.map(s=>s.w));
+      const pWork = P.sets.filter(s=>Math.abs(s.w-pW)<0.01).map(s=>s.r);
+      const pe1 = Math.max(...P.sets.map(s=>s.w*(1+s.r/30)));
+      const sumNow = work.reduce((a,b)=>a+b,0), sumPrev = pWork.reduce((a,b)=>a+b,0);
+      const pAtW = P.sets.filter(s=>Math.abs(s.w-W)<0.01).map(s=>s.r);
+      const sumAtW = pAtW.reduce((a,b)=>a+b,0);
+      if(W > pW+0.01 && Math.min(...work) >= ex.min){ tag='up'; msg=`Heavier than last time (${fmtW(pW)} → ${fmtW(W)}kg) and still in range.`; beat++; }
+      else if(Math.abs(W-pW)<0.01 && (sumNow > sumPrev || work.length > pWork.length)){ tag='up'; msg=`Same weight, more total reps (${sumPrev} → ${sumNow}).`; beat++; }
+      else if(W < pW-0.01 && pAtW.length && (sumNow > sumAtW || work.length > pAtW.length)){ tag='up'; msg=`More reps at ${fmtW(W)}kg than last time (${pAtW.join(', ')} → ${work.join(', ')}).`; beat++; }
+      else if(W < pW-0.01 && e1 >= pe1*0.94){ tag='hold'; msg=`Lighter by plan for the new rep range. Build from here.`; held++; }
+      else if(e1 > pe1*1.015){ tag='up'; msg='Stronger than last time on your best set.'; beat++; }
+      else if(e1 < pe1*0.97){ tag='down'; msg=`Weaker than last time (best was ${P.sets.map(s=>fmtW(s.w)+'×'+s.r).join(', ')}).`; dropped++; }
+      else { tag='hold'; msg='Matched last time. Matching is not progressing.'; held++; }
+    }
+    // set-level flags
+    if(work.length>=3 && work.every(r=>r===work[0]) && work[0] < ex.max && work[0] >= ex.min && !notes.some(n=>/fail/i.test(n)))
+      flags.push(`<strong>${esc(name)}:</strong> ${work.join(', ')}. Identical sets mean you stopped at a number, not at failure.`);
+    if(sets.length>=2 && sets[0].r - sets[sets.length-1].r > 2 && Math.abs(sets[0].w-sets[sets.length-1].w)<0.01 && !notes.some(n=>/fail/i.test(n)))
+      flags.push(`<strong>${esc(name)}:</strong> reps fell ${sets[0].r} → ${sets[sets.length-1].r}. Take the full ${restFor(ex)} rest, or longer if you need it.`);
+    if(Math.max(...work) < ex.min)
+      flags.push(`<strong>${esc(name)}:</strong> every set below ${ex.min} reps. Too heavy for the range. Drop the weight next time.`);
+    if(work.length>=ex.sets && work.every(r=>r>=ex.max))
+      flags.push(`<strong>${esc(name)}:</strong> top of the range on every set. Weight goes up next time. Earned.`);
+    if(notes.some(n=>/fail/i.test(n)))
+      flags.push(`<strong>${esc(name)}:</strong> you noted going to (or near) failure. That's the effort that builds muscle.`);
+    rows.push({name, setsTxt, tag, msg});
+  });
+  if(T){
+    const doneIds = new Set(order);
+    const skipped = T.ex.filter(id=>!doneIds.has(id)).map(id=>getEx(id)?getEx(id).name:id);
+    if(skipped.length) flags.unshift(`<strong>Skipped:</strong> ${esc(skipped.join(', '))}. Missing work is missing progress.`);
+  }
+  let tier;
+  if(!compared) tier = 'ok';
+  else {
+    const score = (beat - dropped*1.5)/compared;
+    tier = (dropped===0 && score>=0.5) ? 'ok' : (score>=0 && dropped<=1) ? 'warn' : 'bad';
+  }
+  const grade = !compared ? '-' : tier==='ok' ? (held===0 && dropped===0 ? 'A' : 'A-') : tier==='warn' ? (beat>=held ? 'B' : 'C') : 'D';
+  return {rows, flags, tier, grade, beat, held, dropped, compared, tplName: T ? T.name : 'Session'};
+}
+
+function renderReview(){
+  const card = document.getElementById('reviewCard');
+  const r = reviewSession(todayKey());
+  if(!r){ card.style.display='none'; return; }
+  card.style.display='block';
+  const v = document.getElementById('reviewVerdict');
+  v.textContent = r.compared ? `GRADE ${r.grade}` : 'BASELINE';
+  v.className = 'deficit-status ' + (r.tier==='ok'?'status-ok':r.tier==='warn'?'status-warn':'status-bad');
+  const icon = {up:'▲', hold:'=', down:'▼', new:'•', extra:'+'};
+  const col = {up:'var(--ok)', hold:'var(--warn)', down:'var(--danger)', new:'var(--fg-dim)', extra:'var(--fg-dim)'};
+  const open = pickCoachLine(REVIEW_LINES[r.tier].open, 1), close = pickCoachLine(REVIEW_LINES[r.tier].close, 2);
+  let html = `<div style="font-weight:700;color:var(--fg);margin-bottom:6px;">${open}</div>`;
+  if(r.compared) html += `<div class="d" style="font-family:'JetBrains Mono',monospace;font-size:11px;margin-bottom:12px;color:var(--fg-dim);">${r.beat} beat · ${r.held} matched · ${r.dropped} dropped</div>`;
+  html += r.rows.map(x=>`<div class="rv-row"><span class="rv-ic" style="color:${col[x.tag]}">${icon[x.tag]}</span><div><div class="rv-name">${esc(x.name)} <span class="rv-sets">${x.setsTxt}</span></div><div class="rv-msg">${x.msg}</div></div></div>`).join('');
+  if(r.flags.length) html += `<div class="divider-lbl">Coach flags</div>` + r.flags.map(f=>`<div style="margin-bottom:8px;">${f}</div>`).join('');
+  html += `<div style="margin-top:10px;padding-top:12px;border-top:1px solid var(--border);">${close}</div>`;
+  document.getElementById('reviewText').innerHTML = html;
+}
 
 /* ---------- DAILY CHECK-IN ---------- */
 const SCALES = [
