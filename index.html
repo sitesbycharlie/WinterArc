@@ -1092,8 +1092,8 @@ const BLOCK_START = '2026-10-01'; // stalls only count from the start of this bl
 function isDeload(k){ return k>=DELOAD_START && k<=DELOAD_END; }
 const X = (id,name,aliases,sets,min,max,inc,compound)=>({id,name,aliases:[name,...aliases],sets,min,max,inc,compound:!!compound});
 const EX = {
-  smith_incline: X('smith_incline','Smith Incline Chest Press',['Smith Machine Incline Bench Press'],3,6,10,2.5,1),
-  smith_shoulder: X('smith_shoulder','Smith Sitting Shoulder Press',[],3,6,10,2.5,1),
+  smith_incline: X('smith_incline','Smith Incline Chest Press',['Smith Machine Incline Bench Press'],3,6,10,10,1),
+  smith_shoulder: X('smith_shoulder','Smith Sitting Shoulder Press',[],3,6,10,10,1),
   pec_fly: X('pec_fly','Machine Pec Fly',[],3,10,15,2.5),
   lateral: X('lateral','Seated Lateral Raise',['Seated Lateral Raises'],3,12,20,2.5),
   pushdown: X('pushdown','Tricep Cable Pushdown',['Tricep Cable Pushdowns','Tricep Pushdown'],3,10,15,2.5),
@@ -1114,8 +1114,8 @@ const EX = {
   preacher: X('preacher','Preacher Curl Machine',[],3,10,15,1),
   hack: X('hack','Hack Squat',[],3,6,10,5,1),
   free_lp: X('free_lp','Free Leg Press',[],3,8,12,10,1),
-  smith_squat: X('smith_squat','Smith Squat',['Smith Machine Squat'],3,6,10,5,1),
-  seated_lp: Object.assign(X('seated_lp','Single Leg Press',['Seated Leg Press'],3,8,12,5,1),{perSide:true}),
+  smith_squat: X('smith_squat','Smith Squat',['Smith Machine Squat'],3,6,10,10,1),
+  seated_lp: Object.assign(X('seated_lp','Single Leg Press',['Seated Leg Press'],3,8,12,5,1),{perSide:true, stack:[14,20,27,34,41,48,54,61,68,75,82,88,95,102,109,116,122,129,136,143,150,156,163,170,177,184]}),
   leg_curl: X('leg_curl','Leg curl machine',[],3,8,12,5),
   leg_ext: X('leg_ext','Seated Leg Extension',[],3,10,15,10),
   abductor: X('abductor','Abductor',['Hip Abduction Machine'],3,12,20,5),
@@ -1131,7 +1131,7 @@ const EX = {
   shoulder_machine: X('shoulder_machine','Shoulder Press Machine',['Machine Shoulder Press'],3,8,12,2.5,1),
   bar_row: X('bar_row','Bar Back Rows',[],3,8,12,2.5,1),
   cable_hammer: X('cable_hammer','Cable Hammer Curl',['Cable Hammer Curls'],3,8,12,2.5),
-  lying_curl: X('lying_curl','Laying Hamstring Curl',[],3,8,12,2.5),
+  lying_curl: Object.assign(X('lying_curl','Laying Hamstring Curl',['Laying Leg Curl'],3,8,12,2.5),{stack:[9,14,18,22,27,31,36,41,46,50,55,59,64,68,73,77,82,86,91,95,100,104,109,113]}),
   bss: Object.assign(X('bss','Smith Bulgarian Split Squats',[],3,8,12,2.5,1),{perSide:true}),
 };
 const DEFAULT_PROGRAM = {
@@ -1155,7 +1155,19 @@ function nameIndex(){
   return idx;
 }
 function sessionKeys(){ return Object.keys(data.train.sessions).sort(); }
-function roundTo(v,inc){ return Math.max(inc, Math.round(v/inc)*inc); }
+// snap a weight to what the machine actually has (pin stack) or to its increment
+function snapW(ex, v, mode){
+  if(ex.stack && ex.stack.length){
+    const st = ex.stack;
+    if(mode==='floor'){ const c = st.filter(x=>x<=v+0.01); return c.length ? c[c.length-1] : st[0]; }
+    if(mode==='next'){ const c = st.filter(x=>x>v+0.01); return c.length ? c[0] : st[st.length-1]; }
+    return st.reduce((a,b)=>Math.abs(b-v)<Math.abs(a-v)?b:a);
+  }
+  if(mode==='next') return v + ex.inc;
+  return roundTo(v, ex.inc, mode);
+}
+function roundTo(v,inc,mode){
+  if(mode==='floor') return Math.max(inc, Math.floor(v/inc+1e-9)*inc); return Math.max(inc, (inc>=10 ? Math.floor(v/inc) : Math.round(v/inc))*inc); }
 function fmtW(w){ return String(Math.round(w*100)/100); }
 function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
@@ -1191,7 +1203,9 @@ function nextInRotation(){
   return variants[(variants.indexOf(lastVar)+1) % variants.length];
 }
 const WEEK_PLAN = {5:'PUSH_A', 6:'PULL_A', 0:'LEGS_A', 1:'PUSH_B', 2:'PULL_B', 3:'LEGS_B', 4:'REST'};
-function plannedFor(d){ return WEEK_PLAN[d.getDay()]; }
+// one-off swaps for a specific date (the weekly plan stays the same)
+const DATE_PLAN = {'2026-10-05':'PUSH_A'};
+function plannedFor(d){ const k = dateKey(d); return (data.train.datePlan && data.train.datePlan[k]) || DATE_PLAN[k] || WEEK_PLAN[d.getDay()]; }
 function currentTemplate(){
   const prog = getProgram();
   const s = data.train.sessions[todayKey()];
@@ -1254,17 +1268,17 @@ function computeTarget(id, beforeKey){
   res.prevW = W;
   const daysSince = Math.round((new Date(todayKey()) - new Date(prev.date))/86400000);
   if(daysSince>42){
-    res.weight = roundTo(W*0.8, inc); res.action = 'return';
+    res.weight = snapW(ex, W*0.8, 'floor'); res.action = 'return';
     res.why = `Not trained in ${Math.round(daysSince/7)} weeks. Start about 20% lighter than your last ${fmtW(W)}kg and build back.`;
     return res;
   }
   if(reps.length>=ex.sets && reps.every(r=>r>=ex.max)){
-    res.weight = W+inc; res.action = 'up';
+    res.weight = snapW(ex, W, 'next'); res.action = 'up';
     res.why = `Hit ${ex.max}+ on all ${reps.length} sets at ${fmtW(W)}kg. Weight goes up. Expect ${ex.min} to ${ex.min+2} reps, that's normal.`;
     return res;
   }
   if(stall>=3){
-    res.weight = roundTo(W*0.9, inc); res.action = 'reset';
+    res.weight = snapW(ex, W*0.9, 'floor'); res.action = 'reset';
     res.why = `No progress in ${stall} sessions at ${fmtW(W)}kg. Drop 10%, clean reps, rebuild past it.`;
     return res;
   }
@@ -1273,7 +1287,8 @@ function computeTarget(id, beforeKey){
     const L = hist[hist.length-1];
     const e1 = Math.max(...L.sets.map(st=>st.w*(1+st.r/30)));
     const tgt = ex.min+2;
-    const w2 = Math.min(W, Math.round(e1/(1+tgt/30)/inc)*inc);
+    const want = e1/(1+tgt/30);
+    const w2 = Math.min(W, ex.stack ? snapW(ex, want) : snapW(ex, want, inc>=10 ? 'floor' : undefined));
     if(w2>0 && w2<W){
       res.weight = w2; res.action = 'hold';
       res.why = `New rep range (${ex.min}-${ex.max}). Your best set last time puts you at ${fmtW(w2)}kg for ${tgt} reps. Hit ${ex.min}+ on all ${ex.sets} sets, then build.`;
@@ -1288,7 +1303,7 @@ function computeTarget(id, beforeKey){
 }
 
 const TAGS = {
-  up:  t=>['tag-up','+'+fmtW(t.ex.inc)+'kg'],
+  up:  t=>['tag-up','+'+fmtW(Math.round((t.weight-(t.prevW||0))*100)/100)+'kg'],
   hold:()=>['tag-hold','Hold'],
   reset:()=>['tag-reset','-10%'],
   new: ()=>['tag-new','New'],
@@ -1354,7 +1369,7 @@ function renderTrain(){
     const [tagCls, tagTxt] = deload ? ['tag-new','Deload'] : TAGS[t.action](t);
     const savedSets = saved ? saved.sets.filter(s=>idx[norm(s[0])]===id) : [];
     const rows = Math.max(sets, savedSets.length);
-    const warm = (ex.compound && weight) ? `Warm-up: ${fmtW(roundTo(weight*.5,ex.inc))}×8, ${fmtW(roundTo(weight*.75,ex.inc))}×4 (don't log these)` : '';
+    const warm = (ex.compound && weight) ? `Warm-up: ${fmtW(snapW(ex,weight*.5))}×8, ${fmtW(snapW(ex,weight*.75))}×4 (don't log these)` : '';
 
     const div = document.createElement('div');
     div.className = 'ex';
@@ -1547,6 +1562,7 @@ document.getElementById('coachFile').addEventListener('change', e=>{
       });
       if(j.note) data.train.coachNote = {text:j.note, date:d0, from: j.forDate || d0, until: j.forDate || j.until || shiftKey(d0,1)};
       if(j.forceNext) data.train.forceNext = {tpl:j.forceNext, setOn:d0};
+      if(j.datePlan) data.train.datePlan = Object.assign(data.train.datePlan||{}, j.datePlan);
       saveData();
       toast('Coach update applied');
       renderAll();
