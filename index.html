@@ -211,6 +211,15 @@ textarea.ta:focus{border-color:var(--accent);}
       <div class="day-sub" id="todaySub">--</div>
     </div>
 
+    <div class="card" id="restPickCard" style="display:none;">
+      <div class="card-title">This Week's Rest Day</div>
+      <div class="row2">
+        <button class="btn ghost" id="restMonBtn">Rest today</button>
+        <button class="btn ghost" id="restThuBtn">Train today</button>
+      </div>
+      <div class="subtle-note" id="restPickNote"></div>
+    </div>
+
     <div class="card" id="checkinCard">
       <div class="card-title">Morning Check-in <span class="pill" id="checkinState">Not done</span></div>
       <div class="row2">
@@ -362,7 +371,7 @@ textarea.ta:focus{border-color:var(--accent);}
     <div class="card">
       <div class="card-title">Weekly Split</div>
       <div class="week-schedule" id="rotation"></div>
-      <div class="subtle-note">A days Friday to Sunday, B days Monday to Wednesday, Thursday active recovery. Weights, reps and rest for each session are in the Train tab. Miss a day? Pick the session from the dropdown in Train.</div>
+      <div class="subtle-note">A days Friday to Sunday. B days Monday to Thursday around one rest day: rest Monday and B runs Tue to Thu, train Monday and Thursday is rest. Pick it on the Today tab each Monday. Weights, reps and rest for each session are in the Train tab. Miss a day? Pick the session from the dropdown in Train.</div>
     </div>
     <div class="card">
       <div class="card-title">How Progression Works</div>
@@ -386,7 +395,7 @@ textarea.ta:focus{border-color:var(--accent);}
         • Whole foods, minimal ultra-processed<br>
         • 10,000+ steps every day<br>
         • Liquids: water, black coffee/tea, energy drinks only. No alcohol, no sugary drinks<br>
-        • Thursday: active recovery. Core, mobility and stretching<br>
+        • Rest day: Monday or Thursday, picked each Monday. Core, mobility and stretching<br>
     • Runs: optional, when you feel like it<br>
         • Import SetGraph CSV after every session<br>
         • Weigh daily, judge the weekly average<br>
@@ -875,8 +884,10 @@ function renderPlan(){
   const c = document.getElementById('rotation');
   const prog = getProgram(), todayDow = new Date().getDay();
   c.innerHTML = '';
-  [5,6,0,1,2,3,4].forEach(dow=>{
-    const k = WEEK_PLAN[dow], t = prog[k];
+  const mon = new Date(mondayKeyOf(new Date())+'T00:00:00');
+  [0,1,2,3,4,5,6].forEach(i=>{
+    const dt = new Date(mon); dt.setDate(mon.getDate()+i);
+    const dow = dt.getDay(), k = plannedFor(dt), t = prog[k];
     const row = document.createElement('div');
     row.className = 'week-row'+(dow===todayDow?' today-row':'');
     row.style.flexDirection='column'; row.style.alignItems='flex-start';
@@ -1204,8 +1215,47 @@ function nextInRotation(){
 }
 const WEEK_PLAN = {5:'PUSH_A', 6:'PULL_A', 0:'LEGS_A', 1:'PUSH_B', 2:'PULL_B', 3:'LEGS_B', 4:'REST'};
 // one-off swaps for a specific date (the weekly plan stays the same)
-const DATE_PLAN = {'2026-10-05':'PUSH_A'};
-function plannedFor(d){ const k = dateKey(d); return (data.train.datePlan && data.train.datePlan[k]) || DATE_PLAN[k] || WEEK_PLAN[d.getDay()]; }
+// rest Monday shifts the B days: Tue Push B, Wed Pull B, Thu Legs B
+const WEEK_PLAN_MON_REST = {1:'REST', 2:'PUSH_B', 3:'PULL_B', 4:'LEGS_B'};
+const DATE_PLAN = {};
+function mondayKeyOf(d){ const x = new Date(d); x.setHours(0,0,0,0); const w = x.getDay(); x.setDate(x.getDate()-(w===0?6:w-1)); return dateKey(x); }
+function restMonday(d){ return !!(data.train.restMon && data.train.restMon[mondayKeyOf(d)]); }
+function setRestMonday(d, on){
+  if(!data.train.restMon) data.train.restMon = {};
+  const mk = mondayKeyOf(d);
+  if(on) data.train.restMon[mk] = true; else delete data.train.restMon[mk];
+  // clear one-off swaps for Mon to Thu of that week so the new order applies
+  for(let i=0;i<4;i++){
+    const k = shiftKey(mk,i);
+    if(data.train.datePlan) delete data.train.datePlan[k];
+    if(data.train.forceNext && data.train.forceNext.setOn===k) data.train.forceNext = null;
+  }
+}
+function plannedFor(d){
+  const k = dateKey(d), o = (data.train.datePlan && data.train.datePlan[k]) || DATE_PLAN[k];
+  if(o) return o;
+  const dow = d.getDay();
+  if(dow>=1 && dow<=4 && restMonday(d)) return WEEK_PLAN_MON_REST[dow];
+  return WEEK_PLAN[dow];
+}
+function renderRestPick(){
+  const card = document.getElementById('restPickCard');
+  const now = new Date(), t = todayKey();
+  const logged = data.train.sessions[t] && data.train.sessions[t].sets.length;
+  if(now.getDay()!==1 || logged){ card.style.display='none'; return; }
+  card.style.display='block';
+  const rest = restMonday(now);
+  document.getElementById('restMonBtn').className = 'btn' + (rest?'':' ghost');
+  document.getElementById('restThuBtn').className = 'btn' + (rest?' ghost':'');
+  document.getElementById('restPickNote').textContent = rest
+    ? 'Resting today. Tue Push B, Wed Pull B, Thu Legs B, then A days Fri to Sun.'
+    : 'Training today. Mon Push B, Tue Pull B, Wed Legs B, Thu rest, then A days Fri to Sun.';
+}
+function chooseRest(on){
+  setRestMonday(new Date(), on);
+  saveData(); toast(on ? 'Rest today. B days start tomorrow' : 'Training today. Thursday is rest');
+  renderRestPick(); renderHeader(); renderChecklist(); renderTrain(); renderPlan();
+}
 function currentTemplate(){
   const prog = getProgram();
   const s = data.train.sessions[todayKey()];
@@ -1456,6 +1506,9 @@ function renderWatch(){
 
 document.getElementById('sessSelect').addEventListener('change', e=>{
   const v = e.target.value;
+  if(new Date().getDay()===1 && !data.train.sessions[todayKey()] && (v==='REST' || (v==='PUSH_B' && restMonday(new Date())))){
+    chooseRest(v==='REST'); return;
+  }
   data.train.forceNext = {tpl:v, setOn:todayKey()};
   const s = data.train.sessions[todayKey()];
   if(s && v!=='REST') s.tpl = v;
@@ -2093,12 +2146,16 @@ function renderTruth(){
   document.getElementById('dailyTruth').textContent = getDailyTruth();
 }
 
+document.getElementById('restMonBtn').addEventListener('click', ()=>chooseRest(true));
+document.getElementById('restThuBtn').addEventListener('click', ()=>chooseRest(false));
+
 /* ---------- INIT ---------- */
 function renderAll(){
   if(!storageHealthCheck()){
     document.getElementById('storageBanner').classList.add('show');
   }
   renderHeader();
+  renderRestPick();
   renderTruth();
   renderCheckin();
   renderChecklist();
